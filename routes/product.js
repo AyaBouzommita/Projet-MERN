@@ -5,12 +5,14 @@ const {
   getProductById,
   addProduct,
   updateProduct,
+  upvoteProject,
   deleteProduct,
   getCategories,
 } = require("../controllers/productController");
 
-// Specific routes first
+// Specific routes
 router.get("/categories", getCategories);
+router.put("/:id/upvote", upvoteProject);
 
 // CRUD routes
 router.get("/", getProducts);

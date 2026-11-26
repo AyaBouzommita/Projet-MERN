@@ -1,47 +1,31 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteproduct } from "../../redux/productSlice";
-import { addToCart, toggleWishlist } from "../../redux/cartSlice";
+import { deleteproduct, upvoteProduct } from "../../redux/productSlice";
 import EditProduct from "./EditProduct";
 import { toast } from "react-toastify";
-import { IconTrash, IconHeart, IconStar, IconBag } from "../common/Icons";
+import { IconUpvote, IconGithub, IconExternal, IconTrash } from "../common/Icons";
 
 function ProductCard({ el }) {
   const dispatch = useDispatch();
-  const { wishlist } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
-
-  const [selectedSize, setSelectedSize] = useState(
-    el?.sizes && el.sizes.length > 0 ? el.sizes[0] : "M"
-  );
-  const [selectedColor, setSelectedColor] = useState(
-    el?.colors && el.colors.length > 0 ? el.colors[0] : "#000000"
-  );
   const [showConfirm, setShowConfirm] = useState(false);
+  const [hasVoted, setHasVoted] = useState(false);
 
-  const isLiked = wishlist.includes(el?._id);
-
-  const handleAddToCart = () => {
-    dispatch(
-      addToCart({
-        _id: el?._id,
-        nameproduct: el?.nameproduct,
-        price: el?.price,
-        oldPrice: el?.oldPrice,
-        img: el?.img,
-        size: selectedSize,
-        color: selectedColor,
-        qty: 1,
-      })
-    );
-    toast.success(`"${el?.nameproduct}" ajouté au panier !`);
+  const handleUpvote = async () => {
+    try {
+      await dispatch(upvoteProduct(el?._id)).unwrap();
+      setHasVoted(true);
+      toast.success(`+1 vote pour "${el?.nameproduct}" !`);
+    } catch (err) {
+      toast.error(err || "Erreur de vote");
+    }
   };
 
   const handleDelete = async () => {
     try {
       await dispatch(deleteproduct(el?._id)).unwrap();
-      toast.success("Produit retiré du catalogue");
+      toast.success("Projet retiré de la vitrine");
     } catch (err) {
       toast.error(err || "Erreur de suppression");
     } finally {
@@ -49,138 +33,144 @@ function ProductCard({ el }) {
     }
   };
 
-  const defaultImg = "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80";
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case "En ligne":
+        return <span className="status-badge-online">En ligne</span>;
+      case "Bêta":
+        return <span className="status-badge-beta">Bêta</span>;
+      case "Recherche de contributeurs":
+        return <span className="status-badge-contrib">Recrute dev</span>;
+      default:
+        return <span className="status-badge-prototype">Prototype</span>;
+    }
+  };
+
+  const defaultImg = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80";
 
   return (
     <>
-      <div className="shein-product-card">
-        {/* Image Container with Badges */}
-        <div className="shein-img-wrapper">
+      <div className="dev-project-card">
+        {/* Project Thumbnail */}
+        <div className="dev-card-img-wrapper">
           <img
             src={el?.img || defaultImg}
             alt={el?.nameproduct}
-            className="shein-img"
+            className="dev-card-img"
             onError={(e) => {
               e.target.src = defaultImg;
             }}
           />
-
-          {/* Discount Badge */}
-          {el?.discount > 0 && (
-            <div className="shein-discount-badge">-{el.discount}%</div>
-          )}
-
-          {/* Flash Sale Tag */}
-          {el?.isFlashSale && (
-            <div className="shein-flash-badge">FLASH</div>
-          )}
-
-          {/* Wishlist Button */}
-          <button
-            type="button"
-            className="shein-wishlist-btn"
-            onClick={() => {
-              dispatch(toggleWishlist(el?._id));
-              toast.info(isLiked ? "Retiré des favoris" : "Ajouté à vos favoris");
-            }}
-          >
-            <IconHeart size={18} filled={isLiked} />
-          </button>
-
-          {/* Quick Add To Cart Hover Button */}
-          <div className="shein-quick-add">
-            <button
-              type="button"
-              className="btn btn-dark w-100 py-2 d-flex align-items-center justify-content-center gap-2 fw-bold text-uppercase"
-              style={{ fontSize: "0.8rem", letterSpacing: "0.5px" }}
-              onClick={handleAddToCart}
-            >
-              <IconBag size={15} />
-              <span>Ajouter au panier</span>
-            </button>
+          <div className="position-absolute top-0 start-0 m-2">
+            {getStatusBadge(el?.status)}
           </div>
         </div>
 
         {/* Card Body */}
-        <div className="shein-card-body p-2 pt-3">
-          {/* Color Dots */}
-          {el?.colors && el.colors.length > 0 && (
-            <div className="d-flex gap-1 mb-2">
-              {el.colors.map((c, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  className={`shein-color-dot ${selectedColor === c ? "active" : ""}`}
-                  style={{ backgroundColor: c }}
-                  onClick={() => setSelectedColor(c)}
-                />
-              ))}
-            </div>
-          )}
+        <div className="p-3 d-flex flex-column flex-grow-1">
+          {/* Header Row: Category & Upvote Button */}
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <span className="text-muted fw-bold small text-uppercase" style={{ fontSize: "0.72rem" }}>
+              {el?.category || "Web Fullstack"}
+            </span>
 
-          {/* Title */}
-          <h6 className="shein-title text-truncate mb-1" title={el?.nameproduct}>
+            <button
+              type="button"
+              className={`btn-upvote ${hasVoted ? "border-warning bg-warning bg-opacity-10 text-dark" : ""}`}
+              onClick={handleUpvote}
+              title="Voter pour ce projet"
+            >
+              <IconUpvote size={13} />
+              <span>{el?.upvotes || 1}</span>
+            </button>
+          </div>
+
+          {/* Project Title */}
+          <h5 className="fw-bold text-dark mb-1 text-truncate" title={el?.nameproduct}>
             {el?.nameproduct}
-          </h6>
+          </h5>
 
-          {/* Price */}
-          <div className="d-flex align-items-baseline gap-2 mb-2">
-            <span className="shein-price">{el?.price} TND</span>
-            {el?.oldPrice && (
-              <span className="shein-old-price">{el.oldPrice} TND</span>
+          {/* Tagline */}
+          <p className="text-muted small mb-3 flex-grow-1" style={{ fontSize: "0.84rem", lineHeight: 1.5 }}>
+            {el?.tagline || el?.description}
+          </p>
+
+          {/* Technology Badges */}
+          <div className="d-flex gap-1 flex-wrap mb-3">
+            {el?.technologies && el.technologies.length > 0 ? (
+              el.technologies.slice(0, 4).map((tech, idx) => (
+                <span key={idx} className="dev-tech-tag">
+                  {tech}
+                </span>
+              ))
+            ) : (
+              <span className="dev-tech-tag">MERN</span>
             )}
           </div>
 
-          {/* Rating */}
-          <div className="d-flex align-items-center gap-1 mb-2 small">
-            <IconStar size={13} />
-            <span className="fw-bold">{el?.rating || 4.8}</span>
-            <span className="text-muted" style={{ fontSize: "0.72rem" }}>
-              ({el?.reviewsCount || 120})
-            </span>
-          </div>
+          {/* Author info & Action links */}
+          <div className="d-flex justify-content-between align-items-center pt-2 border-top mt-auto">
+            <div className="d-flex align-items-center gap-2">
+              <img
+                src={el?.authorAvatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"}
+                alt={el?.authorName || "Auteur"}
+                style={{ width: "24px", height: "24px", borderRadius: "50%", objectFit: "cover" }}
+              />
+              <span className="small text-muted fw-semibold" style={{ fontSize: "0.78rem" }}>
+                {el?.authorName || "Étudiant GL3"}
+              </span>
+            </div>
 
-          {/* Sizes Options */}
-          {el?.sizes && el.sizes.length > 0 && (
-            <div className="d-flex gap-1 flex-wrap mb-2">
-              {el.sizes.map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  className={`shein-size-pill ${selectedSize === s ? "active" : ""}`}
-                  onClick={() => setSelectedSize(s)}
+            <div className="d-flex align-items-center gap-2">
+              {el?.githubUrl && (
+                <a
+                  href={el.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-sm btn-light p-1 text-dark"
+                  title="Voir le code source GitHub"
                 >
-                  {s}
-                </button>
-              ))}
-            </div>
-          )}
+                  <IconGithub size={16} />
+                </a>
+              )}
+              {el?.demoUrl && (
+                <a
+                  href={el.demoUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-sm btn-light p-1 text-primary"
+                  title="Tester la démo en ligne"
+                >
+                  <IconExternal size={16} />
+                </a>
+              )}
 
-          {/* Admin Edit/Delete Controls */}
-          {user?.isAdmin && (
-            <div className="d-flex gap-1 mt-2 pt-2 border-top">
-              <EditProduct el={el} />
-              <Button
-                variant="light"
-                size="sm"
-                className="btn-outline-pro px-2"
-                onClick={() => setShowConfirm(true)}
-                title="Supprimer"
-              >
-                <IconTrash size={14} />
-              </Button>
+              {/* Edit/Delete for Admin or Author */}
+              {user?.isAdmin && (
+                <>
+                  <EditProduct el={el} />
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-light p-1 text-danger border-0"
+                    onClick={() => setShowConfirm(true)}
+                    title="Supprimer le projet"
+                  >
+                    <IconTrash size={15} />
+                  </button>
+                </>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
 
       {/* Confirmation Modal */}
       <Modal show={showConfirm} onHide={() => setShowConfirm(false)} centered size="sm">
         <Modal.Header closeButton className="border-0 pb-0">
-          <Modal.Title className="fs-6 fw-bold">Supprimer l'article</Modal.Title>
+          <Modal.Title className="fs-6 fw-bold">Supprimer le projet</Modal.Title>
         </Modal.Header>
         <Modal.Body className="py-3 text-muted small">
-          Êtes-vous sûr de retirer cette référence de la boutique ?
+          Êtes-vous sûr de retirer ce projet de la vitrine ?
           <div className="fw-bold text-dark mt-2">{el?.nameproduct}</div>
         </Modal.Body>
         <Modal.Footer className="border-0 pt-0">

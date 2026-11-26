@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Card, Button, Modal } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { Button, Modal } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteuser } from "../redux/userSlice";
 import Edituser from "./Edituser";
 import { toast } from "react-toastify";
-import { IconTrash } from "./common/Icons";
+import { IconTrash, IconCode } from "./common/Icons";
 
 function UserCard({ el }) {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const handleDelete = async () => {
@@ -25,8 +26,8 @@ function UserCard({ el }) {
 
   return (
     <>
-      <div className="pro-user-card text-center">
-        <div className="mx-auto mb-3">
+      <div className="pro-user-card text-center d-flex flex-column">
+        <div className="mx-auto mb-3 position-relative">
           <img
             src={el?.img || defaultAvatar}
             alt={el?.name}
@@ -45,25 +46,31 @@ function UserCard({ el }) {
         </div>
 
         <div className="d-flex justify-content-center align-items-center gap-2 mb-3">
-          <span className={`badge-status ${el?.isAdmin ? "badge-admin" : "badge-member"}`}>
-            <span className="badge-status-dot" style={{ backgroundColor: el?.isAdmin ? "#0f172a" : "#2563eb" }}></span>
-            {el?.isAdmin ? "Administrateur" : "Collaborateur"}
+          <span className={`badge ${el?.isAdmin ? "bg-dark text-white" : "bg-primary-subtle text-primary border border-primary"} px-3 py-1 rounded-pill small fw-bold`}>
+            {el?.isAdmin ? "Lead / Admin" : "Étudiant Développeur"}
           </span>
-          <span className="text-muted small">• {el?.age || 25} ans</span>
+          <span className="text-muted small">• {el?.age || 22} ans</span>
         </div>
 
-        <div className="d-flex gap-2 mt-auto pt-3 border-top">
-          <Edituser el={el} />
-          <Button
-            variant="light"
-            size="sm"
-            className="btn-outline-pro px-2"
-            onClick={() => setShowConfirm(true)}
-            title="Supprimer le collaborateur"
-          >
-            <IconTrash size={15} />
-          </Button>
+        <div className="p-2 bg-light rounded-3 small text-muted mb-3">
+          <span className="d-block fw-semibold text-dark">Spécialité</span>
+          <span>Génie Logiciel & Informatique</span>
         </div>
+
+        {user?.isAdmin && (
+          <div className="d-flex gap-2 mt-auto pt-3 border-top">
+            <Edituser el={el} />
+            <Button
+              variant="light"
+              size="sm"
+              className="btn-outline-pro px-2"
+              onClick={() => setShowConfirm(true)}
+              title="Supprimer le membre"
+            >
+              <IconTrash size={15} />
+            </Button>
+          </div>
+        )}
       </div>
 
       <Modal show={showConfirm} onHide={() => setShowConfirm(false)} centered size="sm">
@@ -75,7 +82,7 @@ function UserCard({ el }) {
           <div className="fw-bold text-dark mt-2">{el?.name}</div>
         </Modal.Body>
         <Modal.Footer className="border-0 pt-0">
-          <Button variant="light" size="sm" className="btn-outline-pro" onClick={() => setShowConfirm(false)}>
+          <Button variant="light" size="sm" onClick={() => setShowConfirm(false)}>
             Annuler
           </Button>
           <Button variant="danger" size="sm" onClick={handleDelete} className="px-3">

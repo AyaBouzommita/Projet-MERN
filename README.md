@@ -1,4 +1,4 @@
-# SHEIN Tunisie — Plateforme E-Commerce Mode & Prêt-à-Porter (MERN)
+# DevShowcase — Le Product Hunt des Projets Étudiants & Ingénieurs (MERN)
 
 > **Auteur :** Aya Bouzommita  
 > **Filière :** Diplôme National d'Ingénieur en Génie Logiciel (FIGL3)  
@@ -8,24 +8,25 @@
 
 ## 1. Description du Projet
 
-Ce projet transforme l'application de base en une **plateforme e-commerce complète inspirée du géant mondial de la mode SHEIN**, adaptée au marché tunisien.
+**DevShowcase** est une plateforme communautaire et collaborative inspirée de Product Hunt, spécialement conçue pour les étudiants ingénieurs en informatique.
 
-L'application intègre toutes les fonctionnalités emblématiques d'un site de vente en ligne moderne :
-* **Expérience d'achat intégrale** : Panier d'achat coulissant dynamique (*Cart Drawer*), gestion des quantités, sélection des tailles (XS, S, M, L, XL) et pastilles de couleurs.
-* **Système de codes promotionnels** : Application de coupons instantanés (`SHEIN20` pour -20%, `BIENVENUE` pour -15%) avec jauge d'éligibilité à la livraison gratuite (dès 100 TND).
-* **Ventes Flash avec compte à rebours** : Section dédiée aux offres temporaires avec minuteur en temps réel (heures, minutes, secondes).
-* **Validation de commande (*Checkout*)** : Formulaire de livraison avec sélection des 24 gouvernorats tunisiens et options de paiement (Paiement à la livraison / Carte bancaire).
-* **Liste d'envies (*Wishlist*)** : Sauvegarde des articles favoris avec indicateur en direct dans la barre de navigation.
-* **Architecture MERN robuste** : Backend MVC, authentification JWT, hachage Bcrypt, gestion d'état centralisée avec Redux Toolkit et persistance `localStorage`.
+L'objectif est d'offrir une vitrine publique durable aux projets académiques, projets de fin d'études (PFE), prototypes d'intelligence artificielle et outils open-source qui restent trop souvent confinés aux machines locales après les soutenances.
+
+### Fonctionnalités Clés :
+* **Système d'Upvotes en direct** : Les visiteurs et étudiants votent pour les projets les plus ingénieux et prometteurs.
+* **Fiches Projets Détaillées** : Capture d'écran, accroche (tagline), description, liens directs vers le code source GitHub et la démo en ligne.
+* **Badges Technologiques** : Tags des technos employées (*React, FastAPI, Docker, Node.js, Flutter, PyTorch, MongoDB*).
+* **Statuts de Projet** : *En ligne*, *Bêta*, *Prototype*, *Recherche de contributeurs*.
+* **Soumission & Modération** : Formulaire complet de publication de projets avec modération administrateur.
+* **Annuaire des Développeurs** : Profils des étudiants et créateurs de projets.
 
 ---
 
-## 2. Fonctionnalités E-Commerce Clés
+## 2. Architecture & Génie Logiciel
 
-* **Bandeau défilant (*Top Announcement Ticker*)** : Annonces des offres promotionnelles et seuil de livraison offerte.
-* **Navigation thématique** : Rayons Nouveautés, Robes, Hauts & Tops, Vestes, Pantalons, Chaussures, Accessoires et Ventes Flash.
-* **Fiches produits stylisées** : Ratios d'images portrait (3:4), étiquettes de remises en rouge (`-45%`), notes étoiles clients et pastilles de tailles et teintes.
-* **Tunnel d'achat fluide** : Tiroir latéral sans interruption de navigation permettant de commander en quelques clics.
+* **Backend MVC (Node.js & Express.js 5)** : Architecture séparée en couches (`controllers/`, `routes/`, `models/`, `middlewares/`), gestion centralisée des erreurs avec codes HTTP normalisés.
+* **Sécurité & Contrôle d'accès** : Variables d'environnement isolées (`dotenv`), hachage Bcrypt, jeton d'authentification JWT et en-têtes Helmet.
+* **Frontend Moderne (React 19 & Redux Toolkit)** : État réactif sans ping manuel, requêtes asynchrones avec `createAsyncThunk`, interface responsive avec Plus Jakarta Sans.
 
 ---
 
@@ -43,12 +44,12 @@ cp .env.example .env
 npm install
 cd client && npm install && cd ..
 
-# 4. Peupler le catalogue de mode
+# 4. Peupler les projets de démonstration
 node seed.js
 
-# 5. Lancer le projet
+# 5. Démarrer le projet
 npm run start
 ```
 
-* **Boutique en ligne :** `http://localhost:5173`
-* **Serveur API :** `http://localhost:5000`
+* **Interface Web :** `http://localhost:5173`
+* **API REST :** `http://localhost:5000`

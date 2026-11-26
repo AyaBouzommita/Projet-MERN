@@ -1,68 +1,63 @@
 const mongoose = require("mongoose");
 
-const productSchema = new mongoose.Schema(
+const projectSchema = new mongoose.Schema(
   {
     nameproduct: {
       type: String,
-      required: [true, "Le nom du produit est obligatoire"],
+      required: [true, "Le titre du projet est obligatoire"],
       trim: true,
     },
-    price: {
-      type: Number,
-      required: [true, "Le prix est obligatoire"],
-      min: [0, "Le prix doit être positif"],
-    },
-    oldPrice: {
-      type: Number,
-      default: function () {
-        return Math.round(this.price * 1.4);
-      },
-    },
-    discount: {
-      type: Number,
-      default: 30,
-    },
-    category: {
+    tagline: {
       type: String,
-      default: "Robes",
+      default: "Solution logicielle innovante développée par des étudiants.",
       trim: true,
     },
     description: {
       type: String,
-      default: "Tissu fluide de qualité supérieure, coupe moderne et confortable.",
+      required: [true, "La description du projet est obligatoire"],
+    },
+    category: {
+      type: String,
+      default: "Web Fullstack",
+      trim: true,
+    },
+    technologies: {
+      type: [String],
+      default: ["React", "Node.js", "MongoDB"],
     },
     img: {
       type: String,
-      default: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80",
+      default: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
     },
-    countInStock: {
+    githubUrl: {
+      type: String,
+      default: "https://github.com",
+    },
+    demoUrl: {
+      type: String,
+      default: "https://demo.devshowcase.tn",
+    },
+    upvotes: {
       type: Number,
-      default: 25,
-      min: [0, "Le stock ne peut pas être négatif"],
+      default: 1,
+      min: 0,
     },
-    rating: {
-      type: Number,
-      default: 4.8,
+    status: {
+      type: String,
+      enum: ["Prototype", "Bêta", "En ligne", "Recherche de contributeurs"],
+      default: "Bêta",
     },
-    reviewsCount: {
-      type: Number,
-      default: 142,
+    authorName: {
+      type: String,
+      default: "Aya Bouzommita",
     },
-    sizes: {
-      type: [String],
-      default: ["XS", "S", "M", "L", "XL"],
-    },
-    colors: {
-      type: [String],
-      default: ["#1e293b", "#f59e0b", "#ec4899", "#f1f5f9"],
-    },
-    isFlashSale: {
-      type: Boolean,
-      default: false,
+    authorAvatar: {
+      type: String,
+      default: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
     },
   },
   { timestamps: true }
 );
 
-const Product = mongoose.model("Product", productSchema);
+const Product = mongoose.model("Product", projectSchema);
 module.exports = Product;

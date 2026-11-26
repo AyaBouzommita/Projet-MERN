@@ -1,190 +1,110 @@
 import React, { useEffect } from "react";
-import { Container, Row, Col, Button, Badge } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Container, Row, Col, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getproducts } from "../redux/productSlice";
+import { getusers } from "../redux/userSlice";
 import ProductCard from "./Products/ProductCard";
-import FlashCountdown from "./common/FlashCountdown";
-import { IconTruck, IconShield, IconHeadphones, IconArrowRight, IconHeart } from "./common/Icons";
+import AddProduct from "./Products/AddProduct";
+import { IconRocket, IconCode, IconSparkles, IconArrowRight, IconCheck } from "./common/Icons";
 
 function Home() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { productlist } = useSelector((state) => state.product);
+  const { userlist } = useSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(getproducts({}));
+    dispatch(getproducts({ sortBy: "upvotes_desc" }));
+    dispatch(getusers(""));
   }, [dispatch]);
 
-  const flashSaleProducts = productlist?.filter((p) => p.isFlashSale)?.slice(0, 4) || [];
-  const trendingProducts = productlist?.slice(0, 8) || [];
+  const topProjects = productlist?.slice(0, 3) || [];
+  const latestProjects = productlist?.slice(3, 9) || [];
 
-  const categories = [
-    { name: "Robes", query: "Robes", img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&q=80" },
-    { name: "Hauts & Tops", query: "Hauts & Tops", img: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80" },
-    { name: "Vestes", query: "Vestes & Manteaux", img: "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&w=400&q=80" },
-    { name: "Pantalons", query: "Pantalons & Bas", img: "https://images.unsplash.com/photo-1551854838-212c50b4c184?auto=format&fit=crop&w=400&q=80" },
-    { name: "Chaussures", query: "Chaussures", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=400&q=80" },
-    { name: "Sacs", query: "Sacs & Accessoires", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&q=80" },
-  ];
-
-  const handleCategoryFilter = (cat) => {
-    dispatch(getproducts({ category: cat }));
-    navigate("/products");
-  };
+  const totalUpvotes = productlist?.reduce((acc, p) => acc + (p.upvotes || 0), 0) || 0;
 
   return (
     <div>
-      {/* Mega Hero Campaign SHEIN */}
-      <section className="shein-hero position-relative">
-        <Container className="py-5">
-          <Row className="align-items-center gy-4">
-            <Col lg={7} className="text-white">
-              <span className="badge bg-danger text-uppercase px-3 py-2 fw-bold mb-3 letter-spacing-1">
-                VENTES FLASH DE SAISON
-              </span>
-              <h1 className="display-3 fw-extrabold text-uppercase letter-spacing-2 mb-3">
-                COLLECTION <br />
-                <span className="text-warning">PRINTEMPS 2026</span>
-              </h1>
-              <p className="lead fs-5 text-white-50 mb-4 pe-lg-5">
-                Des centaines de nouveautés mode à prix mini. Robes tendance, blazers oversize, denim et accessoires pour toutes vos envies.
-              </p>
-
-              <div className="d-flex flex-wrap gap-3">
-                <Button
-                  as={Link}
-                  to="/products"
-                  className="btn-shein-cta px-4 py-3 text-uppercase fw-bold letter-spacing-1"
-                >
-                  Découvrir la collection
-                </Button>
-                <Button
-                  variant="outline-light"
-                  className="px-4 py-3 text-uppercase fw-bold letter-spacing-1"
-                  onClick={() => {
-                    dispatch(getproducts({ isFlashSale: "true" }));
-                    navigate("/products");
-                  }}
-                >
-                  Ventes Flash (-50%)
-                </Button>
-              </div>
-            </Col>
-
-            <Col lg={5} className="d-none d-lg-block text-center">
-              <div className="shein-hero-banner-card p-4 rounded-4 shadow-lg text-white">
-                <div className="text-uppercase small fw-bold text-warning mb-1">OFFRE SPÉCIALE EN LIGNE</div>
-                <div className="display-4 fw-extrabold text-danger mb-2">-60%</div>
-                <div className="fw-semibold mb-3">SUR UNE SÉLECTION DE PLUS DE 500 ARTICLES</div>
-                <div className="p-3 bg-dark bg-opacity-75 rounded-3 border border-secondary mb-3">
-                  <div className="small text-white-50 mb-1">Code coupon exclusif au panier :</div>
-                  <div className="fs-5 fw-bold text-warning letter-spacing-2">SHEIN20</div>
-                </div>
-                <div className="small text-white-50">Valable dès 80 TND d'achats | Livraison offerte dès 100 TND</div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-
-      {/* Coupon Strip */}
-      <section className="bg-dark py-3 text-white border-bottom border-secondary">
+      {/* Hero Section */}
+      <section className="dev-hero">
         <Container>
-          <Row className="text-center gy-2">
-            <Col md={4}>
-              <div className="small">
-                🎟️ <strong>-15% DÈS 80 TND</strong> | Code : <span className="text-warning fw-bold">SHEIN15</span>
+          <Row className="align-items-center gy-5">
+            <Col lg={7}>
+              <div className="dev-pill">
+                <IconSparkles size={14} />
+                <span>La vitrine des innovations & réalisations étudiantes</span>
+              </div>
+              <h1 className="dev-hero-title mb-3">
+                Le <span className="text-primary">Product Hunt</span> des étudiants ingénieurs.
+              </h1>
+              <p className="dev-hero-desc mb-4 pe-lg-4">
+                Découvrez, testez et soutenez les projets logiciels, outils open-source et PFE conçus par les étudiants. Votez pour vos favoris et trouvez des collaborateurs.
+              </p>
+              <div className="d-flex flex-wrap gap-3">
+                <AddProduct />
+                <Button as={Link} to="/products" variant="light" className="btn-outline-pro px-4 py-2">
+                  <span>Explorer les {productlist?.length || 0} projets</span>
+                  <IconArrowRight size={15} className="ms-1" />
+                </Button>
               </div>
             </Col>
-            <Col md={4}>
-              <div className="small">
-                🚚 <strong>LIVRAISON GRATUITE</strong> dès 100 TND d'achat
-              </div>
-            </Col>
-            <Col md={4}>
-              <div className="small">
-                ⚡ <strong>VENTE FLASH EXCLUSIVE</strong> : -20% avec le code <span className="text-warning fw-bold">SHEIN20</span>
+
+            <Col lg={5}>
+              <div className="p-4 bg-white border rounded-4 shadow-sm">
+                <h6 className="fw-bold text-dark mb-3 pb-2 border-bottom d-flex align-items-center gap-2">
+                  <IconCode size={18} className="text-primary" />
+                  <span>Métriques de la Communauté</span>
+                </h6>
+
+                <Row className="g-3 mb-3">
+                  <Col xs={6}>
+                    <div className="p-3 bg-light rounded-3 text-center border">
+                      <div className="display-6 fw-bold text-primary mb-0">{productlist?.length || 0}</div>
+                      <div className="small text-muted fw-semibold">Projets soumis</div>
+                    </div>
+                  </Col>
+                  <Col xs={6}>
+                    <div className="p-3 bg-light rounded-3 text-center border">
+                      <div className="display-6 fw-bold text-warning mb-0">{totalUpvotes}</div>
+                      <div className="small text-muted fw-semibold">Upvotes donnés</div>
+                    </div>
+                  </Col>
+                </Row>
+
+                <div className="p-3 bg-light rounded-3 border small">
+                  <div className="d-flex justify-content-between mb-2">
+                    <span className="text-muted">Étudiants & Développeurs :</span>
+                    <strong className="text-dark">{userlist?.length || 0} membres</strong>
+                  </div>
+                  <div className="d-flex justify-content-between mb-2">
+                    <span className="text-muted">Projets Open Source :</span>
+                    <strong className="text-success">100% libre accès</strong>
+                  </div>
+                  <div className="d-flex justify-content-between">
+                    <span className="text-muted">Filière d'ingénierie :</span>
+                    <strong className="text-primary">Génie Logiciel (GL3)</strong>
+                  </div>
+                </div>
               </div>
             </Col>
           </Row>
         </Container>
       </section>
 
-      {/* Flash Sale Section with Countdown */}
+      {/* Top 3 Voted Projects */}
       <Container className="my-5">
-        <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 p-3 bg-light rounded-3 border">
-          <div className="d-flex align-items-center gap-3">
-            <h3 className="fw-extrabold text-dark mb-0 text-uppercase letter-spacing-1">
-              ⚡ VENTES FLASH
-            </h3>
-            <FlashCountdown />
-          </div>
-          <Button
-            variant="link"
-            className="text-dark fw-bold text-decoration-none p-0 d-flex align-items-center gap-1"
-            onClick={() => {
-              dispatch(getproducts({ isFlashSale: "true" }));
-              navigate("/products");
-            }}
-          >
-            <span>Voir toutes les offres flash</span>
-            <IconArrowRight size={16} />
-          </Button>
-        </div>
-
-        <Row xs={2} sm={2} md={3} lg={4} className="g-3 g-md-4">
-          {flashSaleProducts.map((el) => (
-            <Col key={el._id}>
-              <ProductCard el={el} />
-            </Col>
-          ))}
-        </Row>
-      </Container>
-
-      {/* Circular Categories Bar */}
-      <Container className="my-5">
-        <div className="text-center mb-4">
-          <h4 className="fw-extrabold text-dark text-uppercase letter-spacing-1 mb-1">
-            EXPLORER PAR RAYONS
-          </h4>
-          <p className="text-muted small">Trouvez les pièces parfaites pour compléter votre garde-robe</p>
-        </div>
-
-        <Row className="justify-content-center text-center g-3">
-          {categories.map((c) => (
-            <Col key={c.name} xs={4} sm={4} md={2}>
-              <div
-                className="shein-category-circle-wrapper cursor-pointer"
-                onClick={() => handleCategoryFilter(c.query)}
-                style={{ cursor: "pointer" }}
-              >
-                <div className="shein-category-circle mb-2 mx-auto">
-                  <img src={c.img} alt={c.name} />
-                </div>
-                <div className="fw-bold small text-dark text-truncate">{c.name}</div>
-              </div>
-            </Col>
-          ))}
-        </Row>
-      </Container>
-
-      {/* Trending Products */}
-      <Container className="my-5 pb-5">
-        <div className="d-flex justify-content-between align-items-end mb-4">
+        <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-2 mb-4 pb-2 border-bottom">
           <div>
-            <h4 className="fw-extrabold text-dark text-uppercase letter-spacing-1 mb-1">
-              COUPS DE CŒUR & MEILLEURES VENTES
-            </h4>
-            <p className="text-muted small mb-0">Les articles les plus tendances et les plus demandés de la semaine</p>
+            <span className="text-warning fw-bold small text-uppercase">Classement Communautaire</span>
+            <h3 className="fw-bold text-dark mb-0">🔥 Top Projets les Plus Votés</h3>
           </div>
-          <Link to="/products" className="btn btn-outline-dark btn-sm fw-bold px-3">
-            Tout afficher ({productlist?.length || 0})
+          <Link to="/products" className="btn-outline-pro small py-2 text-decoration-none">
+            Voir le classement complet →
           </Link>
         </div>
 
-        <Row xs={2} sm={2} md={3} lg={4} className="g-3 g-md-4">
-          {trendingProducts.map((el) => (
+        <Row xs={1} md={2} lg={3} className="g-4">
+          {topProjects.map((el) => (
             <Col key={el._id}>
               <ProductCard el={el} />
             </Col>
@@ -192,36 +112,65 @@ function Home() {
         </Row>
       </Container>
 
-      {/* Trust & Guarantees */}
-      <section className="bg-light py-5 border-top">
+      {/* Feed of Recent Innovations */}
+      <Container className="my-5 pb-4">
+        <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-2 mb-4 pb-2 border-bottom">
+          <div>
+            <span className="text-primary fw-bold small text-uppercase">Dernières Publications</span>
+            <h3 className="fw-bold text-dark mb-0">Nouvelles Démos & Projets en Bêta</h3>
+          </div>
+          <Link to="/products" className="btn-outline-pro small py-2 text-decoration-none">
+            Parcourir par technologies →
+          </Link>
+        </div>
+
+        <Row xs={1} md={2} lg={3} className="g-4">
+          {latestProjects.map((el) => (
+            <Col key={el._id}>
+              <ProductCard el={el} />
+            </Col>
+          ))}
+        </Row>
+      </Container>
+
+      {/* Why publish banner */}
+      <section className="bg-white py-5 border-top border-bottom my-5">
         <Container>
-          <Row className="gy-4 text-center">
-            <Col md={3} sm={6}>
-              <div className="p-3">
-                <div className="fs-2 mb-2 text-danger">🚚</div>
-                <div className="fw-bold text-dark small text-uppercase">Livraison Partout en Tunisie</div>
-                <p className="text-muted small mb-0">Livraison à domicile sous 24 à 48h dans les 24 gouvernorats.</p>
+          <div className="text-center max-w-700 mx-auto mb-5">
+            <h3 className="fw-bold text-dark mb-2">Pourquoi publier sur DevShowcase ?</h3>
+            <p className="text-muted small">
+              Une opportunité unique de donner de la visibilité à vos travaux académiques, projets personnels et PFE.
+            </p>
+          </div>
+
+          <Row className="g-4">
+            <Col md={4}>
+              <div className="p-4 bg-light border rounded-4 h-100">
+                <div className="fs-2 text-primary mb-3">💬</div>
+                <h5 className="fw-bold text-dark mb-2">Retours Constructifs</h5>
+                <p className="text-muted small mb-0">
+                  Obtenez des avis objectifs de vos pairs et enseignants sur l'ergonomie, l'architecture et les performances de votre code.
+                </p>
               </div>
             </Col>
-            <Col md={3} sm={6}>
-              <div className="p-3">
-                <div className="fs-2 mb-2 text-danger">🛡️</div>
-                <div className="fw-bold text-dark small text-uppercase">Paiement à la Livraison</div>
-                <p className="text-muted small mb-0">Commandez en toute confiance et payez à la réception de votre colis.</p>
+
+            <Col md={4}>
+              <div className="p-4 bg-light border rounded-4 h-100">
+                <div className="fs-2 text-warning mb-3">🤝</div>
+                <h5 className="fw-bold text-dark mb-2">Trouver des Collaborateurs</h5>
+                <p className="text-muted small mb-0">
+                  Vous cherchez un développeur backend, un designer UI ou un expert IA pour un hackathon ? Proposez votre projet en mode contribution.
+                </p>
               </div>
             </Col>
-            <Col md={3} sm={6}>
-              <div className="p-3">
-                <div className="fs-2 mb-2 text-danger">🔄</div>
-                <div className="fw-bold text-dark small text-uppercase">Retours Faciles 30 Jours</div>
-                <p className="text-muted small mb-0">Échange ou remboursement simple si la taille ne convient pas.</p>
-              </div>
-            </Col>
-            <Col md={3} sm={6}>
-              <div className="p-3">
-                <div className="fs-2 mb-2 text-danger">💬</div>
-                <div className="fw-bold text-dark small text-uppercase">Service Client 7j/7</div>
-                <p className="text-muted small mb-0">Une équipe disponible par téléphone et WhatsApp pour vous conseiller.</p>
+
+            <Col md={4}>
+              <div className="p-4 bg-light border rounded-4 h-100">
+                <div className="fs-2 text-success mb-3">🚀</div>
+                <h5 className="fw-bold text-dark mb-2">Tremplin Portfolio</h5>
+                <p className="text-muted small mb-0">
+                  Partagez une URL publique de votre réalisation avec démo interactive et dépôt GitHub pour impressionner les recruteurs en stage PFE.
+                </p>
               </div>
             </Col>
           </Row>

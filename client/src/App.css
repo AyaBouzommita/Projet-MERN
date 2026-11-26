@@ -1,351 +1,304 @@
-/* SHEIN E-Commerce Design System */
+/* DevShowcase — Product Hunt des Projets Étudiants */
 :root {
-  --shein-black: #000000;
-  --shein-dark: #111111;
-  --shein-red: #fa243c;
-  --shein-red-dark: #e11d48;
-  --shein-gray-bg: #f7f7f7;
-  --shein-border: #e5e5e5;
-  --shein-text-muted: #767676;
+  --dev-dark: #090d16;
+  --dev-surface: #ffffff;
+  --dev-border: #e2e8f0;
+  --dev-border-hover: #cbd5e1;
+  --dev-primary: #2563eb;
+  --dev-primary-light: #eff6ff;
+  --dev-upvote: #ea580c;
+  --dev-upvote-light: #fff7ed;
+  --dev-muted: #64748b;
+  --dev-text: #0f172a;
+  --dev-bg: #f8fafc;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  color: var(--shein-dark);
-  background-color: #ffffff;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--dev-text);
+  background-color: var(--dev-bg);
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
 }
 
-.letter-spacing-1 { letter-spacing: 1px; }
-.letter-spacing-2 { letter-spacing: 2px; }
 .cursor-pointer { cursor: pointer; }
+.letter-spacing-1 { letter-spacing: 0.5px; }
 
-/* Ticker */
-.shein-ticker {
-  background-color: var(--shein-black);
+/* Navbar */
+.dev-navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--dev-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.dev-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--dev-dark) !important;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+
+.dev-brand-badge {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #ffffff;
+  box-shadow: 0 4px 10px rgba(234, 88, 12, 0.3);
 }
 
-/* Header */
-.shein-header {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.shein-logo {
-  font-size: 2.1rem;
-  font-weight: 900;
-  letter-spacing: 3px;
-  font-family: 'Arial Black', Impact, sans-serif;
-}
-
-.shein-search-input {
-  background-color: #f5f5f5 !important;
+.dev-search-input {
+  background-color: #f1f5f9 !important;
   border: 1px solid transparent !important;
-  border-radius: 24px !important;
-  padding: 0.55rem 1rem 0.55rem 2.4rem !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 1rem 0.5rem 2.2rem !important;
   font-size: 0.88rem !important;
   transition: all 0.2s ease;
 }
 
-.shein-search-input:focus {
+.dev-search-input:focus {
   background-color: #ffffff !important;
-  border-color: #000000 !important;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
+  border-color: var(--dev-primary) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
 }
 
-.shein-badge-counter {
-  position: absolute;
-  top: -6px;
-  right: -8px;
-  background-color: var(--shein-red);
+.nav-link-dev {
+  color: var(--dev-muted) !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.85rem !important;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.nav-link-dev:hover,
+.nav-link-dev.active {
+  color: var(--dev-dark) !important;
+  background-color: #f1f5f9;
+}
+
+.btn-dev-submit {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   color: #ffffff;
-  font-size: 0.68rem;
-  font-weight: 800;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: none;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+  transition: all 0.2s ease;
 }
 
-/* Subnav */
-.shein-subnav button:hover {
-  color: var(--shein-red) !important;
+.btn-dev-submit:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
+  color: #ffffff;
 }
 
 /* Hero Section */
-.shein-hero {
-  background: linear-gradient(135deg, #111111 0%, #1f2937 100%);
-  min-height: 440px;
-  display: flex;
+.dev-hero {
+  background: radial-gradient(circle at top right, rgba(234, 88, 12, 0.08) 0%, transparent 60%),
+              radial-gradient(circle at top left, rgba(37, 99, 235, 0.08) 0%, transparent 60%),
+              #ffffff;
+  border-bottom: 1px solid var(--dev-border);
+  padding: 4rem 0 3.5rem;
+}
+
+.dev-pill {
+  display: inline-flex;
   align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.85rem;
+  background-color: var(--dev-upvote-light);
+  color: var(--dev-upvote);
+  border: 1px solid rgba(234, 88, 12, 0.2);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
 }
 
-.shein-hero-banner-card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+.dev-hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--dev-dark);
 }
 
-.btn-shein-cta {
-  background-color: #ffffff;
-  color: #000000;
-  border: 2px solid #ffffff;
-  transition: all 0.2s ease;
+.dev-hero-desc {
+  font-size: 1.15rem;
+  color: var(--dev-muted);
+  line-height: 1.6;
 }
 
-.btn-shein-cta:hover {
-  background-color: var(--shein-red);
-  color: #ffffff;
-  border-color: var(--shein-red);
-}
-
-/* Circular Category */
-.shein-category-circle-wrapper {
-  transition: transform 0.2s ease;
-}
-
-.shein-category-circle-wrapper:hover {
-  transform: translateY(-4px);
-}
-
-.shein-category-circle {
-  width: 86px;
-  height: 86px;
-  border-radius: 50%;
+/* Project Card */
+.dev-project-card {
+  background: #ffffff;
+  border: 1px solid var(--dev-border);
+  border-radius: 12px;
   overflow: hidden;
-  border: 2px solid #e5e5e5;
-  background-color: #f5f5f5;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-}
-
-.shein-category-circle img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.shein-category-circle-wrapper:hover img {
-  transform: scale(1.1);
-}
-
-/* SHEIN Product Card */
-.shein-product-card {
-  background-color: #ffffff;
-  transition: all 0.2s ease;
-  height: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
-.shein-product-card:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+.dev-project-card:hover {
+  border-color: var(--dev-border-hover);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
 }
 
-.shein-img-wrapper {
+.dev-card-img-wrapper {
   position: relative;
   width: 100%;
-  padding-top: 130%; /* 3:4 portrait ratio */
-  background-color: #f7f7f7;
+  padding-top: 55%;
+  background-color: #f1f5f9;
   overflow: hidden;
 }
 
-.shein-img {
+.dev-card-img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.3s ease;
 }
 
-.shein-product-card:hover .shein-img {
-  transform: scale(1.05);
+.dev-project-card:hover .dev-card-img {
+  transform: scale(1.03);
 }
 
-.shein-discount-badge {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background-color: var(--shein-red);
-  color: #ffffff;
-  font-size: 0.75rem;
-  font-weight: 800;
-  padding: 3px 7px;
-  border-radius: 3px;
-  z-index: 2;
-}
-
-.shein-flash-badge {
-  position: absolute;
-  top: 8px;
-  right: 42px;
-  background-color: #000000;
-  color: #f59e0b;
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 3px 6px;
-  border-radius: 3px;
-  z-index: 2;
-}
-
-.shein-wishlist-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background-color: rgba(255, 255, 255, 0.85);
-  border: none;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
+/* Upvote Button */
+.btn-upvote {
+  background-color: #ffffff;
+  border: 1px solid var(--dev-border);
+  border-radius: 8px;
+  padding: 0.35rem 0.75rem;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  color: #111111;
-  z-index: 3;
-  transition: background-color 0.2s;
-}
-
-.shein-wishlist-btn:hover {
-  background-color: #ffffff;
-}
-
-.shein-quick-add {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 8px;
-  transform: translateY(100%);
-  transition: transform 0.25s ease;
-  z-index: 4;
-}
-
-.shein-product-card:hover .shein-quick-add {
-  transform: translateY(0);
-}
-
-.shein-title {
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: #222222;
-  margin-bottom: 4px;
-}
-
-.shein-price {
-  font-size: 1.15rem;
+  gap: 0.4rem;
   font-weight: 800;
-  color: var(--shein-red);
-}
-
-.shein-old-price {
-  font-size: 0.82rem;
-  color: #999999;
-  text-decoration: line-through;
-}
-
-.shein-color-dot {
-  width: 13px;
-  height: 13px;
-  border-radius: 50%;
-  border: 1px solid #d1d5db;
-  padding: 0;
-  cursor: pointer;
-  transition: transform 0.15s ease;
-}
-
-.shein-color-dot.active {
-  transform: scale(1.2);
-  outline: 2px solid #000000;
-}
-
-.shein-size-pill {
-  padding: 1px 6px;
-  border-radius: 3px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  background-color: #f3f4f6;
-  border: 1px solid #e5e7eb;
-  color: #4b5563;
-  cursor: pointer;
-}
-
-.shein-size-pill.active {
-  background-color: #000000;
-  color: #ffffff;
-  border-color: #000000;
-}
-
-/* Category Tabs */
-.shein-category-tab {
-  padding: 0.45rem 1rem;
-  border-radius: 20px;
   font-size: 0.85rem;
-  font-weight: 700;
-  border: 1px solid #e5e7eb;
-  background-color: #ffffff;
-  color: #374151;
+  color: var(--dev-text);
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
-.shein-category-tab:hover {
-  border-color: #000000;
+.btn-upvote:hover {
+  background-color: var(--dev-upvote-light);
+  border-color: var(--dev-upvote);
+  color: var(--dev-upvote);
+  transform: translateY(-1px);
 }
 
-.shein-category-tab.active {
-  background-color: #000000;
-  color: #ffffff;
-  border-color: #000000;
+.btn-upvote svg {
+  color: var(--dev-upvote);
 }
 
-/* Buttons */
-.btn-shein-primary {
-  background-color: #000000;
-  color: #ffffff;
-  border: 1px solid #000000;
+/* Tags & Badges */
+.dev-tech-tag {
+  background-color: #f1f5f9;
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+.status-badge-online {
+  background-color: #ecfdf5;
+  color: #059669;
+  border: 1px solid rgba(5, 150, 105, 0.2);
+  font-size: 0.72rem;
   font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
 }
 
-.btn-shein-primary:hover {
-  background-color: #222222;
-  color: #ffffff;
-  border-color: #222222;
+.status-badge-beta {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
 }
 
-.btn-shein-checkout {
-  background-color: var(--shein-red);
-  color: #ffffff;
-  border: none;
-  font-size: 0.95rem;
+.status-badge-contrib {
+  background-color: #faf5ff;
+  color: #9333ea;
+  border: 1px solid rgba(147, 51, 234, 0.2);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
 }
 
-.btn-shein-checkout:hover {
-  background-color: var(--shein-red-dark);
+.status-badge-prototype {
+  background-color: #fffbeb;
+  color: #d97706;
+  border: 1px solid rgba(217, 119, 6, 0.2);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
 }
 
-/* Footer */
-.shein-footer-heading {
-  font-weight: 800;
+/* Category Filter Tabs */
+.dev-category-tab {
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
   font-size: 0.85rem;
-  letter-spacing: 0.5px;
-  color: #000000;
-  margin-bottom: 1rem;
+  font-weight: 600;
+  border: 1px solid var(--dev-border);
+  background-color: #ffffff;
+  color: var(--dev-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-/* User Card */
+.dev-category-tab:hover {
+  color: var(--dev-text);
+  border-color: #94a3b8;
+}
+
+.dev-category-tab.active {
+  background-color: var(--dev-dark);
+  color: #ffffff;
+  border-color: var(--dev-dark);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* User Card in Showcase */
 .pro-user-card {
   background: #ffffff;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
+  border: 1px solid var(--dev-border);
+  border-radius: 12px;
   padding: 1.5rem;
   transition: all 0.2s ease;
   height: 100%;
+}
+
+.pro-user-card:hover {
+  border-color: var(--dev-border-hover);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
 }
 
 .pro-user-avatar {
@@ -353,4 +306,13 @@ body {
   height: 72px;
   border-radius: 50%;
   object-fit: cover;
+  border: 2px solid #e2e8f0;
+}
+
+/* Footer */
+.dev-footer {
+  background-color: #ffffff;
+  border-top: 1px solid var(--dev-border);
+  padding: 4rem 0 2rem;
+  color: var(--dev-muted);
 }

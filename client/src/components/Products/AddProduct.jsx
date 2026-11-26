@@ -1,80 +1,102 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addproduct } from "../../redux/productSlice";
 import { toast } from "react-toastify";
-import { IconPlus } from "../common/Icons";
+import { IconPlus, IconRocket } from "../common/Icons";
 
 function AddProduct() {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
-  const [productData, setProductData] = useState({
+  const [projectData, setProjectData] = useState({
     nameproduct: "",
-    price: "",
-    category: "Informatique",
+    tagline: "",
     description: "",
+    category: "Web Fullstack",
+    technologies: "React, Node.js, MongoDB",
     img: "",
-    countInStock: 10,
+    githubUrl: "https://github.com",
+    demoUrl: "",
+    status: "Bêta",
   });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleChange = (e) => {
-    setProductData({ ...productData, [e.target.name]: e.target.value });
+    setProjectData({ ...projectData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!productData.nameproduct || !productData.price) {
-      toast.error("Le nom du produit et le prix sont obligatoires");
+    if (!projectData.nameproduct || !projectData.description) {
+      toast.error("Le titre et la description du projet sont obligatoires");
       return;
     }
 
     try {
       await dispatch(
         addproduct({
-          ...productData,
-          price: Number(productData.price),
-          countInStock: Number(productData.countInStock),
+          ...projectData,
+          authorName: user?.name || "Aya Bouzommita",
+          authorAvatar: user?.img || undefined,
         })
       ).unwrap();
-      toast.success("Produit ajouté avec succès");
-      setProductData({
+      toast.success("Projet publié sur DevShowcase !");
+      setProjectData({
         nameproduct: "",
-        price: "",
-        category: "Informatique",
+        tagline: "",
         description: "",
+        category: "Web Fullstack",
+        technologies: "React, Node.js, MongoDB",
         img: "",
-        countInStock: 10,
+        githubUrl: "https://github.com",
+        demoUrl: "",
+        status: "Bêta",
       });
       handleClose();
     } catch (err) {
-      toast.error(err || "Erreur lors de l'enregistrement");
+      toast.error(err || "Erreur lors de la publication");
     }
   };
 
   return (
     <>
-      <Button onClick={handleShow} className="btn-primary-pro">
+      <Button onClick={handleShow} className="btn-dev-submit d-flex align-items-center gap-2">
         <IconPlus size={16} />
-        <span>Ajouter une référence</span>
+        <span>Publier un projet</span>
       </Button>
 
-      <Modal show={show} onHide={handleClose} backdrop="static" centered>
-        <Modal.Header closeButton>
-          <Modal.Title className="fw-bold fs-5 text-dark">Nouvelle référence catalogue</Modal.Title>
+      <Modal show={show} onHide={handleClose} backdrop="static" centered size="lg">
+        <Modal.Header closeButton className="border-bottom">
+          <Modal.Title className="fw-bold fs-5 text-dark d-flex align-items-center gap-2">
+            <IconRocket size={20} className="text-primary" />
+            <span>Soumettre un Projet Étudiant sur DevShowcase</span>
+          </Modal.Title>
         </Modal.Header>
         <Form onSubmit={handleSubmit}>
           <Modal.Body className="p-4">
             <Form.Group className="mb-3">
-              <Form.Label className="fw-semibold small text-dark">Nom de l'article *</Form.Label>
+              <Form.Label className="fw-semibold small text-dark">Titre du projet *</Form.Label>
               <Form.Control
                 type="text"
                 name="nameproduct"
-                placeholder="Ex: Dell XPS 15 9530"
-                value={productData.nameproduct}
+                placeholder="Ex: EduPulse — Système de QCM en temps réel"
+                value={projectData.nameproduct}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-semibold small text-dark">Accroche / Tagline (1 phrase) *</Form.Label>
+              <Form.Control
+                type="text"
+                name="tagline"
+                placeholder="Ex: Engagez les étudiants en amphi avec des sondages interactifs en direct."
+                value={projectData.tagline}
                 onChange={handleChange}
                 required
               />
@@ -82,61 +104,82 @@ function AddProduct() {
 
             <div className="row g-3 mb-3">
               <div className="col-md-6">
-                <Form.Label className="fw-semibold small text-dark">Prix unitaire (TND) *</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="price"
-                  placeholder="Ex: 4890"
-                  value={productData.price}
-                  onChange={handleChange}
-                  min="0"
-                  required
-                />
+                <Form.Label className="fw-semibold small text-dark">Domaine / Catégorie</Form.Label>
+                <Form.Select name="category" value={projectData.category} onChange={handleChange}>
+                  <option value="Web Fullstack">Web Fullstack</option>
+                  <option value="IA & Machine Learning">IA & Machine Learning</option>
+                  <option value="Mobile & Applications">Mobile & Applications</option>
+                  <option value="DevOps & Cloud">DevOps & Cloud</option>
+                  <option value="Cybersécurité">Cybersécurité</option>
+                  <option value="IoT & Embarqué">IoT & Embarqué</option>
+                </Form.Select>
               </div>
               <div className="col-md-6">
-                <Form.Label className="fw-semibold small text-dark">Catégorie</Form.Label>
-                <Form.Select name="category" value={productData.category} onChange={handleChange}>
-                  <option value="Informatique">Informatique</option>
-                  <option value="Smartphones">Smartphones</option>
-                  <option value="Audio">Audio</option>
-                  <option value="Gaming">Gaming</option>
-                  <option value="Accessoires">Accessoires</option>
+                <Form.Label className="fw-semibold small text-dark">Statut actuel du projet</Form.Label>
+                <Form.Select name="status" value={projectData.status} onChange={handleChange}>
+                  <option value="Prototype">Prototype</option>
+                  <option value="Bêta">Bêta</option>
+                  <option value="En ligne">En ligne (Live)</option>
+                  <option value="Recherche de contributeurs">Recherche de contributeurs</option>
                 </Form.Select>
               </div>
             </div>
 
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-semibold small text-dark">Stack & Technologies (séparées par des virgules)</Form.Label>
+              <Form.Control
+                type="text"
+                name="technologies"
+                placeholder="Ex: React, Node.js, Socket.io, MongoDB, Docker"
+                value={projectData.technologies}
+                onChange={handleChange}
+              />
+            </Form.Group>
+
             <div className="row g-3 mb-3">
-              <div className="col-md-8">
-                <Form.Label className="fw-semibold small text-dark">URL Visuel</Form.Label>
+              <div className="col-md-6">
+                <Form.Label className="fw-semibold small text-dark">Lien GitHub (Code source)</Form.Label>
                 <Form.Control
-                  type="text"
-                  name="img"
-                  placeholder="https://..."
-                  value={productData.img}
+                  type="url"
+                  name="githubUrl"
+                  placeholder="https://github.com/..."
+                  value={projectData.githubUrl}
                   onChange={handleChange}
                 />
               </div>
-              <div className="col-md-4">
-                <Form.Label className="fw-semibold small text-dark">Quantité stock</Form.Label>
+              <div className="col-md-6">
+                <Form.Label className="fw-semibold small text-dark">Lien Démo en ligne (Optionnel)</Form.Label>
                 <Form.Control
-                  type="number"
-                  name="countInStock"
-                  value={productData.countInStock}
+                  type="url"
+                  name="demoUrl"
+                  placeholder="https://votre-projet.vercel.app"
+                  value={projectData.demoUrl}
                   onChange={handleChange}
-                  min="0"
                 />
               </div>
             </div>
 
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-semibold small text-dark">Capture d'écran / Image du projet (URL)</Form.Label>
+              <Form.Control
+                type="text"
+                name="img"
+                placeholder="https://images.unsplash.com/..."
+                value={projectData.img}
+                onChange={handleChange}
+              />
+            </Form.Group>
+
             <Form.Group className="mb-2">
-              <Form.Label className="fw-semibold small text-dark">Fiche technique / Description</Form.Label>
+              <Form.Label className="fw-semibold small text-dark">Description détaillée du projet *</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={3}
                 name="description"
-                placeholder="Détails techniques, processeur, mémoire, connectique..."
-                value={productData.description}
+                placeholder="Expliquez la problématique résolue, l'architecture choisie, les fonctionnalités clés..."
+                value={projectData.description}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
           </Modal.Body>
@@ -144,8 +187,8 @@ function AddProduct() {
             <Button variant="light" className="btn-outline-pro" onClick={handleClose}>
               Annuler
             </Button>
-            <Button type="submit" className="btn-primary-pro">
-              Enregistrer l'article
+            <Button type="submit" className="btn-dev-submit">
+              Publier le projet
             </Button>
           </Modal.Footer>
         </Form>

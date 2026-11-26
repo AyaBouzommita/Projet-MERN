@@ -8,9 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 // Components
-import SHEINTicker from "./components/common/SHEINTicker";
 import Navbarr from "./components/Navbarr";
-import CartDrawer from "./components/Cart/CartDrawer";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
 import ProductList from "./components/Products/ProductList";
@@ -31,14 +29,7 @@ function App() {
 
   return (
     <div className="d-flex flex-column min-vh-100">
-      {/* Top Banner Ticker */}
-      <SHEINTicker />
-
-      {/* Main SHEIN Navbar */}
       <Navbarr />
-
-      {/* Cart Sliding Drawer */}
-      <CartDrawer />
 
       <main className="flex-grow-1">
         <Routes>

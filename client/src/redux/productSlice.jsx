@@ -10,9 +10,8 @@ export const getproducts = createAsyncThunk(
       const params = new URLSearchParams();
       if (filters.search) params.append("search", filters.search);
       if (filters.category && filters.category !== "Tous") params.append("category", filters.category);
+      if (filters.status && filters.status !== "Tous") params.append("status", filters.status);
       if (filters.sortBy) params.append("sortBy", filters.sortBy);
-      if (filters.minPrice) params.append("minPrice", filters.minPrice);
-      if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
 
       const queryString = params.toString() ? `?${params.toString()}` : "";
       const result = await axios.get(`${API_URL}${queryString}`);
@@ -23,12 +22,12 @@ export const getproducts = createAsyncThunk(
   }
 );
 
-export const getCategories = createAsyncThunk(
-  "product/categories",
-  async (_, { rejectWithValue }) => {
+export const upvoteProduct = createAsyncThunk(
+  "product/upvote",
+  async (id, { rejectWithValue }) => {
     try {
-      const result = await axios.get(`${API_URL}/categories`);
-      return result.data.categories;
+      const result = await axios.put(`${API_URL}/${id}/upvote`);
+      return result.data.product;
     } catch (error) {
       return rejectWithValue(error.response?.data?.msg || error.message);
     }
@@ -37,9 +36,9 @@ export const getCategories = createAsyncThunk(
 
 export const addproduct = createAsyncThunk(
   "product/add",
-  async (newproduct, { rejectWithValue }) => {
+  async (newProject, { rejectWithValue }) => {
     try {
-      const result = await axios.post(`${API_URL}/add`, newproduct);
+      const result = await axios.post(`${API_URL}/add`, newProject);
       return result.data.product;
     } catch (error) {
       return rejectWithValue(error.response?.data?.msg || error.message);
@@ -90,7 +89,7 @@ export const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Get products
+      // Get projects
       .addCase(getproducts.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -104,40 +103,43 @@ export const productSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Get categories
-      .addCase(getCategories.fulfilled, (state, action) => {
-        state.categories = action.payload || [];
+      // Upvote project
+      .addCase(upvoteProduct.fulfilled, (state, action) => {
+        const index = state.productlist.findIndex((p) => p._id === action.payload._id);
+        if (index !== -1) {
+          state.productlist[index].upvotes = action.payload.upvotes;
+        }
       })
 
-      // Add product
+      // Add project
       .addCase(addproduct.pending, (state) => {
         state.loading = true;
       })
       .addCase(addproduct.fulfilled, (state, action) => {
         state.loading = false;
         state.productlist.unshift(action.payload);
-        state.successMsg = "Produit ajouté avec succès !";
+        state.successMsg = "Projet soumis avec succès !";
       })
       .addCase(addproduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      // Delete product
+      // Delete project
       .addCase(deleteproduct.pending, (state) => {
         state.loading = true;
       })
       .addCase(deleteproduct.fulfilled, (state, action) => {
         state.loading = false;
         state.productlist = state.productlist.filter((p) => p._id !== action.payload);
-        state.successMsg = "Produit supprimé avec succès !";
+        state.successMsg = "Projet supprimé.";
       })
       .addCase(deleteproduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      // Edit product
+      // Edit project
       .addCase(editproduct.pending, (state) => {
         state.loading = true;
       })
@@ -147,7 +149,7 @@ export const productSlice = createSlice({
         if (index !== -1) {
           state.productlist[index] = action.payload;
         }
-        state.successMsg = "Produit mis à jour avec succès !";
+        state.successMsg = "Projet mis à jour avec succès !";
       })
       .addCase(editproduct.rejected, (state, action) => {
         state.loading = false;

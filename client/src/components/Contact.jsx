@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { IconRocket, IconCheck } from "./common/Icons";
 
 function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    orderNumber: "",
-    subject: "Livraison & Suivi",
+    school: "ISIMG / Université",
+    subject: "Proposition de projet ou partenariat",
     message: "",
   });
 
@@ -21,22 +22,23 @@ function Contact() {
       toast.error("Veuillez remplir tous les champs obligatoires");
       return;
     }
-    toast.success("Votre demande a été envoyée au service client SHEIN. Réponse sous 24h.");
-    setFormData({ name: "", email: "", orderNumber: "", subject: "Livraison & Suivi", message: "" });
+    toast.success("Merci ! Votre message a été transmis à l'équipe DevShowcase.");
+    setFormData({ name: "", email: "", school: "ISIMG / Université", subject: "Proposition de projet ou partenariat", message: "" });
   };
 
   return (
     <div className="py-5 bg-white">
       <Container>
         <div className="text-center max-w-700 mx-auto mb-5 pb-3">
-          <span className="badge bg-danger text-uppercase px-3 py-2 fw-bold mb-3 letter-spacing-1">
-            SERVICE CLIENT & SUPPORT
-          </span>
-          <h1 className="display-5 fw-extrabold text-dark text-uppercase letter-spacing-1 mb-2">
-            Besoin d'aide avec une commande ?
+          <div className="dev-pill mb-2">
+            <IconRocket size={14} />
+            <span>Support & Partenariats</span>
+          </div>
+          <h1 className="display-5 fw-bold text-dark mb-2">
+            Contactez la communauté DevShowcase
           </h1>
           <p className="text-muted small">
-            Notre équipe d'assistance SHEIN est à votre disposition 7j/7 pour vous renseigner et vous accompagner.
+            Une question sur la plateforme, une idée d'amélioration ou un partenariat club étudiant ? Écrivez-nous !
           </p>
         </div>
 
@@ -46,42 +48,38 @@ function Contact() {
               <Row className="g-0">
                 <Col md={5} className="p-4 p-lg-5 bg-light border-end d-flex flex-column justify-content-between">
                   <div>
-                    <h5 className="fw-extrabold text-dark text-uppercase letter-spacing-1 mb-3">
-                      Assistance Directe
-                    </h5>
+                    <h5 className="fw-bold text-dark mb-3">Échanges & Collaborations</h5>
                     <p className="text-muted small mb-4">
-                      Pour une réponse instantanée, vous pouvez contacter nos conseillers via nos canaux prioritaires :
+                      Nous encourageons les clubs d'informatique, organisateurs de hackathons et étudiants motivés à échanger avec nous :
                     </p>
 
                     <div className="d-flex flex-column gap-3 small text-muted">
                       <div className="p-3 bg-white border rounded-3">
-                        <strong className="text-dark d-block mb-1">WhatsApp Express :</strong>
-                        <span className="text-success fw-bold">+216 55 100 200</span>
-                        <div className="text-muted" style={{ fontSize: "0.75rem" }}>Réponse moyenne en 15 minutes</div>
+                        <strong className="text-dark d-block mb-1">Email universitaire :</strong>
+                        <span className="text-primary fw-semibold">aya.bouzommita@isimg.tn</span>
                       </div>
 
                       <div className="p-3 bg-white border rounded-3">
-                        <strong className="text-dark d-block mb-1">Ligne Téléphonique :</strong>
-                        <span className="fw-bold text-dark">+216 71 200 300</span>
-                        <div className="text-muted" style={{ fontSize: "0.75rem" }}>Du lundi au samedi : 08h30 - 19h00</div>
+                        <strong className="text-dark d-block mb-1">Cadre académique :</strong>
+                        <span>Filière Ingénieur Génie Logiciel (FIGL3)</span>
                       </div>
 
                       <div className="p-3 bg-white border rounded-3">
-                        <strong className="text-dark d-block mb-1">Email Réclamation :</strong>
-                        <span>support@shein.tn</span>
+                        <strong className="text-dark d-block mb-1">Dépôt GitHub :</strong>
+                        <a href="https://github.com/AyaBouzommita/Projet-MERN" target="_blank" rel="noreferrer" className="text-decoration-none text-dark fw-semibold">
+                          github.com/AyaBouzommita/Projet-MERN
+                        </a>
                       </div>
                     </div>
                   </div>
 
                   <div className="pt-4 border-top mt-4 text-muted small">
-                    Garantie réponse sous 24h ouvrées
+                    Plateforme collaborative open-source
                   </div>
                 </Col>
 
                 <Col md={7} className="p-4 p-lg-5 bg-white">
-                  <h5 className="fw-extrabold text-dark text-uppercase letter-spacing-1 mb-4">
-                    Envoyer un message
-                  </h5>
+                  <h5 className="fw-bold text-dark mb-4">Envoyer un message</h5>
                   <Form onSubmit={handleSubmit}>
                     <Row className="g-3 mb-3">
                       <Col sm={6}>
@@ -89,18 +87,18 @@ function Contact() {
                         <Form.Control
                           type="text"
                           name="name"
-                          placeholder="Votre nom complet"
+                          placeholder="Votre nom"
                           value={formData.name}
                           onChange={handleChange}
                           required
                         />
                       </Col>
                       <Col sm={6}>
-                        <Form.Label className="small fw-semibold text-dark">Adresse email *</Form.Label>
+                        <Form.Label className="small fw-semibold text-dark">Email de contact *</Form.Label>
                         <Form.Control
                           type="email"
                           name="email"
-                          placeholder="votre.email@domaine.com"
+                          placeholder="nom@universite.tn"
                           value={formData.email}
                           onChange={handleChange}
                           required
@@ -110,41 +108,41 @@ function Contact() {
 
                     <Row className="g-3 mb-3">
                       <Col sm={6}>
-                        <Form.Label className="small fw-semibold text-dark">Numéro de commande (si applicable)</Form.Label>
+                        <Form.Label className="small fw-semibold text-dark">Université / École</Form.Label>
                         <Form.Control
                           type="text"
-                          name="orderNumber"
-                          placeholder="Ex: SH-89241"
-                          value={formData.orderNumber}
+                          name="school"
+                          placeholder="Ex: ISIMG, INSAT, ESPRIT..."
+                          value={formData.school}
                           onChange={handleChange}
                         />
                       </Col>
                       <Col sm={6}>
-                        <Form.Label className="small fw-semibold text-dark">Motif de la demande *</Form.Label>
+                        <Form.Label className="small fw-semibold text-dark">Objet</Form.Label>
                         <Form.Select name="subject" value={formData.subject} onChange={handleChange}>
-                          <option value="Livraison & Suivi">Livraison & Suivi de colis</option>
-                          <option value="Retour & Échange">Retour & Échange de taille</option>
-                          <option value="Remboursement">Demande de remboursement</option>
-                          <option value="Autre question">Autre question sur un produit</option>
+                          <option value="Proposition de projet ou partenariat">Partenariat club étudiant</option>
+                          <option value="Signalement de bug">Signalement de bug / amélioration</option>
+                          <option value="Question sur le code">Question sur l'architecture logicielle</option>
+                          <option value="Autre demande">Autre sujet</option>
                         </Form.Select>
                       </Col>
                     </Row>
 
                     <Form.Group className="mb-4">
-                      <Form.Label className="small fw-semibold text-dark">Message *</Form.Label>
+                      <Form.Label className="small fw-semibold text-dark">Votre message *</Form.Label>
                       <Form.Control
                         as="textarea"
                         rows={4}
                         name="message"
-                        placeholder="Expliquez-nous en détail votre demande..."
+                        placeholder="Présentez votre idée, événement ou question..."
                         value={formData.message}
                         onChange={handleChange}
                         required
                       />
                     </Form.Group>
 
-                    <Button type="submit" className="btn-shein-primary w-100 py-3 text-uppercase fw-bold letter-spacing-1">
-                      Envoyer la demande
+                    <Button type="submit" className="btn-dev-submit w-100 py-2 justify-content-center">
+                      Envoyer le message
                     </Button>
                   </Form>
                 </Col>

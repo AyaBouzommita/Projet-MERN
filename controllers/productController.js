@@ -1,139 +1,163 @@
 const Product = require("../models/product");
 
-// @desc    Get all products with search, category filter, sorting, flash sale
+// @desc    Get all projects with search, category filter, sorting
 // @route   GET /product ou /api/product
 const getProducts = async (req, res, next) => {
   try {
-    const { search, category, minPrice, maxPrice, sortBy, isFlashSale } = req.query;
+    const { search, category, status, sortBy } = req.query;
     let query = {};
 
     if (search) {
-      query.nameproduct = { $regex: search, $options: "i" };
+      query.$or = [
+        { nameproduct: { $regex: search, $options: "i" } },
+        { tagline: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+        { technologies: { $in: [new RegExp(search, "i")] } },
+      ];
     }
 
     if (category && category !== "All" && category !== "Tous") {
       query.category = category;
     }
 
-    if (isFlashSale === "true") {
-      query.isFlashSale = true;
+    if (status && status !== "Tous") {
+      query.status = status;
     }
 
-    if (minPrice || maxPrice) {
-      query.price = {};
-      if (minPrice) query.price.$gte = Number(minPrice);
-      if (maxPrice) query.price.$lte = Number(maxPrice);
-    }
-
-    let sortOption = { createdAt: -1 };
-    if (sortBy === "price_asc") sortOption = { price: 1 };
-    if (sortBy === "price_desc") sortOption = { price: -1 };
+    let sortOption = { upvotes: -1, createdAt: -1 };
+    if (sortBy === "upvotes_desc") sortOption = { upvotes: -1 };
+    if (sortBy === "newest") sortOption = { createdAt: -1 };
     if (sortBy === "name_asc") sortOption = { nameproduct: 1 };
-    if (sortBy === "name_desc") sortOption = { nameproduct: -1 };
-    if (sortBy === "discount_desc") sortOption = { discount: -1 };
 
     const products = await Product.find(query).sort(sortOption);
-    res.status(200).json({ products, msg: "all products", count: products.length });
+    res.status(200).json({ products, msg: "all projects", count: products.length });
   } catch (error) {
     next(error);
   }
 };
 
-// @desc    Get product by id
+// @desc    Get project by id
 // @route   GET /product/:id ou /api/product/:id
 const getProductById = async (req, res, next) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
-      return res.status(404).json({ msg: "Produit non trouvé" });
+      return res.status(404).json({ msg: "Projet non trouvé" });
     }
-    res.status(200).json({ product, msg: "one product" });
+    res.status(200).json({ product, msg: "one project" });
   } catch (error) {
     next(error);
   }
 };
 
-// @desc    Add product
+// @desc    Submit new project
 // @route   POST /product/add ou /api/product/add
 const addProduct = async (req, res, next) => {
   try {
     const {
       nameproduct,
-      price,
-      oldPrice,
-      discount,
-      category,
+      tagline,
       description,
+      category,
+      technologies,
       img,
-      countInStock,
-      sizes,
-      colors,
-      isFlashSale,
+      githubUrl,
+      demoUrl,
+      status,
+      authorName,
+      authorAvatar,
     } = req.body;
 
-    if (!nameproduct || price === undefined || price === null) {
-      return res.status(400).json({ msg: "Le nom du produit et le prix sont obligatoires." });
+    if (!nameproduct || !description) {
+      return res.status(400).json({ msg: "Le titre et la description sont obligatoires." });
     }
 
-    const calculatedOldPrice = oldPrice ? Number(oldPrice) : Math.round(Number(price) * 1.4);
-    const calculatedDiscount = discount
-      ? Number(discount)
-      : Math.round(((calculatedOldPrice - Number(price)) / calculatedOldPrice) * 100);
+    let techArray = technologies;
+    if (typeof technologies === "string") {
+      techArray = technologies.split(",").map((t) => t.trim()).filter(Boolean);
+    }
 
-    const newProduct = new Product({
+    const newProject = new Product({
       nameproduct,
-      price: Number(price),
-      oldPrice: calculatedOldPrice,
-      discount: calculatedDiscount,
-      category: category || "Robes",
-      description: description || undefined,
+      tagline: tagline || "Application logicielle développée par des étudiants.",
+      description,
+      category: category || "Web Fullstack",
+      technologies: techArray && techArray.length > 0 ? techArray : ["React", "Node.js"],
       img: img || undefined,
-      countInStock: countInStock !== undefined ? Number(countInStock) : 20,
-      sizes: sizes || ["XS", "S", "M", "L", "XL"],
-      colors: colors || ["#1e293b", "#f59e0b", "#ec4899", "#f1f5f9"],
-      isFlashSale: Boolean(isFlashSale),
+      githubUrl: githubUrl || "https://github.com",
+      demoUrl: demoUrl || undefined,
+      status: status || "Bêta",
+      authorName: authorName || "Étudiant GL3",
+      authorAvatar: authorAvatar || undefined,
+      upvotes: 1,
     });
 
-    const result = await newProduct.save();
-    res.status(201).json({ product: result, msg: "product is added" });
+    const result = await newProject.save();
+    res.status(201).json({ product: result, msg: "project is submitted" });
   } catch (error) {
     next(error);
   }
 };
 
-// @desc    Update product
+// @desc    Update project
 // @route   PUT /product/:id ou /api/product/:id
 const updateProduct = async (req, res, next) => {
   try {
+    const updateData = { ...req.body };
+    if (typeof updateData.technologies === "string") {
+      updateData.technologies = updateData.technologies
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
+    }
+
     const product = await Product.findByIdAndUpdate(
       req.params.id,
-      { $set: req.body },
+      { $set: updateData },
       { new: true, runValidators: true }
     );
     if (!product) {
-      return res.status(404).json({ msg: "Produit non trouvé" });
+      return res.status(404).json({ msg: "Projet non trouvé" });
     }
-    res.status(200).json({ product, msg: "product is updated" });
+    res.status(200).json({ product, msg: "project is updated" });
   } catch (error) {
     next(error);
   }
 };
 
-// @desc    Delete product
+// @desc    Upvote a project
+// @route   PUT /product/:id/upvote ou /api/product/:id/upvote
+const upvoteProject = async (req, res, next) => {
+  try {
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { upvotes: 1 } },
+      { new: true }
+    );
+    if (!product) {
+      return res.status(404).json({ msg: "Projet non trouvé" });
+    }
+    res.status(200).json({ product, msg: "upvote registered" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Delete project
 // @route   DELETE /product/:id ou /api/product/:id
 const deleteProduct = async (req, res, next) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) {
-      return res.status(404).json({ msg: "Produit non trouvé" });
+      return res.status(404).json({ msg: "Projet non trouvé" });
     }
-    res.status(200).json({ msg: "product is deleted" });
+    res.status(200).json({ msg: "project is deleted" });
   } catch (error) {
     next(error);
   }
 };
 
-// @desc    Get list of distinct categories
+// @desc    Get categories
 // @route   GET /product/categories
 const getCategories = async (req, res, next) => {
   try {
@@ -149,6 +173,7 @@ module.exports = {
   getProductById,
   addProduct,
   updateProduct,
+  upvoteProject,
   deleteProduct,
   getCategories,
 };

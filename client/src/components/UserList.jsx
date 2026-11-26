@@ -9,6 +9,7 @@ import { IconSearch, IconRefresh } from "./common/Icons";
 function UserList() {
   const dispatch = useDispatch();
   const { userlist, loading, error } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.auth);
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
 
@@ -42,13 +43,13 @@ function UserList() {
         {/* Header Section */}
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-3 border-bottom">
           <div>
-            <h2 className="fw-bold mb-1 text-dark">Annuaire Collaborateurs & Utilisateurs</h2>
+            <h2 className="fw-bold mb-1 text-dark">Annuaire des Développeurs & Contributeurs</h2>
             <p className="text-muted small mb-0">
-              Gestion centralisée des accès, rôles et coordonnées du personnel technique.
+              Découvrez les étudiants ingénieurs, contributeurs open-source et créateurs de projets.
             </p>
           </div>
           <div>
-            <Adduser />
+            {user?.isAdmin && <Adduser />}
           </div>
         </div>
 
@@ -57,43 +58,30 @@ function UserList() {
           <Col md={4}>
             <div className="p-3 bg-white border rounded-3 shadow-sm d-flex justify-content-between align-items-center">
               <div>
-                <div className="text-muted small">Total inscrits</div>
+                <div className="text-muted small">Total Développeurs</div>
                 <div className="fs-4 fw-bold text-dark">{userlist?.length || 0}</div>
               </div>
-              <div className="trust-icon-wrapper">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                  <circle cx="9" cy="7" r="4" />
-                </svg>
-              </div>
+              <span className="fs-3">👩‍💻</span>
             </div>
           </Col>
 
           <Col md={4}>
             <div className="p-3 bg-white border rounded-3 shadow-sm d-flex justify-content-between align-items-center">
               <div>
-                <div className="text-muted small">Administrateurs</div>
+                <div className="text-muted small">Leads & Modérateurs</div>
                 <div className="fs-4 fw-bold text-dark">{adminCount}</div>
               </div>
-              <div className="trust-icon-wrapper" style={{ backgroundColor: "#f1f5f9", color: "#0f172a" }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                </svg>
-              </div>
+              <span className="fs-3">🛡️</span>
             </div>
           </Col>
 
           <Col md={4}>
             <div className="p-3 bg-white border rounded-3 shadow-sm d-flex justify-content-between align-items-center">
               <div>
-                <div className="text-muted small">Collaborateurs</div>
+                <div className="text-muted small">Contributeurs Actifs</div>
                 <div className="fs-4 fw-bold text-dark">{memberCount}</div>
               </div>
-              <div className="trust-icon-wrapper" style={{ backgroundColor: "#ecfdf5", color: "#059669" }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              </div>
+              <span className="fs-3">🚀</span>
             </div>
           </Col>
         </Row>
@@ -110,7 +98,7 @@ function UserList() {
                   <Form.Control
                     type="search"
                     placeholder="Recherche par nom ou adresse email..."
-                    className="search-input-pro w-100"
+                    className="dev-search-input w-100"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
@@ -122,21 +110,21 @@ function UserList() {
               <div className="d-flex gap-2">
                 <button
                   type="button"
-                  className={`category-pill ${roleFilter === "all" ? "active" : ""}`}
+                  className={`dev-category-tab ${roleFilter === "all" ? "active" : ""}`}
                   onClick={() => setRoleFilter("all")}
                 >
                   Tous ({userlist?.length || 0})
                 </button>
                 <button
                   type="button"
-                  className={`category-pill ${roleFilter === "admin" ? "active" : ""}`}
+                  className={`dev-category-tab ${roleFilter === "admin" ? "active" : ""}`}
                   onClick={() => setRoleFilter("admin")}
                 >
-                  Admins ({adminCount})
+                  Leads ({adminCount})
                 </button>
                 <button
                   type="button"
-                  className={`category-pill ${roleFilter === "member" ? "active" : ""}`}
+                  className={`dev-category-tab ${roleFilter === "member" ? "active" : ""}`}
                   onClick={() => setRoleFilter("member")}
                 >
                   Membres ({memberCount})
@@ -145,7 +133,7 @@ function UserList() {
             </Col>
 
             <Col lg={2} md={2} className="text-md-end">
-              <Button variant="light" size="sm" className="btn-outline-pro d-inline-flex align-items-center gap-1" onClick={handleReset}>
+              <Button variant="light" size="sm" className="btn-outline-pro d-inline-flex align-items-center gap-1 w-100 justify-content-center" onClick={handleReset}>
                 <IconRefresh size={14} />
                 <span>Réinitialiser</span>
               </Button>
@@ -157,7 +145,7 @@ function UserList() {
         {loading ? (
           <div className="text-center py-5">
             <Spinner animation="border" variant="primary" />
-            <div className="text-muted small mt-2">Chargement des utilisateurs...</div>
+            <div className="text-muted small mt-2">Chargement des profils...</div>
           </div>
         ) : error ? (
           <div className="alert alert-danger text-center small py-3">{error}</div>
@@ -171,10 +159,10 @@ function UserList() {
           </Row>
         ) : (
           <div className="text-center py-5 bg-white border rounded-3 p-4">
-            <h5 className="fw-bold text-dark mb-1">Aucun collaborateur trouvé</h5>
-            <p className="text-muted small mb-3">Aucun compte ne correspond à votre critère de recherche.</p>
+            <h5 className="fw-bold text-dark mb-1">Aucun développeur trouvé</h5>
+            <p className="text-muted small mb-3">Aucun compte ne correspond à votre recherche.</p>
             <Button className="btn-outline-pro" onClick={handleReset}>
-              Réinitialiser la recherche
+              Réinitialiser
             </Button>
           </div>
         )}
