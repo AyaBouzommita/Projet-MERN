@@ -1,222 +1,160 @@
-/* Modern SaaS / E-Commerce Design System */
+/* SHEIN E-Commerce Design System */
 :root {
-  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --color-primary: #1e40af;
-  --color-primary-hover: #1d4ed8;
-  --color-primary-light: #eff6ff;
-  --color-dark: #0f172a;
-  --color-slate-800: #1e293b;
-  --color-slate-700: #334155;
-  --color-slate-600: #475569;
-  --color-slate-500: #64748b;
-  --color-slate-400: #94a3b8;
-  --color-slate-200: #e2e8f0;
-  --color-slate-100: #f1f5f9;
-  --color-slate-50: #f8fafc;
-  --color-success: #059669;
-  --color-success-light: #ecfdf5;
-  --color-warning: #d97706;
-  --color-warning-light: #fffbeb;
-  --color-danger: #dc2626;
-  --color-danger-light: #fef2f2;
-  
-  --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
-  --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.08), 0 1px 2px -1px rgba(15, 23, 42, 0.08);
-  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
-  --shadow-card: 0 2px 8px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.06);
-  --shadow-card-hover: 0 12px 24px -4px rgba(15, 23, 42, 0.1), 0 4px 8px -2px rgba(15, 23, 42, 0.04);
-}
-
-* {
-  box-sizing: border-box;
+  --shein-black: #000000;
+  --shein-dark: #111111;
+  --shein-red: #fa243c;
+  --shein-red-dark: #e11d48;
+  --shein-gray-bg: #f7f7f7;
+  --shein-border: #e5e5e5;
+  --shein-text-muted: #767676;
 }
 
 body {
-  font-family: var(--font-family);
-  background-color: var(--color-slate-50);
-  color: var(--color-dark);
-  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--shein-dark);
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Navbar */
-.pro-navbar {
-  background-color: #ffffff;
-  border-bottom: 1px solid var(--color-slate-200);
+.letter-spacing-1 { letter-spacing: 1px; }
+.letter-spacing-2 { letter-spacing: 2px; }
+.cursor-pointer { cursor: pointer; }
+
+/* Ticker */
+.shein-ticker {
+  background-color: var(--shein-black);
+  color: #ffffff;
+}
+
+/* Header */
+.shein-header {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.shein-logo {
+  font-size: 2.1rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  font-family: 'Arial Black', Impact, sans-serif;
+}
+
+.shein-search-input {
+  background-color: #f5f5f5 !important;
+  border: 1px solid transparent !important;
+  border-radius: 24px !important;
+  padding: 0.55rem 1rem 0.55rem 2.4rem !important;
+  font-size: 0.88rem !important;
   transition: all 0.2s ease;
 }
 
-.pro-brand {
-  font-weight: 800;
-  font-size: 1.35rem;
-  letter-spacing: -0.03em;
-  color: var(--color-dark) !important;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+.shein-search-input:focus {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
 }
 
-.brand-icon-box {
-  width: 34px;
-  height: 34px;
-  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-  border-radius: 8px;
+.shein-badge-counter {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background-color: var(--shein-red);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
 }
 
-.nav-link-pro {
-  color: var(--color-slate-600) !important;
-  font-weight: 500;
-  font-size: 0.92rem;
-  padding: 0.5rem 0.85rem !important;
-  border-radius: 6px;
-  transition: all 0.15s ease;
-}
-
-.nav-link-pro:hover,
-.nav-link-pro.active {
-  color: var(--color-primary) !important;
-  background-color: var(--color-primary-light);
-}
-
-.search-container-pro {
-  position: relative;
-  min-width: 260px;
-}
-
-.search-input-pro {
-  background-color: var(--color-slate-100);
-  border: 1px solid transparent;
-  border-radius: 8px;
-  padding: 0.45rem 0.85rem 0.45rem 2.2rem;
-  font-size: 0.875rem;
-  color: var(--color-dark);
-  transition: all 0.2s ease;
-}
-
-.search-input-pro:focus {
-  background-color: #ffffff;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-  outline: none;
-}
-
-.search-icon-pos {
-  position: absolute;
-  left: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--color-slate-400);
-  pointer-events: none;
-}
-
-.avatar-nav-pro {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--color-slate-200);
+/* Subnav */
+.shein-subnav button:hover {
+  color: var(--shein-red) !important;
 }
 
 /* Hero Section */
-.hero-pro {
-  background: linear-gradient(180deg, #ffffff 0%, var(--color-slate-50) 100%);
-  border-bottom: 1px solid var(--color-slate-200);
-  padding: 4.5rem 0 3.5rem;
-}
-
-.hero-pill {
-  display: inline-flex;
+.shein-hero {
+  background: linear-gradient(135deg, #111111 0%, #1f2937 100%);
+  min-height: 440px;
+  display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.85rem;
-  background-color: var(--color-primary-light);
-  color: var(--color-primary);
-  border: 1px solid rgba(37, 99, 235, 0.2);
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-bottom: 1.25rem;
 }
 
-.hero-title {
-  font-size: 3rem;
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.03em;
-  color: var(--color-dark);
-  margin-bottom: 1.2rem;
+.shein-hero-banner-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.hero-subtitle {
-  font-size: 1.125rem;
-  color: var(--color-slate-600);
-  line-height: 1.6;
-  margin-bottom: 2rem;
-}
-
-/* Trust Bar */
-.trust-bar {
+.btn-shein-cta {
   background-color: #ffffff;
-  border: 1px solid var(--color-slate-200);
-  border-radius: 12px;
-  padding: 1.25rem 2rem;
-  box-shadow: var(--shadow-sm);
-  margin-top: -2rem;
-  position: relative;
-  z-index: 10;
+  color: #000000;
+  border: 2px solid #ffffff;
+  transition: all 0.2s ease;
 }
 
-.trust-item {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
+.btn-shein-cta:hover {
+  background-color: var(--shein-red);
+  color: #ffffff;
+  border-color: var(--shein-red);
 }
 
-.trust-icon-wrapper {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  background-color: var(--color-primary-light);
-  color: var(--color-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Circular Category */
+.shein-category-circle-wrapper {
+  transition: transform 0.2s ease;
 }
 
-/* Product Card */
-.pro-card {
-  background: #ffffff;
-  border: 1px solid var(--color-slate-200);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: var(--shadow-card);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.pro-card:hover {
-  border-color: #cbd5e1;
-  box-shadow: var(--shadow-card-hover);
+.shein-category-circle-wrapper:hover {
   transform: translateY(-4px);
 }
 
-.pro-card-img-wrapper {
+.shein-category-circle {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #e5e5e5;
+  background-color: #f5f5f5;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.shein-category-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.shein-category-circle-wrapper:hover img {
+  transform: scale(1.1);
+}
+
+/* SHEIN Product Card */
+.shein-product-card {
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.shein-product-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.shein-img-wrapper {
   position: relative;
   width: 100%;
-  padding-top: 65%;
-  background-color: var(--color-slate-100);
+  padding-top: 130%; /* 3:4 portrait ratio */
+  background-color: #f7f7f7;
   overflow: hidden;
 }
 
-.pro-card-img {
+.shein-img {
   position: absolute;
   top: 0;
   left: 0;
@@ -226,77 +164,188 @@ body {
   transition: transform 0.4s ease;
 }
 
-.pro-card:hover .pro-card-img {
-  transform: scale(1.04);
+.shein-product-card:hover .shein-img {
+  transform: scale(1.05);
 }
 
-.pro-card-body {
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.pro-category-tag {
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-primary);
-  margin-bottom: 0.4rem;
-}
-
-.pro-card-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--color-dark);
-  line-height: 1.35;
-  margin-bottom: 0.5rem;
-}
-
-.pro-card-desc {
-  font-size: 0.835rem;
-  color: var(--color-slate-500);
-  line-height: 1.5;
-  margin-bottom: 1rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  flex-grow: 1;
-}
-
-.pro-price {
-  font-size: 1.25rem;
+.shein-discount-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: var(--shein-red);
+  color: #ffffff;
+  font-size: 0.75rem;
   font-weight: 800;
-  color: var(--color-dark);
-  letter-spacing: -0.02em;
+  padding: 3px 7px;
+  border-radius: 3px;
+  z-index: 2;
 }
 
-.pro-price-unit {
-  font-size: 0.85rem;
+.shein-flash-badge {
+  position: absolute;
+  top: 8px;
+  right: 42px;
+  background-color: #000000;
+  color: #f59e0b;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 3px 6px;
+  border-radius: 3px;
+  z-index: 2;
+}
+
+.shein-wishlist-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(255, 255, 255, 0.85);
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111111;
+  z-index: 3;
+  transition: background-color 0.2s;
+}
+
+.shein-wishlist-btn:hover {
+  background-color: #ffffff;
+}
+
+.shein-quick-add {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px;
+  transform: translateY(100%);
+  transition: transform 0.25s ease;
+  z-index: 4;
+}
+
+.shein-product-card:hover .shein-quick-add {
+  transform: translateY(0);
+}
+
+.shein-title {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #222222;
+  margin-bottom: 4px;
+}
+
+.shein-price {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--shein-red);
+}
+
+.shein-old-price {
+  font-size: 0.82rem;
+  color: #999999;
+  text-decoration: line-through;
+}
+
+.shein-color-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1px solid #d1d5db;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.shein-color-dot.active {
+  transform: scale(1.2);
+  outline: 2px solid #000000;
+}
+
+.shein-size-pill {
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 0.72rem;
   font-weight: 600;
-  color: var(--color-slate-500);
-  margin-left: 0.25rem;
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #4b5563;
+  cursor: pointer;
+}
+
+.shein-size-pill.active {
+  background-color: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+/* Category Tabs */
+.shein-category-tab {
+  padding: 0.45rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.shein-category-tab:hover {
+  border-color: #000000;
+}
+
+.shein-category-tab.active {
+  background-color: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+/* Buttons */
+.btn-shein-primary {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #000000;
+  font-weight: 700;
+}
+
+.btn-shein-primary:hover {
+  background-color: #222222;
+  color: #ffffff;
+  border-color: #222222;
+}
+
+.btn-shein-checkout {
+  background-color: var(--shein-red);
+  color: #ffffff;
+  border: none;
+  font-size: 0.95rem;
+}
+
+.btn-shein-checkout:hover {
+  background-color: var(--shein-red-dark);
+}
+
+/* Footer */
+.shein-footer-heading {
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  color: #000000;
+  margin-bottom: 1rem;
 }
 
 /* User Card */
 .pro-user-card {
   background: #ffffff;
-  border: 1px solid var(--color-slate-200);
-  border-radius: 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
   padding: 1.5rem;
-  box-shadow: var(--shadow-card);
   transition: all 0.2s ease;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.pro-user-card:hover {
-  box-shadow: var(--shadow-card-hover);
-  border-color: #cbd5e1;
-  transform: translateY(-3px);
 }
 
 .pro-user-avatar {
@@ -304,172 +353,4 @@ body {
   height: 72px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid var(--color-slate-100);
-  box-shadow: var(--shadow-sm);
-}
-
-/* Modern Badges */
-.badge-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.25rem 0.65rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.badge-status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-}
-
-.badge-in-stock {
-  background-color: var(--color-success-light);
-  color: var(--color-success);
-  border: 1px solid rgba(5, 150, 105, 0.2);
-}
-.badge-in-stock .badge-status-dot { background-color: var(--color-success); }
-
-.badge-low-stock {
-  background-color: var(--color-danger-light);
-  color: var(--color-danger);
-  border: 1px solid rgba(220, 38, 38, 0.2);
-}
-.badge-low-stock .badge-status-dot { background-color: var(--color-danger); }
-
-.badge-admin {
-  background-color: #f1f5f9;
-  color: var(--color-slate-800);
-  border: 1px solid var(--color-slate-300);
-}
-
-.badge-member {
-  background-color: var(--color-primary-light);
-  color: var(--color-primary);
-  border: 1px solid rgba(37, 99, 235, 0.2);
-}
-
-/* Category Filter Tabs */
-.category-pill {
-  padding: 0.45rem 1rem;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border: 1px solid var(--color-slate-200);
-  background-color: #ffffff;
-  color: var(--color-slate-700);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.category-pill:hover {
-  background-color: var(--color-slate-100);
-  border-color: var(--color-slate-300);
-}
-
-.category-pill.active {
-  background-color: var(--color-primary);
-  color: #ffffff;
-  border-color: var(--color-primary);
-  box-shadow: 0 2px 6px rgba(30, 64, 175, 0.25);
-}
-
-/* Buttons */
-.btn-primary-pro {
-  background-color: var(--color-primary);
-  color: #ffffff;
-  border: 1px solid var(--color-primary);
-  font-weight: 600;
-  font-size: 0.9rem;
-  padding: 0.55rem 1.25rem;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.btn-primary-pro:hover {
-  background-color: var(--color-primary-hover);
-  border-color: var(--color-primary-hover);
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
-}
-
-.btn-outline-pro {
-  background-color: #ffffff;
-  color: var(--color-slate-700);
-  border: 1px solid var(--color-slate-300);
-  font-weight: 600;
-  font-size: 0.9rem;
-  padding: 0.55rem 1.25rem;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
-.btn-outline-pro:hover {
-  background-color: var(--color-slate-100);
-  border-color: var(--color-slate-400);
-  color: var(--color-dark);
-}
-
-/* Auth Cards */
-.auth-box-pro {
-  background: #ffffff;
-  border: 1px solid var(--color-slate-200);
-  border-radius: 16px;
-  box-shadow: var(--shadow-lg);
-  overflow: hidden;
-}
-
-.auth-sidebar-pro {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  color: #ffffff;
-  padding: 3rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-/* Footer */
-.pro-footer {
-  background-color: #ffffff;
-  color: #334155;
-  border-top: 1px solid var(--color-slate-200);
-  padding: 4.5rem 0 2rem;
-}
-
-.pro-footer a {
-  color: #475569;
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: color 0.15s ease;
-}
-
-.pro-footer a:hover {
-  color: var(--color-primary);
-}
-
-.pro-footer-heading {
-  color: var(--color-dark);
-  font-size: 0.92rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 1.25rem;
-}
-
-.pro-footer .footer-text {
-  color: #475569;
-  font-size: 0.885rem;
-  line-height: 1.6;
-}
-
-.pro-footer .footer-subtext {
-  color: #64748b;
-  font-size: 0.825rem;
 }

@@ -1,163 +1,140 @@
 import React, { useEffect } from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Container, Row, Col, Button, Badge } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getproducts } from "../redux/productSlice";
-import { getusers } from "../redux/userSlice";
 import ProductCard from "./Products/ProductCard";
-import UserCard from "./UserCard";
-import { IconShield, IconTruck, IconHeadphones, IconBox, IconArrowRight } from "./common/Icons";
+import FlashCountdown from "./common/FlashCountdown";
+import { IconTruck, IconShield, IconHeadphones, IconArrowRight, IconHeart } from "./common/Icons";
 
 function Home() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { productlist } = useSelector((state) => state.product);
-  const { userlist } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getproducts({}));
-    dispatch(getusers(""));
   }, [dispatch]);
 
-  const featuredProducts = productlist?.slice(0, 4) || [];
-  const featuredUsers = userlist?.slice(0, 4) || [];
+  const flashSaleProducts = productlist?.filter((p) => p.isFlashSale)?.slice(0, 4) || [];
+  const trendingProducts = productlist?.slice(0, 8) || [];
+
+  const categories = [
+    { name: "Robes", query: "Robes", img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&q=80" },
+    { name: "Hauts & Tops", query: "Hauts & Tops", img: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80" },
+    { name: "Vestes", query: "Vestes & Manteaux", img: "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&w=400&q=80" },
+    { name: "Pantalons", query: "Pantalons & Bas", img: "https://images.unsplash.com/photo-1551854838-212c50b4c184?auto=format&fit=crop&w=400&q=80" },
+    { name: "Chaussures", query: "Chaussures", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=400&q=80" },
+    { name: "Sacs", query: "Sacs & Accessoires", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&q=80" },
+  ];
+
+  const handleCategoryFilter = (cat) => {
+    dispatch(getproducts({ category: cat }));
+    navigate("/products");
+  };
 
   return (
     <div>
-      {/* Hero Section */}
-      <section className="hero-pro">
-        <Container>
-          <Row className="align-items-center gy-5">
-            <Col lg={7}>
-              <div className="hero-pill">
-                <span className="badge-status-dot" style={{ backgroundColor: "#2563eb" }}></span>
-                <span>Nouvelle gamme professionnelle 2026 disponible</span>
-              </div>
-              <h1 className="hero-title">
-                Le matériel informatique de pointe pour vos ambitions.
+      {/* Mega Hero Campaign SHEIN */}
+      <section className="shein-hero position-relative">
+        <Container className="py-5">
+          <Row className="align-items-center gy-4">
+            <Col lg={7} className="text-white">
+              <span className="badge bg-danger text-uppercase px-3 py-2 fw-bold mb-3 letter-spacing-1">
+                VENTES FLASH DE SAISON
+              </span>
+              <h1 className="display-3 fw-extrabold text-uppercase letter-spacing-2 mb-3">
+                COLLECTION <br />
+                <span className="text-warning">PRINTEMPS 2026</span>
               </h1>
-              <p className="hero-subtitle pe-lg-4">
-                Découvrez une sélection rigoureuse d'ordinateurs, stations de travail, périphériques et équipements réseau garantis avec service technique dédié.
+              <p className="lead fs-5 text-white-50 mb-4 pe-lg-5">
+                Des centaines de nouveautés mode à prix mini. Robes tendance, blazers oversize, denim et accessoires pour toutes vos envies.
               </p>
+
               <div className="d-flex flex-wrap gap-3">
-                <Button as={Link} to="/products" className="btn-primary-pro px-4 py-2">
-                  <span>Explorer le catalogue</span>
-                  <IconArrowRight size={16} />
+                <Button
+                  as={Link}
+                  to="/products"
+                  className="btn-shein-cta px-4 py-3 text-uppercase fw-bold letter-spacing-1"
+                >
+                  Découvrir la collection
                 </Button>
-                <Button as={Link} to="/contact" className="btn-outline-pro px-4 py-2">
-                  Demander un devis pro
+                <Button
+                  variant="outline-light"
+                  className="px-4 py-3 text-uppercase fw-bold letter-spacing-1"
+                  onClick={() => {
+                    dispatch(getproducts({ isFlashSale: "true" }));
+                    navigate("/products");
+                  }}
+                >
+                  Ventes Flash (-50%)
                 </Button>
               </div>
             </Col>
 
-            <Col lg={5}>
-              <div className="p-4 bg-white border rounded-4 shadow-sm">
-                <div className="d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom">
-                  <div>
-                    <h6 className="fw-bold mb-0 text-dark">Disponibilité immédiate</h6>
-                    <span className="text-muted small">Articles certifiés en stock direct</span>
-                  </div>
-                  <span className="badge-status badge-in-stock">
-                    <span className="badge-status-dot"></span>
-                    Direct Entrepot
-                  </span>
+            <Col lg={5} className="d-none d-lg-block text-center">
+              <div className="shein-hero-banner-card p-4 rounded-4 shadow-lg text-white">
+                <div className="text-uppercase small fw-bold text-warning mb-1">OFFRE SPÉCIALE EN LIGNE</div>
+                <div className="display-4 fw-extrabold text-danger mb-2">-60%</div>
+                <div className="fw-semibold mb-3">SUR UNE SÉLECTION DE PLUS DE 500 ARTICLES</div>
+                <div className="p-3 bg-dark bg-opacity-75 rounded-3 border border-secondary mb-3">
+                  <div className="small text-white-50 mb-1">Code coupon exclusif au panier :</div>
+                  <div className="fs-5 fw-bold text-warning letter-spacing-2">SHEIN20</div>
                 </div>
-
-                <div className="d-flex flex-column gap-3">
-                  <div className="d-flex justify-content-between align-items-center p-3 bg-light rounded-3">
-                    <div>
-                      <div className="text-muted small">Catalogue actif</div>
-                      <div className="fs-4 fw-bold text-dark">{productlist?.length || 0} références</div>
-                    </div>
-                    <div className="trust-icon-wrapper">
-                      <IconBox size={22} />
-                    </div>
-                  </div>
-
-                  <div className="d-flex justify-content-between align-items-center p-3 bg-light rounded-3">
-                    <div>
-                      <div className="text-muted small">Comptes & Collaborateurs</div>
-                      <div className="fs-4 fw-bold text-dark">{userlist?.length || 0} membres</div>
-                    </div>
-                    <div className="trust-icon-wrapper" style={{ backgroundColor: "#ecfdf5", color: "#059669" }}>
-                      <IconShield size={22} />
-                    </div>
-                  </div>
-                </div>
+                <div className="small text-white-50">Valable dès 80 TND d'achats | Livraison offerte dès 100 TND</div>
               </div>
             </Col>
           </Row>
         </Container>
       </section>
 
-      {/* Trust Proposition Bar */}
-      <Container className="mb-5">
-        <div className="trust-bar">
-          <Row className="gy-3">
-            <Col lg={3} sm={6}>
-              <div className="trust-item">
-                <div className="trust-icon-wrapper">
-                  <IconShield size={20} />
-                </div>
-                <div>
-                  <div className="fw-bold text-dark small">Garantie 2 ans</div>
-                  <div className="text-muted" style={{ fontSize: "0.78rem" }}>Support constructeur certifié</div>
-                </div>
+      {/* Coupon Strip */}
+      <section className="bg-dark py-3 text-white border-bottom border-secondary">
+        <Container>
+          <Row className="text-center gy-2">
+            <Col md={4}>
+              <div className="small">
+                🎟️ <strong>-15% DÈS 80 TND</strong> | Code : <span className="text-warning fw-bold">SHEIN15</span>
               </div>
             </Col>
-
-            <Col lg={3} sm={6}>
-              <div className="trust-item">
-                <div className="trust-icon-wrapper">
-                  <IconTruck size={20} />
-                </div>
-                <div>
-                  <div className="fw-bold text-dark small">Livraison Express</div>
-                  <div className="text-muted" style={{ fontSize: "0.78rem" }}>Expédié en 24 à 48 heures</div>
-                </div>
+            <Col md={4}>
+              <div className="small">
+                🚚 <strong>LIVRAISON GRATUITE</strong> dès 100 TND d'achat
               </div>
             </Col>
-
-            <Col lg={3} sm={6}>
-              <div className="trust-item">
-                <div className="trust-icon-wrapper">
-                  <IconHeadphones size={20} />
-                </div>
-                <div>
-                  <div className="fw-bold text-dark small">Assistance Dédiée</div>
-                  <div className="text-muted" style={{ fontSize: "0.78rem" }}>Du lundi au samedi 8h-19h</div>
-                </div>
-              </div>
-            </Col>
-
-            <Col lg={3} sm={6}>
-              <div className="trust-item">
-                <div className="trust-icon-wrapper">
-                  <IconBox size={20} />
-                </div>
-                <div>
-                  <div className="fw-bold text-dark small">Paiement Sécurisé</div>
-                  <div className="text-muted" style={{ fontSize: "0.78rem" }}>Carte bancaire ou à réception</div>
-                </div>
+            <Col md={4}>
+              <div className="small">
+                ⚡ <strong>VENTE FLASH EXCLUSIVE</strong> : -20% avec le code <span className="text-warning fw-bold">SHEIN20</span>
               </div>
             </Col>
           </Row>
-        </div>
-      </Container>
+        </Container>
+      </section>
 
-      {/* Featured Products */}
-      <Container className="mb-5 pb-3">
-        <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-2 mb-4">
-          <div>
-            <div className="pro-category-tag">Sélection Premium</div>
-            <h3 className="fw-bold text-dark mb-0">Nouveautés & Équipements Phares</h3>
+      {/* Flash Sale Section with Countdown */}
+      <Container className="my-5">
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 p-3 bg-light rounded-3 border">
+          <div className="d-flex align-items-center gap-3">
+            <h3 className="fw-extrabold text-dark mb-0 text-uppercase letter-spacing-1">
+              ⚡ VENTES FLASH
+            </h3>
+            <FlashCountdown />
           </div>
-          <Link to="/products" className="btn-outline-pro text-decoration-none small py-2">
-            Consulter tout le catalogue ({productlist?.length || 0})
-          </Link>
+          <Button
+            variant="link"
+            className="text-dark fw-bold text-decoration-none p-0 d-flex align-items-center gap-1"
+            onClick={() => {
+              dispatch(getproducts({ isFlashSale: "true" }));
+              navigate("/products");
+            }}
+          >
+            <span>Voir toutes les offres flash</span>
+            <IconArrowRight size={16} />
+          </Button>
         </div>
 
-        <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-          {featuredProducts.map((el) => (
+        <Row xs={2} sm={2} md={3} lg={4} className="g-3 g-md-4">
+          {flashSaleProducts.map((el) => (
             <Col key={el._id}>
               <ProductCard el={el} />
             </Col>
@@ -165,26 +142,91 @@ function Home() {
         </Row>
       </Container>
 
-      {/* Team / Users Preview */}
-      <Container className="mb-5 pb-5">
-        <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-2 mb-4">
-          <div>
-            <div className="pro-category-tag">Direction & Technique</div>
-            <h3 className="fw-bold text-dark mb-0">Équipe & Collaborateurs</h3>
-          </div>
-          <Link to="/users" className="btn-outline-pro text-decoration-none small py-2">
-            Annuaire complet ({userlist?.length || 0})
-          </Link>
+      {/* Circular Categories Bar */}
+      <Container className="my-5">
+        <div className="text-center mb-4">
+          <h4 className="fw-extrabold text-dark text-uppercase letter-spacing-1 mb-1">
+            EXPLORER PAR RAYONS
+          </h4>
+          <p className="text-muted small">Trouvez les pièces parfaites pour compléter votre garde-robe</p>
         </div>
 
-        <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-          {featuredUsers.map((el) => (
-            <Col key={el._id}>
-              <UserCard el={el} />
+        <Row className="justify-content-center text-center g-3">
+          {categories.map((c) => (
+            <Col key={c.name} xs={4} sm={4} md={2}>
+              <div
+                className="shein-category-circle-wrapper cursor-pointer"
+                onClick={() => handleCategoryFilter(c.query)}
+                style={{ cursor: "pointer" }}
+              >
+                <div className="shein-category-circle mb-2 mx-auto">
+                  <img src={c.img} alt={c.name} />
+                </div>
+                <div className="fw-bold small text-dark text-truncate">{c.name}</div>
+              </div>
             </Col>
           ))}
         </Row>
       </Container>
+
+      {/* Trending Products */}
+      <Container className="my-5 pb-5">
+        <div className="d-flex justify-content-between align-items-end mb-4">
+          <div>
+            <h4 className="fw-extrabold text-dark text-uppercase letter-spacing-1 mb-1">
+              COUPS DE CŒUR & MEILLEURES VENTES
+            </h4>
+            <p className="text-muted small mb-0">Les articles les plus tendances et les plus demandés de la semaine</p>
+          </div>
+          <Link to="/products" className="btn btn-outline-dark btn-sm fw-bold px-3">
+            Tout afficher ({productlist?.length || 0})
+          </Link>
+        </div>
+
+        <Row xs={2} sm={2} md={3} lg={4} className="g-3 g-md-4">
+          {trendingProducts.map((el) => (
+            <Col key={el._id}>
+              <ProductCard el={el} />
+            </Col>
+          ))}
+        </Row>
+      </Container>
+
+      {/* Trust & Guarantees */}
+      <section className="bg-light py-5 border-top">
+        <Container>
+          <Row className="gy-4 text-center">
+            <Col md={3} sm={6}>
+              <div className="p-3">
+                <div className="fs-2 mb-2 text-danger">🚚</div>
+                <div className="fw-bold text-dark small text-uppercase">Livraison Partout en Tunisie</div>
+                <p className="text-muted small mb-0">Livraison à domicile sous 24 à 48h dans les 24 gouvernorats.</p>
+              </div>
+            </Col>
+            <Col md={3} sm={6}>
+              <div className="p-3">
+                <div className="fs-2 mb-2 text-danger">🛡️</div>
+                <div className="fw-bold text-dark small text-uppercase">Paiement à la Livraison</div>
+                <p className="text-muted small mb-0">Commandez en toute confiance et payez à la réception de votre colis.</p>
+              </div>
+            </Col>
+            <Col md={3} sm={6}>
+              <div className="p-3">
+                <div className="fs-2 mb-2 text-danger">🔄</div>
+                <div className="fw-bold text-dark small text-uppercase">Retours Faciles 30 Jours</div>
+                <p className="text-muted small mb-0">Échange ou remboursement simple si la taille ne convient pas.</p>
+              </div>
+            </Col>
+            <Col md={3} sm={6}>
+              <div className="p-3">
+                <div className="fs-2 mb-2 text-danger">💬</div>
+                <div className="fw-bold text-dark small text-uppercase">Service Client 7j/7</div>
+                <p className="text-muted small mb-0">Une équipe disponible par téléphone et WhatsApp pour vous conseiller.</p>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
     </div>
   );
 }

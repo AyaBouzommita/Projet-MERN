@@ -1,153 +1,107 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { IconShield, IconTruck, IconHeadphones, IconBox, IconCheck, IconArrowRight } from "./common/Icons";
+import { IconShield, IconTruck, IconHeart, IconBox, IconCheck, IconArrowRight } from "./common/Icons";
 
 function About() {
   return (
-    <div className="py-5">
+    <div className="py-5 bg-white">
       <Container>
-        {/* Hero Section Commerciale */}
+        {/* Hero Section */}
         <div className="text-center max-w-700 mx-auto mb-5 pb-3">
-          <div className="hero-pill mx-auto">
-            <span className="badge-status-dot" style={{ backgroundColor: "#2563eb" }}></span>
-            <span>Notre Histoire & Notre Vision</span>
-          </div>
-          <h1 className="display-5 fw-bold text-dark mb-3">
-            Votre partenaire de confiance en technologie & informatique
+          <span className="badge bg-dark text-uppercase px-3 py-2 fw-bold mb-3 letter-spacing-1">
+            À PROPOS DE SHEIN
+          </span>
+          <h1 className="display-4 fw-extrabold text-dark text-uppercase letter-spacing-1 mb-3">
+            Rendre la mode accessible à tous
           </h1>
           <p className="text-muted lead fs-6">
-            TechStore est une enseigne commerciale spécialisée dans la distribution de matériel informatique, stations de travail, périphériques et équipements high-tech certifiés pour professionnels et particuliers en Tunisie.
+            SHEIN est un e-commerçant mondial de mode et de style de vie qui s'engage à rendre le shopping tendance abordable et inspirant pour chaque style, chaque morphologie et chaque occasion.
           </p>
         </div>
 
         {/* Chiffres Clés */}
-        <Row className="g-4 mb-5">
+        <Row className="g-4 mb-5 text-center">
           <Col lg={3} sm={6}>
-            <div className="p-4 bg-white border rounded-4 text-center shadow-sm h-100">
-              <div className="display-6 fw-bold text-primary mb-1">+15 000</div>
-              <div className="fw-semibold text-dark small mb-1">Commandes livrées</div>
-              <p className="text-muted small mb-0">Partout en Tunisie avec un taux de satisfaction de 99%</p>
+            <div className="p-4 bg-light border rounded-3 h-100">
+              <div className="display-5 fw-extrabold text-danger mb-1">+150</div>
+              <div className="fw-bold text-dark small text-uppercase">Pays Desservis</div>
+              <p className="text-muted small mb-0">Une communauté mondiale de millions de passionnés de mode.</p>
             </div>
           </Col>
-
           <Col lg={3} sm={6}>
-            <div className="p-4 bg-white border rounded-4 text-center shadow-sm h-100">
-              <div className="display-6 fw-bold text-success mb-1">24/48h</div>
-              <div className="fw-semibold text-dark small mb-1">Délai moyen d'expédition</div>
-              <p className="text-muted small mb-0">Livraison express dans l'ensemble des 24 gouvernorats</p>
+            <div className="p-4 bg-light border rounded-3 h-100">
+              <div className="display-5 fw-extrabold text-dark mb-1">1000+</div>
+              <div className="fw-bold text-dark small text-uppercase">Nouveautés Quotidiennes</div>
+              <p className="text-muted small mb-0">Des collections constamment renouvelées aux dernières tendances.</p>
             </div>
           </Col>
-
           <Col lg={3} sm={6}>
-            <div className="p-4 bg-white border rounded-4 text-center shadow-sm h-100">
-              <div className="display-6 fw-bold text-dark mb-1">+50</div>
-              <div className="fw-semibold text-dark small mb-1">Marques partenaires</div>
-              <p className="text-muted small mb-0">Apple, Dell, Lenovo, Asus, Samsung, Sony, HP, Logitech</p>
+            <div className="p-4 bg-light border rounded-3 h-100">
+              <div className="display-5 fw-extrabold text-danger mb-1">24/48h</div>
+              <div className="fw-bold text-dark small text-uppercase">Livraison Express Tunisie</div>
+              <p className="text-muted small mb-0">Expédition rapide et sécurisée dans les 24 gouvernorats.</p>
             </div>
           </Col>
-
           <Col lg={3} sm={6}>
-            <div className="p-4 bg-white border rounded-4 text-center shadow-sm h-100">
-              <div className="display-6 fw-bold text-warning mb-1">2 Ans</div>
-              <div className="fw-semibold text-dark small mb-1">Garantie constructeur</div>
-              <p className="text-muted small mb-0">Assistance technique et SAV officiel agréé</p>
+            <div className="p-4 bg-light border rounded-3 h-100">
+              <div className="display-5 fw-extrabold text-dark mb-1">30 Jours</div>
+              <div className="fw-bold text-dark small text-uppercase">Retours Gratuits</div>
+              <p className="text-muted small mb-0">Essayez tranquillement chez vous avec échange simplifié.</p>
             </div>
           </Col>
         </Row>
 
-        {/* Présentation de l'Entreprise */}
-        <div className="p-4 p-md-5 bg-white border rounded-4 shadow-sm mb-5">
+        {/* Mission & Vision */}
+        <div className="p-4 p-md-5 border rounded-4 mb-5">
           <Row className="align-items-center gy-4">
             <Col lg={6}>
-              <span className="pro-category-tag">Qui sommes-nous ?</span>
-              <h3 className="fw-bold text-dark mb-3">Une exigence absolue sur la qualité et l'authenticité</h3>
+              <span className="text-danger fw-bold small text-uppercase letter-spacing-1">NOTRE MISSION</span>
+              <h3 className="fw-extrabold text-dark mb-3">La beauté de la mode pour chacun d'entre nous</h3>
               <p className="text-muted mb-3">
-                Créée pour répondre à une demande croissante d'équipements informatiques fiables et garantis, <strong>TechStore</strong> collabore directement avec les importateurs officiels et constructeurs internationaux.
+                Nous pensons que chacun devrait pouvoir exprimer sa personnalité à travers ses vêtements, sans compromis sur le style ou sur son budget.
               </p>
               <p className="text-muted mb-4">
-                Que vous soyez une entreprise cherchant à renouveler son parc de postes de travail, un développeur en quête de puissance de calcul, ou un passionné exigeant le meilleur équipement, notre catalogue réunit les meilleures références du marché au tarif le plus juste.
+                Grâce à un modèle de production agile et à une chaîne logistique optimisée à la pointe de l'innovation, SHEIN propose les dernières coupes de podiums, basiques intemporels, tenues de soirée et accessoires tendance à des prix imbattables.
               </p>
               <div className="d-flex flex-column gap-2 small text-dark fw-semibold">
                 <div className="d-flex align-items-center gap-2">
-                  <span className="text-primary"><IconCheck size={18} /></span>
-                  <span>Matériel 100% original, neuf, sous emballage scellé d'origine</span>
+                  <span className="text-danger"><IconCheck size={18} /></span>
+                  <span>Guide de tailles inclusif pour toutes les morphologies (du XS au XL+)</span>
                 </div>
                 <div className="d-flex align-items-center gap-2">
-                  <span className="text-primary"><IconCheck size={18} /></span>
-                  <span>Facturation légale avec TVA déductible pour les entreprises</span>
+                  <span className="text-danger"><IconCheck size={18} /></span>
+                  <span>Contrôle qualité rigoureux sur les matières et les finitions</span>
                 </div>
                 <div className="d-flex align-items-center gap-2">
-                  <span className="text-primary"><IconCheck size={18} /></span>
-                  <span>Conseillers commerciaux et techniciens formés et disponibles</span>
+                  <span className="text-danger"><IconCheck size={18} /></span>
+                  <span>Paiement à la réception de votre colis en toute sérénité</span>
                 </div>
               </div>
             </Col>
 
             <Col lg={6}>
-              <div className="p-4 bg-light border rounded-4">
-                <h5 className="fw-bold text-dark mb-3">Nos 4 Piliers Fondamentaux</h5>
-                <div className="d-flex flex-column gap-3">
-                  <div className="d-flex align-items-start gap-3">
-                    <div className="trust-icon-wrapper" style={{ flexShrink: 0 }}>
-                      <IconShield size={20} />
-                    </div>
-                    <div>
-                      <div className="fw-bold text-dark small">Garantie & Authenticité</div>
-                      <div className="text-muted small">Chaque produit bénéficie d'une traçabilité irréprochable et de la garantie constructeur officielle.</div>
-                    </div>
-                  </div>
-
-                  <div className="d-flex align-items-start gap-3">
-                    <div className="trust-icon-wrapper" style={{ flexShrink: 0, backgroundColor: "#ecfdf5", color: "#059669" }}>
-                      <IconTruck size={20} />
-                    </div>
-                    <div>
-                      <div className="fw-bold text-dark small">Logistique Dédiée</div>
-                      <div className="text-muted small">Emballage antichoc renforcé et remise en main propre sécurisée à domicile ou en entreprise.</div>
-                    </div>
-                  </div>
-
-                  <div className="d-flex align-items-start gap-3">
-                    <div className="trust-icon-wrapper" style={{ flexShrink: 0, backgroundColor: "#fffbeb", color: "#d97706" }}>
-                      <IconHeadphones size={20} />
-                    </div>
-                    <div>
-                      <div className="fw-bold text-dark small">Support & SAV Réactif</div>
-                      <div className="text-muted small">Diagnostic rapide, prise en charge immédiate sous garantie et prêt de matériel de secours possible.</div>
-                    </div>
-                  </div>
-
-                  <div className="d-flex align-items-start gap-3">
-                    <div className="trust-icon-wrapper" style={{ flexShrink: 0 }}>
-                      <IconBox size={20} />
-                    </div>
-                    <div>
-                      <div className="fw-bold text-dark small">Transparence des Prix</div>
-                      <div className="text-muted small">Prix clairs en Dinars Tunisiens (TTC) sans frais cachés avec devis immédiat en ligne.</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <img
+                src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80"
+                alt="SHEIN Fashion"
+                className="img-fluid rounded-4 shadow-sm w-100"
+                style={{ maxHeight: "380px", objectFit: "cover" }}
+              />
             </Col>
           </Row>
         </div>
 
-        {/* Showroom & Call to Action */}
-        <div className="p-4 p-md-5 bg-white border rounded-4 text-center shadow-sm">
-          <h4 className="fw-bold text-dark mb-2">Visitez notre showroom aux Berges du Lac 2</h4>
-          <p className="text-muted small max-w-700 mx-auto mb-4">
-            Venez découvrir, manipuler et tester les derniers modèles d'ordinateurs, écrans OLED et accessoires high-tech. Nos experts sont à votre disposition pour vous orienter vers la solution la plus adaptée à vos besoins.
+        {/* CTA */}
+        <div className="p-5 bg-dark text-white rounded-4 text-center">
+          <h3 className="fw-extrabold text-uppercase letter-spacing-1 mb-2">
+            Prête à renouveler votre garde-robe ?
+          </h3>
+          <p className="text-white-50 small mb-4 max-w-500 mx-auto">
+            Découvrez des centaines de pièces mode exclusives et profitez de la livraison gratuite dès 100 TND d'achat.
           </p>
-          <div className="d-flex justify-content-center gap-3 flex-wrap">
-            <Button as={Link} to="/products" className="btn-primary-pro px-4 py-2">
-              <span>Parcourir nos produits en stock</span>
-              <IconArrowRight size={16} />
-            </Button>
-            <Button as={Link} to="/contact" className="btn-outline-pro px-4 py-2">
-              Nous contacter / Demander un devis
-            </Button>
-          </div>
+          <Button as={Link} to="/products" className="btn-shein-primary px-5 py-3 fw-bold text-uppercase letter-spacing-1">
+            Voir le catalogue de mode
+          </Button>
         </div>
       </Container>
     </div>

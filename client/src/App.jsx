@@ -8,7 +8,9 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 // Components
+import SHEINTicker from "./components/common/SHEINTicker";
 import Navbarr from "./components/Navbarr";
+import CartDrawer from "./components/Cart/CartDrawer";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
 import ProductList from "./components/Products/ProductList";
@@ -22,7 +24,6 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Check if token exists on load and fetch current profile
     if (localStorage.getItem("mern_token")) {
       dispatch(getCurrentUser());
     }
@@ -30,7 +31,15 @@ function App() {
 
   return (
     <div className="d-flex flex-column min-vh-100">
+      {/* Top Banner Ticker */}
+      <SHEINTicker />
+
+      {/* Main SHEIN Navbar */}
       <Navbarr />
+
+      {/* Cart Sliding Drawer */}
+      <CartDrawer />
+
       <main className="flex-grow-1">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -44,17 +53,19 @@ function App() {
             path="*"
             element={
               <div className="text-center py-5">
-                <h1 className="display-4 fw-bold text-muted">404</h1>
-                <p className="lead">Page introuvable</p>
+                <h1 className="display-4 fw-bold text-dark">404</h1>
+                <p className="lead text-muted">Page non trouvée</p>
               </div>
             }
           />
         </Routes>
       </main>
+
       <Footer />
+
       <ToastContainer
         position="top-right"
-        autoClose={3500}
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop
         closeOnClick

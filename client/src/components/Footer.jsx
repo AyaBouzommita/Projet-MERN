@@ -1,83 +1,109 @@
-import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import React, { useState } from "react";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Footer() {
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (!email) return;
+    toast.success("Merci ! Votre code de bienvenue -15% : BIENVENUE");
+    setEmail("");
+  };
+
   return (
-    <footer className="pro-footer mt-auto">
-      <Container>
-        <Row className="gy-4 mb-5">
-          <Col lg={4} md={6}>
-            <div className="d-flex align-items-center gap-2 mb-3">
-              <div className="brand-icon-box" style={{ width: 32, height: 32 }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <polygon points="12 2 2 7 12 12 22 7 12 2" />
-                  <polyline points="2 17 12 22 22 17" />
-                  <polyline points="2 12 12 17 22 12" />
-                </svg>
-              </div>
-              <span className="fw-bold text-dark fs-5">TechStore<span className="text-primary">.</span></span>
-            </div>
-            <p className="footer-text pe-lg-4 mb-3">
-              Distributeur agréé d'équipements informatiques, ordinateurs haute performance, smartphones et accessoires de grandes marques en Tunisie.
+    <footer className="shein-footer mt-auto border-top bg-white">
+      {/* Newsletter Strip */}
+      <div className="py-4 bg-dark text-white text-center">
+        <Container>
+          <Row className="justify-content-center">
+            <Col lg={7}>
+              <h5 className="fw-extrabold text-uppercase letter-spacing-1 mb-2">
+                RECEVEZ -15% SUR VOTRE PREMIÈRE COMMANDE
+              </h5>
+              <p className="small text-white-50 mb-3">
+                Inscrivez-vous à nos offres exclusives, nouveautés et alertes ventes flash en avant-première.
+              </p>
+              <Form onSubmit={handleSubscribe} className="d-flex gap-2 max-w-500 mx-auto" style={{ maxWidth: "450px" }}>
+                <Form.Control
+                  type="email"
+                  placeholder="Votre adresse email..."
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="rounded-0 py-2"
+                  required
+                />
+                <Button variant="danger" type="submit" className="rounded-0 px-4 fw-bold text-uppercase">
+                  S'inscrire
+                </Button>
+              </Form>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+
+      {/* Main Footer Links */}
+      <Container className="py-5">
+        <Row className="gy-4">
+          <Col lg={3} sm={6}>
+            <div className="shein-footer-heading">À PROPOS DE SHEIN</div>
+            <ul className="list-unstyled d-flex flex-column gap-2 small text-muted">
+              <li><Link to="/about" className="text-decoration-none text-muted">Qui sommes-nous ?</Link></li>
+              <li><span className="cursor-pointer">Nos engagements mode durable</span></li>
+              <li><span className="cursor-pointer">Programme d'influenceurs</span></li>
+              <li><span className="cursor-pointer">Espace presse & médias</span></li>
+              <li><span className="cursor-pointer">Carrières & Recrutement</span></li>
+            </ul>
+          </Col>
+
+          <Col lg={3} sm={6}>
+            <div className="shein-footer-heading">AIDE & SERVICE CLIENT</div>
+            <ul className="list-unstyled d-flex flex-column gap-2 small text-muted">
+              <li><Link to="/contact" className="text-decoration-none text-muted">Centre d'aide & FAQ</Link></li>
+              <li><span className="cursor-pointer">Suivi de votre colis</span></li>
+              <li><span className="cursor-pointer">Guide des tailles & mensurations</span></li>
+              <li><span className="cursor-pointer">Politique de retour sous 30 jours</span></li>
+              <li><span className="cursor-pointer">Modalités de remboursement</span></li>
+            </ul>
+          </Col>
+
+          <Col lg={3} sm={6}>
+            <div className="shein-footer-heading">LIVRAISON & PAIEMENT</div>
+            <ul className="list-unstyled d-flex flex-column gap-2 small text-muted">
+              <li><span>Paiement à la livraison (Cash on Delivery)</span></li>
+              <li><span>Cartes Bancaires (GIM-TEL / ClicToPay)</span></li>
+              <li><span>Livraison express 24/48h dans les 24 gouvernorats</span></li>
+              <li><span>Frais de port offerts dès 100 TND</span></li>
+              <li><span>Transactions 100% sécurisées SSL</span></li>
+            </ul>
+          </Col>
+
+          <Col lg={3} sm={6}>
+            <div className="shein-footer-heading">SERVICE CLIENT TUNISIE</div>
+            <p className="small text-muted mb-2">
+              Une question sur un article ou votre commande ? Notre équipe est à votre écoute :
             </p>
-            <div className="footer-subtext d-flex flex-column gap-1">
-              <div><strong>Showroom :</strong> Immeuble Technopark, Les Berges du Lac 2, Tunis</div>
-              <div><strong>Téléphone :</strong> +216 71 890 123 / +216 29 450 450</div>
-              <div><strong>Service client :</strong> contact@techstore.tn</div>
+            <div className="small text-muted d-flex flex-column gap-1 mb-3">
+              <div><strong>Téléphone :</strong> +216 71 200 300 / +216 29 100 200</div>
+              <div><strong>WhatsApp :</strong> +216 55 100 200</div>
+              <div><strong>Email :</strong> contact@shein.tn</div>
             </div>
-          </Col>
-
-          <Col lg={2} md={3} sm={6}>
-            <div className="pro-footer-heading">Navigation</div>
-            <ul className="list-unstyled d-flex flex-column gap-2 mb-0">
-              <li><Link to="/">Accueil</Link></li>
-              <li><Link to="/products">Catalogue complet</Link></li>
-              <li><Link to="/about">À propos de l'enseigne</Link></li>
-              <li><Link to="/users">Notre équipe commerciale</Link></li>
-              <li><Link to="/contact">Demander un devis</Link></li>
-            </ul>
-          </Col>
-
-          <Col lg={3} md={3} sm={6}>
-            <div className="pro-footer-heading">Nos Engagements</div>
-            <ul className="list-unstyled d-flex flex-column gap-2 mb-0 footer-text">
-              <li><span>Garantie constructeur officielle 2 ans</span></li>
-              <li><span>Livraison express 24/48h sur toute la Tunisie</span></li>
-              <li><span>Service après-vente agréé et réactif</span></li>
-              <li><span>Paiement sécurisé à la livraison ou par carte</span></li>
-              <li><span>Facturation avec TVA pour les sociétés</span></li>
-            </ul>
-          </Col>
-
-          <Col lg={3} md={6}>
-            <div className="pro-footer-heading">Horaires & Retrait</div>
-            <div className="footer-text mb-3">
-              Notre showroom et comptoir de retrait express sont ouverts pour vous accueillir :
-            </div>
-            <div className="footer-subtext p-3 bg-light rounded-3 border">
-              <div className="d-flex justify-content-between mb-1">
-                <span>Lundi — Vendredi :</span>
-                <strong>08h30 - 18h30</strong>
-              </div>
-              <div className="d-flex justify-content-between mb-1">
-                <span>Samedi :</span>
-                <strong>09h00 - 14h00</strong>
-              </div>
-              <div className="d-flex justify-content-between text-muted">
-                <span>Dimanche :</span>
-                <span>Fermé</span>
-              </div>
+            <div className="d-flex gap-2">
+              <span className="badge bg-light text-dark border p-2">Instagram</span>
+              <span className="badge bg-light text-dark border p-2">TikTok</span>
+              <span className="badge bg-light text-dark border p-2">Facebook</span>
             </div>
           </Col>
         </Row>
 
-        <div className="pt-4 border-top d-flex flex-column flex-sm-row justify-content-between align-items-center footer-subtext">
-          <div>© {new Date().getFullYear()} TechStore Tunisie. Tous droits réservés.</div>
-          <div className="d-flex gap-3 mt-2 mt-sm-0">
-            <Link to="/about">Qui sommes-nous ?</Link>
-            <Link to="/contact">Service client</Link>
-            <Link to="/products">Boutique en ligne</Link>
+        <div className="pt-4 mt-4 border-top d-flex flex-column flex-md-row justify-content-between align-items-center small text-muted">
+          <div>© {new Date().getFullYear()} SHEIN Tunisie. Tous droits réservés.</div>
+          <div className="d-flex gap-3 mt-2 mt-md-0">
+            <span>Conditions Générales</span>
+            <span>Politique de Confidentialité</span>
+            <span>Préférences Cookies</span>
           </div>
         </div>
       </Container>

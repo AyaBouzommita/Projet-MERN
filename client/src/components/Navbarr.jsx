@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Navbar, Nav, Container, Button, Dropdown, Form } from "react-bootstrap";
+import { Navbar, Nav, Container, Dropdown, Form } from "react-bootstrap";
 import { logout } from "../redux/authSlice";
 import { getproducts } from "../redux/productSlice";
-import { getusers } from "../redux/userSlice";
+import { openCart } from "../redux/cartSlice";
 import { toast } from "react-toastify";
-import { IconSearch } from "./common/Icons";
+import { IconSearch, IconHeart, IconBag } from "./common/Icons";
 
 function Navbarr() {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { items, wishlist } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
+
+  const totalCartQty = items.reduce((acc, item) => acc + item.qty, 0);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -23,65 +26,88 @@ function Navbarr() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (location.pathname.includes("/products")) {
-      dispatch(getproducts({ search: searchTerm }));
-    } else if (location.pathname.includes("/users")) {
-      dispatch(getusers(searchTerm));
+    navigate(`/products?search=${encodeURIComponent(searchTerm)}`);
+    dispatch(getproducts({ search: searchTerm }));
+  };
+
+  const navCategories = [
+    { label: "Nouveautés", category: "Tous" },
+    { label: "Robes", category: "Robes" },
+    { label: "Hauts & Tops", category: "Hauts & Tops" },
+    { label: "Vestes & Manteaux", category: "Vestes & Manteaux" },
+    { label: "Pantalons & Bas", category: "Pantalons & Bas" },
+    { label: "Chaussures", category: "Chaussures" },
+    { label: "Accessoires", category: "Sacs & Accessoires" },
+    { label: "% Ventes Flash", category: "Flash", isPromo: true },
+  ];
+
+  const handleCategoryClick = (cat) => {
+    if (cat === "Flash") {
+      dispatch(getproducts({ isFlashSale: "true" }));
+    } else if (cat === "Tous") {
+      dispatch(getproducts({}));
     } else {
-      navigate(`/products?search=${encodeURIComponent(searchTerm)}`);
-      dispatch(getproducts({ search: searchTerm }));
+      dispatch(getproducts({ category: cat }));
     }
+    navigate("/products");
   };
 
   return (
-    <Navbar expand="lg" className="pro-navbar sticky-top py-2" bg="white">
-      <Container>
-        <Navbar.Brand as={Link} to="/" className="pro-brand">
-          <div className="brand-icon-box">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <polygon points="12 2 2 7 12 12 22 7 12 2" />
-              <polyline points="2 17 12 22 22 17" />
-              <polyline points="2 12 12 17 22 12" />
-            </svg>
-          </div>
-          <span>TechStore<span className="text-primary">.</span></span>
-        </Navbar.Brand>
+    <header className="shein-header sticky-top">
+      {/* Main Navbar */}
+      <div className="bg-white border-bottom py-2">
+        <Container className="d-flex align-items-center justify-content-between gap-3">
+          {/* Logo SHEIN */}
+          <Link to="/" className="shein-logo text-decoration-none text-dark">
+            SHEIN
+          </Link>
 
-        <Navbar.Toggle aria-controls="main-nav" className="border-0 shadow-none" />
+          {/* Search Bar */}
+          <Form onSubmit={handleSearch} className="shein-search-bar flex-grow-1 mx-lg-5 mx-2">
+            <span className="search-icon-pos">
+              <IconSearch size={16} />
+            </span>
+            <Form.Control
+              type="search"
+              placeholder="Robe satinée, blazer oversize, crop top..."
+              className="shein-search-input"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </Form>
 
-        <Navbar.Collapse id="main-nav">
-          <Nav className="mx-auto gap-1 my-2 my-lg-0">
-            <Nav.Link as={Link} to="/" className={`nav-link-pro ${location.pathname === "/" ? "active" : ""}`}>
-              Accueil
-            </Nav.Link>
-            <Nav.Link as={Link} to="/products" className={`nav-link-pro ${location.pathname === "/products" ? "active" : ""}`}>
-              Catalogue
-            </Nav.Link>
-            <Nav.Link as={Link} to="/users" className={`nav-link-pro ${location.pathname === "/users" ? "active" : ""}`}>
-              Équipe & Membres
-            </Nav.Link>
-            <Nav.Link as={Link} to="/about" className={`nav-link-pro ${location.pathname === "/about" ? "active" : ""}`}>
-              À Propos
-            </Nav.Link>
-            <Nav.Link as={Link} to="/contact" className={`nav-link-pro ${location.pathname === "/contact" ? "active" : ""}`}>
-              Contact
-            </Nav.Link>
-          </Nav>
-
+          {/* Action Icons */}
           <div className="d-flex align-items-center gap-3">
-            <Form onSubmit={handleSearch} className="search-container-pro d-none d-md-block">
-              <span className="search-icon-pos">
-                <IconSearch size={16} />
-              </span>
-              <Form.Control
-                type="search"
-                placeholder="Rechercher un produit..."
-                className="search-input-pro"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </Form>
+            {/* Wishlist */}
+            <button
+              type="button"
+              className="btn btn-link p-0 position-relative text-dark border-0"
+              onClick={() => {
+                navigate("/products");
+                toast.info(`Vous avez ${wishlist.length} article(s) dans vos favoris`);
+              }}
+              title="Mes favoris"
+            >
+              <IconHeart size={22} filled={wishlist.length > 0} />
+              {wishlist.length > 0 && (
+                <span className="shein-badge-counter">{wishlist.length}</span>
+              )}
+            </button>
 
+            {/* Cart Button */}
+            <button
+              type="button"
+              className="btn btn-link p-0 position-relative text-dark border-0"
+              onClick={() => dispatch(openCart())}
+              title="Mon panier"
+            >
+              <IconBag size={22} />
+              {totalCartQty > 0 && (
+                <span className="shein-badge-counter">{totalCartQty}</span>
+              )}
+            </button>
+
+            {/* User Dropdown */}
             {isAuthenticated && user ? (
               <Dropdown align="end">
                 <Dropdown.Toggle variant="transparent" className="d-flex align-items-center gap-2 border-0 p-0 text-dark">
@@ -90,10 +116,10 @@ function Navbarr() {
                     alt={user.name}
                     className="avatar-nav-pro"
                   />
-                  <div className="text-start d-none d-sm-block">
+                  <div className="text-start d-none d-md-block">
                     <div className="fw-bold small text-dark leading-none">{user.name}</div>
-                    <span className="text-muted" style={{ fontSize: "0.75rem" }}>
-                      {user.isAdmin ? "Administrateur" : "Membre"}
+                    <span className="text-muted" style={{ fontSize: "0.72rem" }}>
+                      {user.isAdmin ? "Admin" : "Membre"}
                     </span>
                   </div>
                 </Dropdown.Toggle>
@@ -104,10 +130,10 @@ function Navbarr() {
                     <div className="text-muted small">{user.email}</div>
                   </div>
                   <Dropdown.Item as={Link} to="/products" className="rounded-2 py-2 small">
-                    Gérer le catalogue
+                    Gérer la boutique
                   </Dropdown.Item>
                   <Dropdown.Item as={Link} to="/users" className="rounded-2 py-2 small">
-                    Gestion des utilisateurs
+                    Gestion des comptes
                   </Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.Item onClick={handleLogout} className="text-danger rounded-2 py-2 small fw-semibold">
@@ -117,18 +143,43 @@ function Navbarr() {
               </Dropdown>
             ) : (
               <div className="d-flex align-items-center gap-2">
-                <Button as={Link} to="/login" variant="light" size="sm" className="btn-outline-pro px-3">
+                <Link to="/login" className="btn btn-sm btn-outline-dark px-3 fw-semibold">
                   Connexion
-                </Button>
-                <Button as={Link} to="/register" size="sm" className="btn-primary-pro px-3">
-                  Créer un compte
-                </Button>
+                </Link>
+                <Link to="/register" className="btn btn-sm btn-dark px-3 fw-semibold">
+                  S'inscrire
+                </Link>
               </div>
             )}
           </div>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+        </Container>
+      </div>
+
+      {/* Subcategory Menu Ribbon */}
+      <div className="shein-subnav bg-white border-bottom py-2 d-none d-md-block">
+        <Container className="d-flex align-items-center justify-content-center gap-4 flex-wrap">
+          {navCategories.map((cat) => (
+            <button
+              key={cat.label}
+              type="button"
+              className={`btn btn-link p-0 text-decoration-none small text-uppercase fw-bold ${
+                cat.isPromo ? "text-danger" : "text-dark"
+              }`}
+              onClick={() => handleCategoryClick(cat.category)}
+              style={{ fontSize: "0.82rem", letterSpacing: "0.5px" }}
+            >
+              {cat.label}
+            </button>
+          ))}
+          <Link to="/about" className="text-muted small text-decoration-none fw-semibold ms-3">
+            À Propos de SHEIN
+          </Link>
+          <Link to="/contact" className="text-muted small text-decoration-none fw-semibold">
+            Service Client
+          </Link>
+        </Container>
+      </div>
+    </header>
   );
 }
 

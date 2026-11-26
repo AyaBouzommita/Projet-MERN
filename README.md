@@ -1,4 +1,4 @@
-# TechStore Pro — Plateforme MERN de Gestion de Catalogue
+# SHEIN Tunisie — Plateforme E-Commerce Mode & Prêt-à-Porter (MERN)
 
 > **Auteur :** Aya Bouzommita  
 > **Filière :** Diplôme National d'Ingénieur en Génie Logiciel (FIGL3)  
@@ -8,71 +8,29 @@
 
 ## 1. Description du Projet
 
-TechStore Pro est une application web fullstack d'entreprise développée sur la pile technologique **MERN** (MongoDB Atlas, Express.js, React 19, Node.js).
+Ce projet transforme l'application de base en une **plateforme e-commerce complète inspirée du géant mondial de la mode SHEIN**, adaptée au marché tunisien.
 
-Conçu à partir d'un squelette minimal, ce projet a fait l'objet d'une refonte architecturale approfondie afin d'implémenter les normes de qualité du Génie Logiciel :
-* **Architecture MVC découplée** : Contrôleurs dédiés, validation des données d'entrée, gestionnaires d'exceptions unifiés.
-* **Sécurité & Authentification** : Authentification par jeton JWT (JSON Web Tokens), chiffrement asymétrique des mots de passe avec Bcrypt, et gestion des rôles d'accès (RBAC).
-* **Isolation des environnements** : Paramétrage centralisé via `dotenv` et sécurisation des en-têtes avec Helmet.
-* **Gestion d'état prédictible** : Implémentation de Redux Toolkit (`createAsyncThunk`, `extraReducers`) sans artifice de rechargement manuel.
-* **Design System professionnel** : Interface moderne et responsive développée avec React-Bootstrap et la typographie Plus Jakarta Sans, intégrant des filtres par facettes, recherche en temps réel et notifications toast.
-
----
-
-## 2. Synthèse Comparative des Travaux Réalisés
-
-| Composant | Implémentation Initiale | Implémentation Finale (Aya Bouzommita) |
-| :--- | :--- | :--- |
-| **Sécurité des accès** | Clés et mot de passe de base de données en clair | Variables d'environnement isolées (`.env`), en-têtes Helmet, CORS paramétré |
-| **Authentification** | Inexistante (pas de mot de passe) | Inscription, connexion, génération de jeton JWT 7 jours, chiffrement Bcrypt |
-| **Modèle de données** | Schémas basiques (2 champs pour les produits) | Schémas complets (référence, description, stock, catégorie, horodatage, rôles) |
-| **Gestion des erreurs** | Journalisation muette sans retour client | Middleware centralisé avec codes d'état HTTP normalisés (400, 401, 403, 404, 500) |
-| **Catalogue & Produits** | Affichage partiel textuel sans formulaire UI | CRUD intégral, filtrage par facettes (catégories), tri par prix et nom |
-| **Architecture Redux** | Déclencheurs manuels (`ping / setping`) | État global immuable avec Redux Toolkit (`authSlice`, `productSlice`, `userSlice`) |
-| **Interface Utilisateur** | Alertes natives du navigateur, mise en page brute | Design System moderne, modales de confirmation, notifications discrètes |
+L'application intègre toutes les fonctionnalités emblématiques d'un site de vente en ligne moderne :
+* **Expérience d'achat intégrale** : Panier d'achat coulissant dynamique (*Cart Drawer*), gestion des quantités, sélection des tailles (XS, S, M, L, XL) et pastilles de couleurs.
+* **Système de codes promotionnels** : Application de coupons instantanés (`SHEIN20` pour -20%, `BIENVENUE` pour -15%) avec jauge d'éligibilité à la livraison gratuite (dès 100 TND).
+* **Ventes Flash avec compte à rebours** : Section dédiée aux offres temporaires avec minuteur en temps réel (heures, minutes, secondes).
+* **Validation de commande (*Checkout*)** : Formulaire de livraison avec sélection des 24 gouvernorats tunisiens et options de paiement (Paiement à la livraison / Carte bancaire).
+* **Liste d'envies (*Wishlist*)** : Sauvegarde des articles favoris avec indicateur en direct dans la barre de navigation.
+* **Architecture MERN robuste** : Backend MVC, authentification JWT, hachage Bcrypt, gestion d'état centralisée avec Redux Toolkit et persistance `localStorage`.
 
 ---
 
-## 3. Structure de l'Arborescence
+## 2. Fonctionnalités E-Commerce Clés
 
-```text
-Projet-MERN/
-├── config/
-│   └── db.js                 # Initialisation de la connexion MongoDB
-├── controllers/              # Logique applicative (MVC)
-│   ├── authController.js     # Gestion des sessions et accès
-│   ├── productController.js  # Opérations d'inventaire et requêtes filtrées
-│   └── userController.js     # Annuaire des collaborateurs
-├── middlewares/              # Intercepteurs de requêtes
-│   ├── auth.js               # Validation des jetons JWT et contrôle de rôle
-│   └── errorHandler.js       # Capture et formatage des erreurs HTTP
-├── models/                   # Définitions de schémas Mongoose
-│   ├── product.js
-│   └── user.js
-├── routes/                   # Définition des points d'accès de l'API
-│   ├── auth.js
-│   ├── product.js
-│   └── user.js
-├── client/                   # Interface client (React 19 + Vite)
-│   ├── src/
-│   │   ├── components/       # Composants modulaires (Auth, Products, Users, etc.)
-│   │   ├── redux/            # Store et gestionnaires d'état Redux Toolkit
-│   │   ├── App.jsx           # Définition des routes applicatives
-│   │   └── App.css           # Feuille de style du Design System
-├── seed.js                   # Script de peuplement de la base de données
-├── server.js                 # Point d'entrée du serveur Express
-└── README.md
-```
+* **Bandeau défilant (*Top Announcement Ticker*)** : Annonces des offres promotionnelles et seuil de livraison offerte.
+* **Navigation thématique** : Rayons Nouveautés, Robes, Hauts & Tops, Vestes, Pantalons, Chaussures, Accessoires et Ventes Flash.
+* **Fiches produits stylisées** : Ratios d'images portrait (3:4), étiquettes de remises en rouge (`-45%`), notes étoiles clients et pastilles de tailles et teintes.
+* **Tunnel d'achat fluide** : Tiroir latéral sans interruption de navigation permettant de commander en quelques clics.
 
 ---
 
-## 4. Guide d'Installation et Exécution
+## 3. Guide de Démarrage
 
-### Prérequis
-* Node.js (version 18 ou supérieure)
-* Gestionnaire de paquets npm
-
-### Procédure de mise en service
 ```bash
 # 1. Cloner le dépôt
 git clone https://github.com/AyaBouzommita/Projet-MERN.git
@@ -81,23 +39,16 @@ cd Projet-MERN
 # 2. Configurer les variables d'environnement
 cp .env.example .env
 
-# 3. Installer les dépendances serveur et client
+# 3. Installer les dépendances
 npm install
 cd client && npm install && cd ..
 
-# 4. (Optionnel) Peupler la base avec le jeu de données de test
+# 4. Peupler le catalogue de mode
 node seed.js
 
-# 5. Lancer l'application complète
+# 5. Lancer le projet
 npm run start
 ```
 
-* Application Frontend : `http://localhost:5173`
-* Serveur d'API Backend : `http://localhost:5000`
-
----
-
-## 5. Comptes de Démonstration (Jeu de données de test)
-
-* **Administrateur :** `aya.bouzommita@isimg.tn` / mot de passe : `admin123`
-* **Collaborateur standard :** `sarra.trabelsi@gmail.com` / mot de passe : `password123`
+* **Boutique en ligne :** `http://localhost:5173`
+* **Serveur API :** `http://localhost:5000`

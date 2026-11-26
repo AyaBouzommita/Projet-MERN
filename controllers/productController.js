@@ -1,10 +1,10 @@
 const Product = require("../models/product");
 
-// @desc    Get all products with search, category filter, sorting
+// @desc    Get all products with search, category filter, sorting, flash sale
 // @route   GET /product ou /api/product
 const getProducts = async (req, res, next) => {
   try {
-    const { search, category, minPrice, maxPrice, sortBy } = req.query;
+    const { search, category, minPrice, maxPrice, sortBy, isFlashSale } = req.query;
     let query = {};
 
     if (search) {
@@ -13,6 +13,10 @@ const getProducts = async (req, res, next) => {
 
     if (category && category !== "All" && category !== "Tous") {
       query.category = category;
+    }
+
+    if (isFlashSale === "true") {
+      query.isFlashSale = true;
     }
 
     if (minPrice || maxPrice) {
@@ -26,6 +30,7 @@ const getProducts = async (req, res, next) => {
     if (sortBy === "price_desc") sortOption = { price: -1 };
     if (sortBy === "name_asc") sortOption = { nameproduct: 1 };
     if (sortBy === "name_desc") sortOption = { nameproduct: -1 };
+    if (sortBy === "discount_desc") sortOption = { discount: -1 };
 
     const products = await Product.find(query).sort(sortOption);
     res.status(200).json({ products, msg: "all products", count: products.length });
@@ -52,18 +57,41 @@ const getProductById = async (req, res, next) => {
 // @route   POST /product/add ou /api/product/add
 const addProduct = async (req, res, next) => {
   try {
-    const { nameproduct, price, category, description, img, countInStock } = req.body;
+    const {
+      nameproduct,
+      price,
+      oldPrice,
+      discount,
+      category,
+      description,
+      img,
+      countInStock,
+      sizes,
+      colors,
+      isFlashSale,
+    } = req.body;
+
     if (!nameproduct || price === undefined || price === null) {
       return res.status(400).json({ msg: "Le nom du produit et le prix sont obligatoires." });
     }
 
+    const calculatedOldPrice = oldPrice ? Number(oldPrice) : Math.round(Number(price) * 1.4);
+    const calculatedDiscount = discount
+      ? Number(discount)
+      : Math.round(((calculatedOldPrice - Number(price)) / calculatedOldPrice) * 100);
+
     const newProduct = new Product({
       nameproduct,
       price: Number(price),
-      category: category || "Informatique",
+      oldPrice: calculatedOldPrice,
+      discount: calculatedDiscount,
+      category: category || "Robes",
       description: description || undefined,
       img: img || undefined,
-      countInStock: countInStock !== undefined ? Number(countInStock) : 10,
+      countInStock: countInStock !== undefined ? Number(countInStock) : 20,
+      sizes: sizes || ["XS", "S", "M", "L", "XL"],
+      colors: colors || ["#1e293b", "#f59e0b", "#ec4899", "#f1f5f9"],
+      isFlashSale: Boolean(isFlashSale),
     });
 
     const result = await newProduct.save();
