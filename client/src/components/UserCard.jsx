@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Card, Button, Badge, Modal } from "react-bootstrap";
+import { Card, Button, Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { deleteuser } from "../redux/userSlice";
 import Edituser from "./Edituser";
 import { toast } from "react-toastify";
+import { IconTrash } from "./common/Icons";
 
 function UserCard({ el }) {
   const dispatch = useDispatch();
@@ -12,9 +13,9 @@ function UserCard({ el }) {
   const handleDelete = async () => {
     try {
       await dispatch(deleteuser(el?._id)).unwrap();
-      toast.success(`Utilisateur "${el?.name}" supprimé !`);
+      toast.success(`Compte "${el?.name}" supprimé`);
     } catch (err) {
-      toast.error(err || "Erreur lors de la suppression");
+      toast.error(err || "Erreur de suppression");
     } finally {
       setShowConfirm(false);
     }
@@ -24,68 +25,60 @@ function UserCard({ el }) {
 
   return (
     <>
-      <Card className="user-card h-100 shadow-sm border-0 rounded-4 text-center p-3">
-        <div className="position-relative mx-auto mt-2">
+      <div className="pro-user-card text-center">
+        <div className="mx-auto mb-3">
           <img
             src={el?.img || defaultAvatar}
             alt={el?.name}
-            className="rounded-circle user-avatar border border-3 border-light shadow-sm"
+            className="pro-user-avatar"
             onError={(e) => {
               e.target.src = defaultAvatar;
             }}
           />
-          <Badge
-            bg={el?.isAdmin ? "danger" : "primary"}
-            className="position-absolute bottom-0 end-0 px-2 py-1 shadow-sm"
-          >
-            {el?.isAdmin ? "Admin" : "Membre"}
-          </Badge>
         </div>
 
-        <Card.Body className="d-flex flex-column pt-3 pb-0 px-2">
-          <Card.Title className="fw-bold fs-5 mb-1 text-dark text-truncate">{el?.name}</Card.Title>
-          <Card.Subtitle className="text-muted small mb-2 text-truncate">{el?.email}</Card.Subtitle>
+        <h5 className="fw-bold text-dark mb-1 text-truncate" title={el?.name}>
+          {el?.name}
+        </h5>
+        <div className="text-muted small mb-3 text-truncate" title={el?.email}>
+          {el?.email}
+        </div>
 
-          <div className="d-flex justify-content-center gap-3 my-2 py-2 bg-light rounded-3 small">
-            <div>
-              <span className="text-muted d-block">Âge</span>
-              <strong>{el?.age || "N/A"} ans</strong>
-            </div>
-            <div className="border-start"></div>
-            <div>
-              <span className="text-muted d-block">Statut</span>
-              <strong className="text-success">Actif</strong>
-            </div>
-          </div>
+        <div className="d-flex justify-content-center align-items-center gap-2 mb-3">
+          <span className={`badge-status ${el?.isAdmin ? "badge-admin" : "badge-member"}`}>
+            <span className="badge-status-dot" style={{ backgroundColor: el?.isAdmin ? "#0f172a" : "#2563eb" }}></span>
+            {el?.isAdmin ? "Administrateur" : "Collaborateur"}
+          </span>
+          <span className="text-muted small">• {el?.age || 25} ans</span>
+        </div>
 
-          <div className="d-flex gap-2 mt-auto pt-3">
-            <Edituser el={el} />
-            <Button
-              variant="outline-danger"
-              size="sm"
-              onClick={() => setShowConfirm(true)}
-              title="Supprimer l'utilisateur"
-            >
-              🗑️
-            </Button>
-          </div>
-        </Card.Body>
-      </Card>
+        <div className="d-flex gap-2 mt-auto pt-3 border-top">
+          <Edituser el={el} />
+          <Button
+            variant="light"
+            size="sm"
+            className="btn-outline-pro px-2"
+            onClick={() => setShowConfirm(true)}
+            title="Supprimer le collaborateur"
+          >
+            <IconTrash size={15} />
+          </Button>
+        </div>
+      </div>
 
-      {/* Confirmation Modal */}
       <Modal show={showConfirm} onHide={() => setShowConfirm(false)} centered size="sm">
-        <Modal.Header closeButton>
-          <Modal.Title className="fs-6 fw-bold">Confirmer suppression</Modal.Title>
+        <Modal.Header closeButton className="border-0 pb-0">
+          <Modal.Title className="fs-6 fw-bold text-dark">Confirmer la suppression</Modal.Title>
         </Modal.Header>
-        <Modal.Body className="text-center py-3">
-          <p className="mb-1">Supprimer définitivement cet utilisateur ?</p>
-          <strong className="text-danger">{el?.name}</strong>
+        <Modal.Body className="py-3 text-muted small">
+          Confirmez-vous le retrait de cet utilisateur du système ?
+          <div className="fw-bold text-dark mt-2">{el?.name}</div>
         </Modal.Body>
-        <Modal.Footer className="justify-content-center border-0 pt-0">
-          <Button variant="secondary" size="sm" onClick={() => setShowConfirm(false)}>
+        <Modal.Footer className="border-0 pt-0">
+          <Button variant="light" size="sm" className="btn-outline-pro" onClick={() => setShowConfirm(false)}>
             Annuler
           </Button>
-          <Button variant="danger" size="sm" onClick={handleDelete}>
+          <Button variant="danger" size="sm" onClick={handleDelete} className="px-3">
             Supprimer
           </Button>
         </Modal.Footer>

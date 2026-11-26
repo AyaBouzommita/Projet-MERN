@@ -3,6 +3,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addproduct } from "../../redux/productSlice";
 import { toast } from "react-toastify";
+import { IconPlus } from "../common/Icons";
 
 function AddProduct() {
   const [show, setShow] = useState(false);
@@ -27,7 +28,7 @@ function AddProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!productData.nameproduct || !productData.price) {
-      toast.error("Le nom du produit et le prix sont obligatoires !");
+      toast.error("Le nom du produit et le prix sont obligatoires");
       return;
     }
 
@@ -39,7 +40,7 @@ function AddProduct() {
           countInStock: Number(productData.countInStock),
         })
       ).unwrap();
-      toast.success("Produit ajouté avec succès !");
+      toast.success("Produit ajouté avec succès");
       setProductData({
         nameproduct: "",
         price: "",
@@ -50,41 +51,42 @@ function AddProduct() {
       });
       handleClose();
     } catch (err) {
-      toast.error(err || "Erreur lors de l'ajout");
+      toast.error(err || "Erreur lors de l'enregistrement");
     }
   };
 
   return (
     <>
-      <Button variant="warning" onClick={handleShow} className="fw-semibold shadow-sm d-flex align-items-center gap-2">
-        <span>➕</span> Ajouter un produit
+      <Button onClick={handleShow} className="btn-primary-pro">
+        <IconPlus size={16} />
+        <span>Ajouter une référence</span>
       </Button>
 
       <Modal show={show} onHide={handleClose} backdrop="static" centered>
         <Modal.Header closeButton>
-          <Modal.Title className="fw-bold">Nouveau Produit</Modal.Title>
+          <Modal.Title className="fw-bold fs-5 text-dark">Nouvelle référence catalogue</Modal.Title>
         </Modal.Header>
         <Form onSubmit={handleSubmit}>
-          <Modal.Body>
+          <Modal.Body className="p-4">
             <Form.Group className="mb-3">
-              <Form.Label className="fw-semibold small">Nom du produit *</Form.Label>
+              <Form.Label className="fw-semibold small text-dark">Nom de l'article *</Form.Label>
               <Form.Control
                 type="text"
                 name="nameproduct"
-                placeholder="ex: MacBook Pro M3"
+                placeholder="Ex: Dell XPS 15 9530"
                 value={productData.nameproduct}
                 onChange={handleChange}
                 required
               />
             </Form.Group>
 
-            <div className="row g-2 mb-3">
+            <div className="row g-3 mb-3">
               <div className="col-md-6">
-                <Form.Label className="fw-semibold small">Prix (TND) *</Form.Label>
+                <Form.Label className="fw-semibold small text-dark">Prix unitaire (TND) *</Form.Label>
                 <Form.Control
                   type="number"
                   name="price"
-                  placeholder="ex: 3500"
+                  placeholder="Ex: 4890"
                   value={productData.price}
                   onChange={handleChange}
                   min="0"
@@ -92,20 +94,20 @@ function AddProduct() {
                 />
               </div>
               <div className="col-md-6">
-                <Form.Label className="fw-semibold small">Catégorie</Form.Label>
+                <Form.Label className="fw-semibold small text-dark">Catégorie</Form.Label>
                 <Form.Select name="category" value={productData.category} onChange={handleChange}>
                   <option value="Informatique">Informatique</option>
                   <option value="Smartphones">Smartphones</option>
-                  <option value="Accessoires">Accessoires</option>
                   <option value="Audio">Audio</option>
                   <option value="Gaming">Gaming</option>
+                  <option value="Accessoires">Accessoires</option>
                 </Form.Select>
               </div>
             </div>
 
-            <div className="row g-2 mb-3">
+            <div className="row g-3 mb-3">
               <div className="col-md-8">
-                <Form.Label className="fw-semibold small">URL de l'image</Form.Label>
+                <Form.Label className="fw-semibold small text-dark">URL Visuel</Form.Label>
                 <Form.Control
                   type="text"
                   name="img"
@@ -115,7 +117,7 @@ function AddProduct() {
                 />
               </div>
               <div className="col-md-4">
-                <Form.Label className="fw-semibold small">Stock</Form.Label>
+                <Form.Label className="fw-semibold small text-dark">Quantité stock</Form.Label>
                 <Form.Control
                   type="number"
                   name="countInStock"
@@ -127,23 +129,23 @@ function AddProduct() {
             </div>
 
             <Form.Group className="mb-2">
-              <Form.Label className="fw-semibold small">Description</Form.Label>
+              <Form.Label className="fw-semibold small text-dark">Fiche technique / Description</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={3}
                 name="description"
-                placeholder="Description détaillée du produit..."
+                placeholder="Détails techniques, processeur, mémoire, connectique..."
                 value={productData.description}
                 onChange={handleChange}
               />
             </Form.Group>
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+          <Modal.Footer className="border-top px-4 py-3">
+            <Button variant="light" className="btn-outline-pro" onClick={handleClose}>
               Annuler
             </Button>
-            <Button variant="warning" type="submit" className="fw-semibold text-dark">
-              Enregistrer le produit
+            <Button type="submit" className="btn-primary-pro">
+              Enregistrer l'article
             </Button>
           </Modal.Footer>
         </Form>

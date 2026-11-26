@@ -3,6 +3,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { editproduct } from "../../redux/productSlice";
 import { toast } from "react-toastify";
+import { IconEdit } from "../common/Icons";
 
 function EditProduct({ el }) {
   const [show, setShow] = useState(false);
@@ -47,7 +48,7 @@ function EditProduct({ el }) {
           },
         })
       ).unwrap();
-      toast.success("Produit mis à jour avec succès !");
+      toast.success("Mise à jour enregistrée");
       handleClose();
     } catch (err) {
       toast.error(err || "Erreur de mise à jour");
@@ -56,18 +57,19 @@ function EditProduct({ el }) {
 
   return (
     <>
-      <Button variant="outline-primary" size="sm" onClick={handleShow} className="flex-grow-1">
-        ✏️ Modifier
+      <Button variant="light" size="sm" onClick={handleShow} className="btn-outline-pro flex-grow-1 d-flex align-items-center justify-content-center gap-1">
+        <IconEdit size={14} />
+        <span>Modifier</span>
       </Button>
 
       <Modal show={show} onHide={handleClose} backdrop="static" centered>
         <Modal.Header closeButton>
-          <Modal.Title className="fw-bold">Modifier le Produit</Modal.Title>
+          <Modal.Title className="fw-bold fs-5 text-dark">Modifier la référence</Modal.Title>
         </Modal.Header>
         <Form onSubmit={handleSubmit}>
-          <Modal.Body>
+          <Modal.Body className="p-4">
             <Form.Group className="mb-3">
-              <Form.Label className="fw-semibold small">Nom du produit</Form.Label>
+              <Form.Label className="fw-semibold small text-dark">Nom de l'article</Form.Label>
               <Form.Control
                 type="text"
                 name="nameproduct"
@@ -77,9 +79,9 @@ function EditProduct({ el }) {
               />
             </Form.Group>
 
-            <div className="row g-2 mb-3">
+            <div className="row g-3 mb-3">
               <div className="col-md-6">
-                <Form.Label className="fw-semibold small">Prix (TND)</Form.Label>
+                <Form.Label className="fw-semibold small text-dark">Prix unitaire (TND)</Form.Label>
                 <Form.Control
                   type="number"
                   name="price"
@@ -90,20 +92,20 @@ function EditProduct({ el }) {
                 />
               </div>
               <div className="col-md-6">
-                <Form.Label className="fw-semibold small">Catégorie</Form.Label>
+                <Form.Label className="fw-semibold small text-dark">Catégorie</Form.Label>
                 <Form.Select name="category" value={edited.category} onChange={handleChange}>
                   <option value="Informatique">Informatique</option>
                   <option value="Smartphones">Smartphones</option>
-                  <option value="Accessoires">Accessoires</option>
                   <option value="Audio">Audio</option>
                   <option value="Gaming">Gaming</option>
+                  <option value="Accessoires">Accessoires</option>
                 </Form.Select>
               </div>
             </div>
 
-            <div className="row g-2 mb-3">
+            <div className="row g-3 mb-3">
               <div className="col-md-8">
-                <Form.Label className="fw-semibold small">URL de l'image</Form.Label>
+                <Form.Label className="fw-semibold small text-dark">URL Visuel</Form.Label>
                 <Form.Control
                   type="text"
                   name="img"
@@ -112,7 +114,7 @@ function EditProduct({ el }) {
                 />
               </div>
               <div className="col-md-4">
-                <Form.Label className="fw-semibold small">Stock</Form.Label>
+                <Form.Label className="fw-semibold small text-dark">Stock</Form.Label>
                 <Form.Control
                   type="number"
                   name="countInStock"
@@ -124,7 +126,7 @@ function EditProduct({ el }) {
             </div>
 
             <Form.Group className="mb-2">
-              <Form.Label className="fw-semibold small">Description</Form.Label>
+              <Form.Label className="fw-semibold small text-dark">Description</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={3}
@@ -134,11 +136,11 @@ function EditProduct({ el }) {
               />
             </Form.Group>
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+          <Modal.Footer className="border-top px-4 py-3">
+            <Button variant="light" className="btn-outline-pro" onClick={handleClose}>
               Annuler
             </Button>
-            <Button variant="primary" type="submit">
+            <Button type="submit" className="btn-primary-pro">
               Sauvegarder
             </Button>
           </Modal.Footer>

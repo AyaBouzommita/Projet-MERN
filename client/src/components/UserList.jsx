@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Form, InputGroup, Spinner, Button, Card } from "react-bootstrap";
+import { Container, Row, Col, Form, Spinner, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getusers } from "../redux/userSlice";
 import UserCard from "./UserCard";
 import Adduser from "./Adduser";
+import { IconSearch, IconRefresh } from "./common/Icons";
 
 function UserList() {
   const dispatch = useDispatch();
   const { userlist, loading, error } = useSelector((state) => state.user);
   const [search, setSearch] = useState("");
+  const [roleFilter, setRoleFilter] = useState("all");
 
   useEffect(() => {
     dispatch(getusers(search));
@@ -21,115 +23,163 @@ function UserList() {
 
   const handleReset = () => {
     setSearch("");
+    setRoleFilter("all");
     dispatch(getusers(""));
   };
 
   const adminCount = userlist?.filter((u) => u.isAdmin)?.length || 0;
   const memberCount = (userlist?.length || 0) - adminCount;
 
+  const filteredUsers = userlist?.filter((u) => {
+    if (roleFilter === "admin") return u.isAdmin;
+    if (roleFilter === "member") return !u.isAdmin;
+    return true;
+  });
+
   return (
-    <Container className="py-4">
-      {/* Top Banner */}
-      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 p-4 bg-light rounded-4 border">
-        <div>
-          <h2 className="fw-bold mb-1 text-dark">Gestion des Utilisateurs</h2>
-          <p className="text-muted small mb-0">
-            Administrez les comptes de la plateforme, attribuez des rôles et gérez les profils.
-          </p>
+    <div className="py-4">
+      <Container>
+        {/* Header Section */}
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-3 border-bottom">
+          <div>
+            <h2 className="fw-bold mb-1 text-dark">Annuaire Collaborateurs & Utilisateurs</h2>
+            <p className="text-muted small mb-0">
+              Gestion centralisée des accès, rôles et coordonnées du personnel technique.
+            </p>
+          </div>
+          <div>
+            <Adduser />
+          </div>
         </div>
-        <div>
-          <Adduser />
-        </div>
-      </div>
 
-      {/* Stats Cards */}
-      <Row className="g-3 mb-4">
-        <Col sm={4}>
-          <Card className="border-0 shadow-sm rounded-3 bg-primary text-white p-3">
-            <div className="d-flex justify-content-between align-items-center">
+        {/* Metric Badges */}
+        <Row className="g-3 mb-4">
+          <Col md={4}>
+            <div className="p-3 bg-white border rounded-3 shadow-sm d-flex justify-content-between align-items-center">
               <div>
-                <div className="small text-white-50">Total Inscrits</div>
-                <h3 className="fw-bold mb-0">{userlist?.length || 0}</h3>
+                <div className="text-muted small">Total inscrits</div>
+                <div className="fs-4 fw-bold text-dark">{userlist?.length || 0}</div>
               </div>
-              <span className="fs-1 opacity-75">👥</span>
-            </div>
-          </Card>
-        </Col>
-        <Col sm={4}>
-          <Card className="border-0 shadow-sm rounded-3 bg-danger text-white p-3">
-            <div className="d-flex justify-content-between align-items-center">
-              <div>
-                <div className="small text-white-50">Administrateurs</div>
-                <h3 className="fw-bold mb-0">{adminCount}</h3>
+              <div className="trust-icon-wrapper">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                </svg>
               </div>
-              <span className="fs-1 opacity-75">🛡️</span>
             </div>
-          </Card>
-        </Col>
-        <Col sm={4}>
-          <Card className="border-0 shadow-sm rounded-3 bg-success text-white p-3">
-            <div className="d-flex justify-content-between align-items-center">
-              <div>
-                <div className="small text-white-50">Membres Actifs</div>
-                <h3 className="fw-bold mb-0">{memberCount}</h3>
-              </div>
-              <span className="fs-1 opacity-75">✅</span>
-            </div>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* Search Bar */}
-      <div className="p-3 mb-4 rounded-3 border bg-white shadow-sm">
-        <Row className="g-2">
-          <Col md={8}>
-            <Form onSubmit={handleSearchSubmit}>
-              <InputGroup>
-                <Form.Control
-                  placeholder="Rechercher par nom ou email..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-                <Button variant="primary" type="submit">
-                  Rechercher
-                </Button>
-              </InputGroup>
-            </Form>
           </Col>
-          <Col md={4} className="text-md-end">
-            <Button variant="outline-secondary" onClick={handleReset}>
-              🔄 Réinitialiser
-            </Button>
+
+          <Col md={4}>
+            <div className="p-3 bg-white border rounded-3 shadow-sm d-flex justify-content-between align-items-center">
+              <div>
+                <div className="text-muted small">Administrateurs</div>
+                <div className="fs-4 fw-bold text-dark">{adminCount}</div>
+              </div>
+              <div className="trust-icon-wrapper" style={{ backgroundColor: "#f1f5f9", color: "#0f172a" }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </div>
+            </div>
+          </Col>
+
+          <Col md={4}>
+            <div className="p-3 bg-white border rounded-3 shadow-sm d-flex justify-content-between align-items-center">
+              <div>
+                <div className="text-muted small">Collaborateurs</div>
+                <div className="fs-4 fw-bold text-dark">{memberCount}</div>
+              </div>
+              <div className="trust-icon-wrapper" style={{ backgroundColor: "#ecfdf5", color: "#059669" }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+            </div>
           </Col>
         </Row>
-      </div>
 
-      {/* Users Grid */}
-      {loading ? (
-        <div className="text-center py-5">
-          <Spinner animation="border" variant="primary" />
-          <p className="text-muted mt-2">Chargement des utilisateurs...</p>
-        </div>
-      ) : error ? (
-        <div className="alert alert-danger text-center">{error}</div>
-      ) : userlist && userlist.length > 0 ? (
-        <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-          {userlist.map((el) => (
-            <Col key={el._id}>
-              <UserCard el={el} />
+        {/* Filter and Search Bar */}
+        <div className="bg-white border rounded-3 p-3 mb-4 shadow-sm">
+          <Row className="g-3 align-items-center">
+            <Col lg={6} md={6}>
+              <Form onSubmit={handleSearchSubmit}>
+                <div className="position-relative">
+                  <span className="search-icon-pos">
+                    <IconSearch size={16} />
+                  </span>
+                  <Form.Control
+                    type="search"
+                    placeholder="Recherche par nom ou adresse email..."
+                    className="search-input-pro w-100"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </div>
+              </Form>
             </Col>
-          ))}
-        </Row>
-      ) : (
-        <div className="text-center py-5 bg-light rounded-4 border">
-          <h4 className="fw-bold text-muted">Aucun utilisateur trouvé</h4>
-          <p className="text-muted small">Aucun compte ne correspond à votre recherche.</p>
-          <Button variant="primary" onClick={handleReset}>
-            Afficher tous les utilisateurs
-          </Button>
+
+            <Col lg={4} md={4}>
+              <div className="d-flex gap-2">
+                <button
+                  type="button"
+                  className={`category-pill ${roleFilter === "all" ? "active" : ""}`}
+                  onClick={() => setRoleFilter("all")}
+                >
+                  Tous ({userlist?.length || 0})
+                </button>
+                <button
+                  type="button"
+                  className={`category-pill ${roleFilter === "admin" ? "active" : ""}`}
+                  onClick={() => setRoleFilter("admin")}
+                >
+                  Admins ({adminCount})
+                </button>
+                <button
+                  type="button"
+                  className={`category-pill ${roleFilter === "member" ? "active" : ""}`}
+                  onClick={() => setRoleFilter("member")}
+                >
+                  Membres ({memberCount})
+                </button>
+              </div>
+            </Col>
+
+            <Col lg={2} md={2} className="text-md-end">
+              <Button variant="light" size="sm" className="btn-outline-pro d-inline-flex align-items-center gap-1" onClick={handleReset}>
+                <IconRefresh size={14} />
+                <span>Réinitialiser</span>
+              </Button>
+            </Col>
+          </Row>
         </div>
-      )}
-    </Container>
+
+        {/* Users Grid */}
+        {loading ? (
+          <div className="text-center py-5">
+            <Spinner animation="border" variant="primary" />
+            <div className="text-muted small mt-2">Chargement des utilisateurs...</div>
+          </div>
+        ) : error ? (
+          <div className="alert alert-danger text-center small py-3">{error}</div>
+        ) : filteredUsers && filteredUsers.length > 0 ? (
+          <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+            {filteredUsers.map((el) => (
+              <Col key={el._id}>
+                <UserCard el={el} />
+              </Col>
+            ))}
+          </Row>
+        ) : (
+          <div className="text-center py-5 bg-white border rounded-3 p-4">
+            <h5 className="fw-bold text-dark mb-1">Aucun collaborateur trouvé</h5>
+            <p className="text-muted small mb-3">Aucun compte ne correspond à votre critère de recherche.</p>
+            <Button className="btn-outline-pro" onClick={handleReset}>
+              Réinitialiser la recherche
+            </Button>
+          </div>
+        )}
+      </Container>
+    </div>
   );
 }
 

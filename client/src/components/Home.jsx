@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
-import { Container, Row, Col, Card, Button, Badge } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getproducts } from "../redux/productSlice";
 import { getusers } from "../redux/userSlice";
 import ProductCard from "./Products/ProductCard";
 import UserCard from "./UserCard";
+import { IconShield, IconTruck, IconHeadphones, IconBox, IconArrowRight } from "./common/Icons";
 
 function Home() {
   const dispatch = useDispatch();
   const { productlist } = useSelector((state) => state.product);
   const { userlist } = useSelector((state) => state.user);
-  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(getproducts({}));
@@ -24,161 +24,166 @@ function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="hero-section text-white py-5 mb-5">
-        <Container className="py-4">
-          <Row className="align-items-center gy-4">
+      <section className="hero-pro">
+        <Container>
+          <Row className="align-items-center gy-5">
             <Col lg={7}>
-              <Badge bg="warning" text="dark" className="px-3 py-2 fs-6 fw-bold mb-3 shadow-sm">
-                ⭐ Projet MERN - Filière GL3
-              </Badge>
-              <h1 className="display-4 fw-extrabold mb-3">
-                Plateforme Fullstack <span className="text-warning">MERN Innovante</span>
+              <div className="hero-pill">
+                <span className="badge-status-dot" style={{ backgroundColor: "#2563eb" }}></span>
+                <span>Nouvelle gamme professionnelle 2026 disponible</span>
+              </div>
+              <h1 className="hero-title">
+                Le matériel informatique de pointe pour vos ambitions.
               </h1>
-              <p className="lead mb-4 text-white-50">
-                Application complète conçue et optimisée par <strong>Aya Bouzommita</strong>. Architecture logicielle MVC, sécurité renforcée JWT & Bcrypt, et gestion d'état centralisée avec Redux Toolkit.
+              <p className="hero-subtitle pe-lg-4">
+                Découvrez une sélection rigoureuse d'ordinateurs, stations de travail, périphériques et équipements réseau garantis avec service technique dédié.
               </p>
-              <div className="d-flex gap-3 flex-wrap">
-                <Button as={Link} to="/products" variant="warning" size="lg" className="fw-bold px-4 shadow">
-                  🛍️ Explorer les Produits
+              <div className="d-flex flex-wrap gap-3">
+                <Button as={Link} to="/products" className="btn-primary-pro px-4 py-2">
+                  <span>Explorer le catalogue</span>
+                  <IconArrowRight size={16} />
                 </Button>
-                <Button as={Link} to="/users" variant="outline-light" size="lg" className="fw-semibold px-4">
-                  👥 Espace Utilisateurs
+                <Button as={Link} to="/contact" className="btn-outline-pro px-4 py-2">
+                  Demander un devis pro
                 </Button>
               </div>
-
-              {user && (
-                <div className="mt-4 p-3 bg-white bg-opacity-10 rounded-3 border border-light border-opacity-25 d-inline-flex align-items-center gap-2">
-                  <span>👋</span>
-                  <span>Ravi de vous revoir, <strong>{user.name}</strong> !</span>
-                </div>
-              )}
             </Col>
 
-            <Col lg={5} className="text-center">
-              <div className="hero-stats-card p-4 rounded-4 shadow-lg border border-white border-opacity-25 bg-white bg-opacity-10 text-white">
-                <h4 className="fw-bold mb-3">Vue d'ensemble</h4>
-                <Row className="g-3">
-                  <Col xs={6}>
-                    <div className="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary">
-                      <div className="display-6 fw-bold text-warning">{productlist?.length || 0}</div>
-                      <div className="small text-white-50">Produits Actifs</div>
+            <Col lg={5}>
+              <div className="p-4 bg-white border rounded-4 shadow-sm">
+                <div className="d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom">
+                  <div>
+                    <h6 className="fw-bold mb-0 text-dark">Disponibilité immédiate</h6>
+                    <span className="text-muted small">Articles certifiés en stock direct</span>
+                  </div>
+                  <span className="badge-status badge-in-stock">
+                    <span className="badge-status-dot"></span>
+                    Direct Entrepot
+                  </span>
+                </div>
+
+                <div className="d-flex flex-column gap-3">
+                  <div className="d-flex justify-content-between align-items-center p-3 bg-light rounded-3">
+                    <div>
+                      <div className="text-muted small">Catalogue actif</div>
+                      <div className="fs-4 fw-bold text-dark">{productlist?.length || 0} références</div>
                     </div>
-                  </Col>
-                  <Col xs={6}>
-                    <div className="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary">
-                      <div className="display-6 fw-bold text-info">{userlist?.length || 0}</div>
-                      <div className="small text-white-50">Comptes Inscrits</div>
+                    <div className="trust-icon-wrapper">
+                      <IconBox size={22} />
                     </div>
-                  </Col>
-                  <Col xs={12}>
-                    <div className="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary text-start small">
-                      <div className="d-flex justify-content-between mb-1">
-                        <span>Sécurité Token</span>
-                        <span className="text-success fw-bold">✓ Actif (JWT 7j)</span>
-                      </div>
-                      <div className="d-flex justify-content-between mb-1">
-                        <span>Base de données</span>
-                        <span className="text-success fw-bold">✓ MongoDB Atlas</span>
-                      </div>
-                      <div className="d-flex justify-content-between">
-                        <span>Framework Frontend</span>
-                        <span className="text-warning fw-bold">React 19 + Vite</span>
-                      </div>
+                  </div>
+
+                  <div className="d-flex justify-content-between align-items-center p-3 bg-light rounded-3">
+                    <div>
+                      <div className="text-muted small">Comptes & Collaborateurs</div>
+                      <div className="fs-4 fw-bold text-dark">{userlist?.length || 0} membres</div>
                     </div>
-                  </Col>
-                </Row>
+                    <div className="trust-icon-wrapper" style={{ backgroundColor: "#ecfdf5", color: "#059669" }}>
+                      <IconShield size={22} />
+                    </div>
+                  </div>
+                </div>
               </div>
             </Col>
           </Row>
         </Container>
       </section>
 
-      {/* Highlights Section */}
+      {/* Trust Proposition Bar */}
       <Container className="mb-5">
-        <Row className="g-4 text-center">
-          <Col md={3} sm={6}>
-            <Card className="h-100 border-0 shadow-sm rounded-4 p-3 feature-card">
-              <div className="fs-1 mb-2">⚡</div>
-              <h5 className="fw-bold">React 19 + Vite</h5>
-              <p className="text-muted small mb-0">Build ultra-rapide et composants modulaires interactifs.</p>
-            </Card>
-          </Col>
-          <Col md={3} sm={6}>
-            <Card className="h-100 border-0 shadow-sm rounded-4 p-3 feature-card">
-              <div className="fs-1 mb-2">🔒</div>
-              <h5 className="fw-bold">Auth JWT & Bcrypt</h5>
-              <p className="text-muted small mb-0">Hachage des mots de passe et sécurisation des routes par token.</p>
-            </Card>
-          </Col>
-          <Col md={3} sm={6}>
-            <Card className="h-100 border-0 shadow-sm rounded-4 p-3 feature-card">
-              <div className="fs-1 mb-2">📦</div>
-              <h5 className="fw-bold">Redux Toolkit</h5>
-              <p className="text-muted small mb-0">Architecture réactive sans ping manuel avec extraReducers.</p>
-            </Card>
-          </Col>
-          <Col md={3} sm={6}>
-            <Card className="h-100 border-0 shadow-sm rounded-4 p-3 feature-card">
-              <div className="fs-1 mb-2">🍃</div>
-              <h5 className="fw-bold">MongoDB Cloud</h5>
-              <p className="text-muted small mb-0">Persistance des données via Mongoose ODM & schéma strict.</p>
-            </Card>
-          </Col>
-        </Row>
+        <div className="trust-bar">
+          <Row className="gy-3">
+            <Col lg={3} sm={6}>
+              <div className="trust-item">
+                <div className="trust-icon-wrapper">
+                  <IconShield size={20} />
+                </div>
+                <div>
+                  <div className="fw-bold text-dark small">Garantie 2 ans</div>
+                  <div className="text-muted" style={{ fontSize: "0.78rem" }}>Support constructeur certifié</div>
+                </div>
+              </div>
+            </Col>
+
+            <Col lg={3} sm={6}>
+              <div className="trust-item">
+                <div className="trust-icon-wrapper">
+                  <IconTruck size={20} />
+                </div>
+                <div>
+                  <div className="fw-bold text-dark small">Livraison Express</div>
+                  <div className="text-muted" style={{ fontSize: "0.78rem" }}>Expédié en 24 à 48 heures</div>
+                </div>
+              </div>
+            </Col>
+
+            <Col lg={3} sm={6}>
+              <div className="trust-item">
+                <div className="trust-icon-wrapper">
+                  <IconHeadphones size={20} />
+                </div>
+                <div>
+                  <div className="fw-bold text-dark small">Assistance Dédiée</div>
+                  <div className="text-muted" style={{ fontSize: "0.78rem" }}>Du lundi au samedi 8h-19h</div>
+                </div>
+              </div>
+            </Col>
+
+            <Col lg={3} sm={6}>
+              <div className="trust-item">
+                <div className="trust-icon-wrapper">
+                  <IconBox size={20} />
+                </div>
+                <div>
+                  <div className="fw-bold text-dark small">Paiement Sécurisé</div>
+                  <div className="text-muted" style={{ fontSize: "0.78rem" }}>Carte bancaire ou à réception</div>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </div>
       </Container>
 
       {/* Featured Products */}
-      <Container className="mb-5">
-        <div className="d-flex justify-content-between align-items-center mb-4">
+      <Container className="mb-5 pb-3">
+        <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-2 mb-4">
           <div>
-            <h3 className="fw-bold text-dark mb-0">Produits en Vedette</h3>
-            <p className="text-muted small mb-0">Sélection des articles récents du catalogue</p>
+            <div className="pro-category-tag">Sélection Premium</div>
+            <h3 className="fw-bold text-dark mb-0">Nouveautés & Équipements Phares</h3>
           </div>
-          <Button as={Link} to="/products" variant="outline-primary" size="sm" className="fw-semibold">
-            Voir tout le catalogue ({productlist?.length || 0}) →
-          </Button>
+          <Link to="/products" className="btn-outline-pro text-decoration-none small py-2">
+            Consulter tout le catalogue ({productlist?.length || 0})
+          </Link>
         </div>
 
-        {featuredProducts.length > 0 ? (
-          <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-            {featuredProducts.map((el) => (
-              <Col key={el._id}>
-                <ProductCard el={el} />
-              </Col>
-            ))}
-          </Row>
-        ) : (
-          <div className="text-center py-4 bg-light rounded-4 border">
-            <p className="text-muted mb-0">Aucun produit disponible pour le moment.</p>
-          </div>
-        )}
+        <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+          {featuredProducts.map((el) => (
+            <Col key={el._id}>
+              <ProductCard el={el} />
+            </Col>
+          ))}
+        </Row>
       </Container>
 
-      {/* Featured Users */}
-      <Container className="mb-5">
-        <div className="d-flex justify-content-between align-items-center mb-4">
+      {/* Team / Users Preview */}
+      <Container className="mb-5 pb-5">
+        <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-2 mb-4">
           <div>
-            <h3 className="fw-bold text-dark mb-0">Membres de la Communauté</h3>
-            <p className="text-muted small mb-0">Utilisateurs enregistrés sur la plateforme</p>
+            <div className="pro-category-tag">Direction & Technique</div>
+            <h3 className="fw-bold text-dark mb-0">Équipe & Collaborateurs</h3>
           </div>
-          <Button as={Link} to="/users" variant="outline-primary" size="sm" className="fw-semibold">
-            Gérer les utilisateurs ({userlist?.length || 0}) →
-          </Button>
+          <Link to="/users" className="btn-outline-pro text-decoration-none small py-2">
+            Annuaire complet ({userlist?.length || 0})
+          </Link>
         </div>
 
-        {featuredUsers.length > 0 ? (
-          <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-            {featuredUsers.map((el) => (
-              <Col key={el._id}>
-                <UserCard el={el} />
-              </Col>
-            ))}
-          </Row>
-        ) : (
-          <div className="text-center py-4 bg-light rounded-4 border">
-            <p className="text-muted mb-0">Aucun utilisateur enregistré pour le moment.</p>
-          </div>
-        )}
+        <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+          {featuredUsers.map((el) => (
+            <Col key={el._id}>
+              <UserCard el={el} />
+            </Col>
+          ))}
+        </Row>
       </Container>
     </div>
   );

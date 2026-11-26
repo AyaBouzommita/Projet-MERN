@@ -3,6 +3,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { edituser } from "../redux/userSlice";
 import { toast } from "react-toastify";
+import { IconEdit } from "./common/Icons";
 
 function Edituser({ el }) {
   const [show, setShow] = useState(false);
@@ -13,7 +14,7 @@ function Edituser({ el }) {
     setEdited({
       name: el?.name || "",
       img: el?.img || "",
-      age: el?.age || 18,
+      age: el?.age || 25,
       email: el?.email || "",
       isAdmin: Boolean(el?.isAdmin),
     });
@@ -23,7 +24,7 @@ function Edituser({ el }) {
   const [edited, setEdited] = useState({
     name: el?.name || "",
     img: el?.img || "",
-    age: el?.age || 18,
+    age: el?.age || 25,
     email: el?.email || "",
     isAdmin: Boolean(el?.isAdmin),
   });
@@ -45,27 +46,28 @@ function Edituser({ el }) {
           },
         })
       ).unwrap();
-      toast.success("Utilisateur mis à jour avec succès !");
+      toast.success("Profil mis à jour");
       handleClose();
     } catch (err) {
-      toast.error(err || "Erreur de mise à jour");
+      toast.error(err || "Erreur lors de la modification");
     }
   };
 
   return (
     <>
-      <Button variant="outline-primary" size="sm" onClick={handleShow} className="flex-grow-1">
-        ✏️ Modifier
+      <Button variant="light" size="sm" onClick={handleShow} className="btn-outline-pro flex-grow-1 d-flex align-items-center justify-content-center gap-1">
+        <IconEdit size={14} />
+        <span>Modifier</span>
       </Button>
 
       <Modal show={show} onHide={handleClose} backdrop="static" centered>
         <Modal.Header closeButton>
-          <Modal.Title className="fw-bold">Modifier l'Utilisateur</Modal.Title>
+          <Modal.Title className="fw-bold fs-5 text-dark">Modifier le collaborateur</Modal.Title>
         </Modal.Header>
         <Form onSubmit={handleSubmit}>
-          <Modal.Body>
+          <Modal.Body className="p-4">
             <Form.Group className="mb-3">
-              <Form.Label className="fw-semibold small">Nom complet</Form.Label>
+              <Form.Label className="fw-semibold small text-dark">Nom et prénom</Form.Label>
               <Form.Control
                 type="text"
                 name="name"
@@ -76,7 +78,7 @@ function Edituser({ el }) {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label className="fw-semibold small">Adresse Email</Form.Label>
+              <Form.Label className="fw-semibold small text-dark">Email professionnel</Form.Label>
               <Form.Control
                 type="email"
                 name="email"
@@ -86,19 +88,19 @@ function Edituser({ el }) {
               />
             </Form.Group>
 
-            <div className="row g-2 mb-3">
+            <div className="row g-3 mb-3">
               <div className="col-md-6">
-                <Form.Label className="fw-semibold small">Âge</Form.Label>
+                <Form.Label className="fw-semibold small text-dark">Âge</Form.Label>
                 <Form.Control
                   type="number"
                   name="age"
                   value={edited.age}
                   onChange={handleChange}
-                  min="1"
+                  min="18"
                 />
               </div>
               <div className="col-md-6">
-                <Form.Label className="fw-semibold small">Privilège</Form.Label>
+                <Form.Label className="fw-semibold small text-dark">Rôle d'administration</Form.Label>
                 <Form.Select
                   name="isAdmin"
                   value={edited.isAdmin}
@@ -106,14 +108,14 @@ function Edituser({ el }) {
                     setEdited({ ...edited, isAdmin: e.target.value === "true" })
                   }
                 >
-                  <option value="false">Utilisateur (Membre)</option>
+                  <option value="false">Collaborateur standard</option>
                   <option value="true">Administrateur</option>
                 </Form.Select>
               </div>
             </div>
 
             <Form.Group className="mb-2">
-              <Form.Label className="fw-semibold small">URL Photo de Profil</Form.Label>
+              <Form.Label className="fw-semibold small text-dark">URL Photo de profil</Form.Label>
               <Form.Control
                 type="text"
                 name="img"
@@ -122,11 +124,11 @@ function Edituser({ el }) {
               />
             </Form.Group>
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+          <Modal.Footer className="border-top px-4 py-3">
+            <Button variant="light" className="btn-outline-pro" onClick={handleClose}>
               Annuler
             </Button>
-            <Button variant="primary" type="submit">
+            <Button type="submit" className="btn-primary-pro">
               Sauvegarder
             </Button>
           </Modal.Footer>

@@ -1,76 +1,121 @@
 import React from "react";
-import { Container, Row, Col, Card, Badge, ListGroup } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
+import { IconCheck, IconShield, IconBox } from "./common/Icons";
 
 function About() {
   return (
-    <Container className="py-5">
-      <div className="text-center max-w-700 mx-auto mb-5">
-        <Badge bg="primary" className="px-3 py-2 fs-6 fw-bold mb-2">
-          À PROPOS DU PROJET
-        </Badge>
-        <h2 className="display-6 fw-bold text-dark">Architecture & Ingénierie Logicielle (GL3)</h2>
-        <p className="text-muted">
-          Conception et amélioration avancée d'une application MERN réalisée par <strong>Aya Bouzommita</strong>.
-        </p>
-      </div>
+    <div className="py-5">
+      <Container>
+        <div className="max-w-700 mx-auto text-center mb-5">
+          <div className="hero-pill mx-auto">
+            <span className="badge-status-dot" style={{ backgroundColor: "#2563eb" }}></span>
+            <span>Spécification & Ingénierie Logicielle</span>
+          </div>
+          <h2 className="display-6 fw-bold text-dark mb-3">Architecture du Système TechStore</h2>
+          <p className="text-muted lead fs-6">
+            Développée par <strong>Aya Bouzommita</strong> dans le cadre de la filière Ingénieur Génie Logiciel (FIGL3), cette application démontre la mise en œuvre des bonnes pratiques de conception fullstack.
+          </p>
+        </div>
 
-      <Row className="gy-4 mb-5">
-        <Col lg={6}>
-          <Card className="h-100 border-0 shadow-sm rounded-4 p-4">
-            <h4 className="fw-bold text-primary mb-3">🎯 Objectifs du Projet</h4>
-            <p className="text-muted">
-              Ce projet a pour objectif de transformer une application de base CRUD en une solution d'entreprise moderne, conforme aux standards de qualité du <strong>Génie Logiciel (FIGL3)</strong> :
-            </p>
-            <ListGroup variant="flush" className="small">
-              <ListGroup.Item className="d-flex align-items-center gap-2 px-0 border-0">
-                <span className="text-success fs-5">✓</span>
-                <span><strong>Sécurité des données</strong> : Élimination des identifiants en clair avec <code>dotenv</code> et hashage <code>bcryptjs</code>.</span>
-              </ListGroup.Item>
-              <ListGroup.Item className="d-flex align-items-center gap-2 px-0 border-0">
-                <span className="text-success fs-5">✓</span>
-                <span><strong>Authentification Robuste</strong> : Implémentation complète de JWT (JSON Web Tokens) avec middleware <code>isAuth</code> et rôles <code>isAdmin</code>.</span>
-              </ListGroup.Item>
-              <ListGroup.Item className="d-flex align-items-center gap-2 px-0 border-0">
-                <span className="text-success fs-5">✓</span>
-                <span><strong>Architecture MVC</strong> : Séparation rigoureuse en Controllers, Routes, Models, et Middlewares.</span>
-              </ListGroup.Item>
-              <ListGroup.Item className="d-flex align-items-center gap-2 px-0 border-0">
-                <span className="text-success fs-5">✓</span>
-                <span><strong>Gestion d'état Redux Toolkit</strong> : Élimination du cycle <code>ping/setping</code> au profit d'un état global réactif et optimiste.</span>
-              </ListGroup.Item>
-            </ListGroup>
-          </Card>
-        </Col>
+        <Row className="gy-4 mb-5">
+          <Col lg={6}>
+            <div className="p-4 bg-white border rounded-4 shadow-sm h-100">
+              <div className="d-flex align-items-center gap-3 mb-4">
+                <div className="trust-icon-wrapper">
+                  <IconShield size={22} />
+                </div>
+                <div>
+                  <h5 className="fw-bold text-dark mb-0">Normes de Conception Backend</h5>
+                  <span className="text-muted small">Pattern MVC & Sécurité</span>
+                </div>
+              </div>
 
-        <Col lg={6}>
-          <Card className="h-100 border-0 shadow-sm rounded-4 p-4">
-            <h4 className="fw-bold text-success mb-3">💻 Stack Technologique</h4>
-            <div className="d-flex flex-column gap-3">
-              <div className="p-3 bg-light rounded-3">
-                <h6 className="fw-bold mb-1">Backend (Node.js & Express)</h6>
-                <p className="text-muted small mb-0">Express 5, Mongoose ODM, Helmet (sécurité HTTP), Morgan (logs), CORS, Bcryptjs, JWT.</p>
-              </div>
-              <div className="p-3 bg-light rounded-3">
-                <h6 className="fw-bold mb-1">Frontend (React 19 & Vite)</h6>
-                <p className="text-muted small mb-0">React 19, Redux Toolkit, React-Bootstrap 5, React Router Dom 6, React Toastify.</p>
-              </div>
-              <div className="p-3 bg-light rounded-3">
-                <h6 className="fw-bold mb-1">Base de Données Cloud</h6>
-                <p className="text-muted small mb-0">MongoDB Atlas avec schémas typés et validation de données.</p>
+              <div className="d-flex flex-column gap-3 text-muted small">
+                <div className="d-flex align-items-start gap-2">
+                  <span className="text-primary mt-1"><IconCheck size={16} /></span>
+                  <div>
+                    <strong className="text-dark d-block">Séparation des responsabilités (MVC)</strong>
+                    Découplage strict entre les contrôleurs (logique métier), les modèles Mongoose (schémas et règles de validation) et les routeurs Express.
+                  </div>
+                </div>
+
+                <div className="d-flex align-items-start gap-2">
+                  <span className="text-primary mt-1"><IconCheck size={16} /></span>
+                  <div>
+                    <strong className="text-dark d-block">Sécurisation & Isolation des environnements</strong>
+                    Gestion centralisée des secrets via <code>dotenv</code>, hashage des mots de passe avec sel cryptographique (Bcrypt) et protection des en-têtes HTTP avec Helmet.
+                  </div>
+                </div>
+
+                <div className="d-flex align-items-start gap-2">
+                  <span className="text-primary mt-1"><IconCheck size={16} /></span>
+                  <div>
+                    <strong className="text-dark d-block">Gestion des autorisations (RBAC)</strong>
+                    Protection des routes sensibles à l'aide de jetons d'accès JWT (JSON Web Tokens) avec vérification de rôle administrateur.
+                  </div>
+                </div>
               </div>
             </div>
-          </Card>
-        </Col>
-      </Row>
+          </Col>
 
-      <Card className="border-0 shadow-sm rounded-4 p-4 text-center bg-primary text-white">
-        <h4 className="fw-bold mb-2">Développé avec rigueur et passion</h4>
-        <p className="mb-3 text-white-50">
-          Projet disponible sur GitHub : <a href="https://github.com/AyaBouzommita/Projet-MERN" target="_blank" rel="noreferrer" className="text-warning fw-bold text-decoration-none">AyaBouzommita/Projet-MERN</a>
-        </p>
-        <span className="badge bg-light text-primary px-3 py-2 align-self-center">Filière Ingénieur Génie Logiciel 3 (FIGL3)</span>
-      </Card>
-    </Container>
+          <Col lg={6}>
+            <div className="p-4 bg-white border rounded-4 shadow-sm h-100">
+              <div className="d-flex align-items-center gap-3 mb-4">
+                <div className="trust-icon-wrapper" style={{ backgroundColor: "#ecfdf5", color: "#059669" }}>
+                  <IconBox size={22} />
+                </div>
+                <div>
+                  <h5 className="fw-bold text-dark mb-0">Architecture Frontend & État Global</h5>
+                  <span className="text-muted small">React 19 & Redux Toolkit</span>
+                </div>
+              </div>
+
+              <div className="d-flex flex-column gap-3 text-muted small">
+                <div className="d-flex align-items-start gap-2">
+                  <span className="text-success mt-1"><IconCheck size={16} /></span>
+                  <div>
+                    <strong className="text-dark d-block">État global asynchrone (Redux Toolkit)</strong>
+                    Remplacement des déclencheurs manuels de rafraîchissement par des <code>createAsyncThunk</code> et <code>extraReducers</code> prédictibles et immuables.
+                  </div>
+                </div>
+
+                <div className="d-flex align-items-start gap-2">
+                  <span className="text-success mt-1"><IconCheck size={16} /></span>
+                  <div>
+                    <strong className="text-dark d-block">Performance & Bundling Vite</strong>
+                    Compilation optimisée avec Rollup/Vite garantissant des temps de chargement minimes et un découpage modulaire du code.
+                  </div>
+                </div>
+
+                <div className="d-flex align-items-start gap-2">
+                  <span className="text-success mt-1"><IconCheck size={16} /></span>
+                  <div>
+                    <strong className="text-dark d-block">Expérience utilisateur fluide</strong>
+                    Notifications non intrusives, filtrage en temps réel, tri dynamique et modales de confirmation.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Col>
+        </Row>
+
+        <div className="p-4 bg-white border rounded-4 shadow-sm text-center">
+          <div className="d-inline-flex align-items-center gap-2 mb-2">
+            <span className="badge-status badge-member">
+              <span className="badge-status-dot" style={{ backgroundColor: "#2563eb" }}></span>
+              Projet Académique & Professionnel
+            </span>
+          </div>
+          <h5 className="fw-bold text-dark mb-1">Aya Bouzommita — Filière Ingénieur GL3</h5>
+          <p className="text-muted small mb-3">
+            Dépôt officiel du code source :{" "}
+            <a href="https://github.com/AyaBouzommita/Projet-MERN" target="_blank" rel="noreferrer" className="text-primary fw-semibold text-decoration-none">
+              github.com/AyaBouzommita/Projet-MERN
+            </a>
+          </p>
+        </div>
+      </Container>
+    </div>
   );
 }
 

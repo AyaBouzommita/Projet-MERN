@@ -1,165 +1,103 @@
-# 🚀 Projet MERN - Filière Ingénieur Génie Logiciel (FIGL3)
-
-[![MERN Stack](https://img.shields.io/badge/Stack-MERN-blue.svg)](https://github.com/AyaBouzommita/Projet-MERN)
-[![React](https://img.shields.io/badge/React-19.3-61DAFB?logo=react)](https://react.dev/)
-[![Node.js](https://img.shields.io/badge/Node.js-21+-339933?logo=node.js)](https://nodejs.org/)
-[![Express](https://img.shields.io/badge/Express-5.x-000000?logo=express)](https://expressjs.com/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb)](https://www.mongodb.com/)
-[![Redux Toolkit](https://img.shields.io/badge/Redux-Toolkit-764ABC?logo=redux)](https://redux-toolkit.js.org/)
-[![JWT](https://img.shields.io/badge/Auth-JWT%20%2B%20Bcrypt-000000?logo=jsonwebtokens)](https://jwt.io/)
+# TechStore Pro — Plateforme MERN de Gestion de Catalogue
 
 > **Auteur :** Aya Bouzommita  
+> **Filière :** Diplôme National d'Ingénieur en Génie Logiciel (FIGL3)  
 > **Dépôt officiel :** [https://github.com/AyaBouzommita/Projet-MERN](https://github.com/AyaBouzommita/Projet-MERN)  
-> **Cadre :** Projet académique d'amélioration et de refactorisation en Génie Logiciel (GL3).
 
 ---
 
-## 📌 Présentation du Projet
+## 1. Description du Projet
 
-Ce projet est une application web fullstack moderne reposant sur la pile **MERN** (*MongoDB, Express.js, React 19, Node.js*). 
+TechStore Pro est une application web fullstack d'entreprise développée sur la pile technologique **MERN** (MongoDB Atlas, Express.js, React 19, Node.js).
 
-Initialement conçu comme un CRUD basique, ce projet a été entièrement **refactorisé, sécurisé et enrichi** pour atteindre les exigences d'une architecture d'entreprise :
-- Séparation stricte des couches selon le pattern **MVC (Modèle - Vue - Contrôleur)**.
-- Système complet d'**Authentification & Autorisation (JWT + Bcrypt)** avec gestion de rôles (`Admin` / `User`).
-- **Gestion d'état réactive avec Redux Toolkit** (suppression du rechargement forcé via state `ping`).
-- Interface utilisateur responsive et moderne conçue avec **React-Bootstrap 5** et notifications **React-Toastify**.
-- Catalogue de produits dynamique avec **recherche textuelle instantanée**, **filtrage par catégories**, et **tri par prix/nom**.
+Conçu à partir d'un squelette minimal, ce projet a fait l'objet d'une refonte architecturale approfondie afin d'implémenter les normes de qualité du Génie Logiciel :
+* **Architecture MVC découplée** : Contrôleurs dédiés, validation des données d'entrée, gestionnaires d'exceptions unifiés.
+* **Sécurité & Authentification** : Authentification par jeton JWT (JSON Web Tokens), chiffrement asymétrique des mots de passe avec Bcrypt, et gestion des rôles d'accès (RBAC).
+* **Isolation des environnements** : Paramétrage centralisé via `dotenv` et sécurisation des en-têtes avec Helmet.
+* **Gestion d'état prédictible** : Implémentation de Redux Toolkit (`createAsyncThunk`, `extraReducers`) sans artifice de rechargement manuel.
+* **Design System professionnel** : Interface moderne et responsive développée avec React-Bootstrap et la typographie Plus Jakarta Sans, intégrant des filtres par facettes, recherche en temps réel et notifications toast.
 
 ---
 
-## 📊 Matrice d'Amélioration (Avant vs Après)
+## 2. Synthèse Comparative des Travaux Réalisés
 
-| Critère | Projet de Base | Projet Amélioré (Aya Bouzommita) |
+| Composant | Implémentation Initiale | Implémentation Finale (Aya Bouzommita) |
 | :--- | :--- | :--- |
-| **Sécurité & Secrets** | URI MongoDB Atlas & credentials en clair dans le code | Variables d'environnement isolées (`dotenv`, `.env.example`, `.env` ignoré par Git) |
-| **Architecture Backend** | Logique métier et base de données mélangées dans les routes | **Architecture MVC propre** (`controllers/`, `routes/`, `models/`, `middlewares/`) |
-| **Authentification** | ❌ Aucune (pas de mot de passe, pas de login/register) | **Complète (JWT 7 jours, Bcrypt, Middleware `isAuth` & `isAdmin`)** |
-| **Gestion des Erreurs** | `console.log(error)` silencieux bloquant les requêtes | Middlewares centralisés (`notFound` 404 & `errorHandler` avec codes HTTP normalisés) |
-| **Sécurité HTTP** | Uniquement CORS basique | **Helmet HTTP Headers**, morgan logger, CORS sécurisé |
-| **Catalogue Produits** | Affichage partiel en texte brut (pas de CRUD UI) | **CRUD complet côté client & serveur**, photos, stock, catégories |
-| **Filtres & Recherche** | ❌ Inexistants | Recherche en temps réel, tri (prix asc/desc, nom), filtre par catégorie |
-| **Gestion d'état Redux** | Bricolage via prop drilling `ping / setping` | **Redux Toolkit idiomatique** (reducers optimistes, `authSlice`, `userSlice`, `productSlice`) |
-| **Expérience Utilisateur** | `alert()` natifs du navigateur, design minimaliste | **Toasts élégants (React-Toastify)**, modales de confirmation, thème moderne |
+| **Sécurité des accès** | Clés et mot de passe de base de données en clair | Variables d'environnement isolées (`.env`), en-têtes Helmet, CORS paramétré |
+| **Authentification** | Inexistante (pas de mot de passe) | Inscription, connexion, génération de jeton JWT 7 jours, chiffrement Bcrypt |
+| **Modèle de données** | Schémas basiques (2 champs pour les produits) | Schémas complets (référence, description, stock, catégorie, horodatage, rôles) |
+| **Gestion des erreurs** | Journalisation muette sans retour client | Middleware centralisé avec codes d'état HTTP normalisés (400, 401, 403, 404, 500) |
+| **Catalogue & Produits** | Affichage partiel textuel sans formulaire UI | CRUD intégral, filtrage par facettes (catégories), tri par prix et nom |
+| **Architecture Redux** | Déclencheurs manuels (`ping / setping`) | État global immuable avec Redux Toolkit (`authSlice`, `productSlice`, `userSlice`) |
+| **Interface Utilisateur** | Alertes natives du navigateur, mise en page brute | Design System moderne, modales de confirmation, notifications discrètes |
 
 ---
 
-## 🏗️ Structure du Projet
+## 3. Structure de l'Arborescence
 
 ```text
 Projet-MERN/
 ├── config/
-│   └── db.js                 # Connexion sécurisée à MongoDB via variables d'environnement
-├── controllers/              # Logique métier pure (MVC)
-│   ├── authController.js     # Register, Login, Current User
-│   ├── productController.js  # CRUD produits, filtres, tri, catégories
-│   └── userController.js     # CRUD utilisateurs, recherche
-├── middlewares/              # Middlewares Express
-│   ├── auth.js               # isAuth (JWT) & isAdmin
-│   └── errorHandler.js       # Gestion centralisée des erreurs et 404
-├── models/                   # Modèles de données Mongoose
-│   ├── product.js            # Schéma Produit (nom, prix, catégorie, image, stock, etc.)
-│   └── user.js               # Schéma Utilisateur (nom, email unique, password haché, rôle)
-├── routes/                   # Définition des endpoints REST
+│   └── db.js                 # Initialisation de la connexion MongoDB
+├── controllers/              # Logique applicative (MVC)
+│   ├── authController.js     # Gestion des sessions et accès
+│   ├── productController.js  # Opérations d'inventaire et requêtes filtrées
+│   └── userController.js     # Annuaire des collaborateurs
+├── middlewares/              # Intercepteurs de requêtes
+│   ├── auth.js               # Validation des jetons JWT et contrôle de rôle
+│   └── errorHandler.js       # Capture et formatage des erreurs HTTP
+├── models/                   # Définitions de schémas Mongoose
+│   ├── product.js
+│   └── user.js
+├── routes/                   # Définition des points d'accès de l'API
 │   ├── auth.js
 │   ├── product.js
 │   └── user.js
-├── client/                   # Frontend React 19 + Vite
+├── client/                   # Interface client (React 19 + Vite)
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── Auth/         # Login.jsx, Register.jsx
-│   │   │   ├── Products/     # ProductList.jsx, ProductCard.jsx, AddProduct.jsx, EditProduct.jsx
-│   │   │   ├── Users/        # UserList.jsx, UserCard.jsx, Adduser.jsx, Edituser.jsx
-│   │   │   ├── Home.jsx      # Page d'accueil avec Hero section et métriques
-│   │   │   ├── Navbarr.jsx   # Barre de navigation responsive avec profil et recherche
-│   │   │   ├── Footer.jsx    # Pied de page informatif
-│   │   │   ├── About.jsx     # Présentation GL3 du projet
-│   │   │   └── Contact.jsx   # Formulaire de contact interactif
-│   │   ├── redux/
-│   │   │   ├── authSlice.jsx # Authentification et synchronisation localStorage
-│   │   │   ├── productSlice.jsx
-│   │   │   ├── userSlice.jsx
-│   │   │   └── store.jsx     # Store Redux combiné
-│   │   ├── App.jsx           # Routes et ToastContainer
-│   │   └── App.css           # Thème personnalisé et responsive
-├── .env.example              # Gabarit des variables d'environnement
+│   │   ├── components/       # Composants modulaires (Auth, Products, Users, etc.)
+│   │   ├── redux/            # Store et gestionnaires d'état Redux Toolkit
+│   │   ├── App.jsx           # Définition des routes applicatives
+│   │   └── App.css           # Feuille de style du Design System
+├── seed.js                   # Script de peuplement de la base de données
 ├── server.js                 # Point d'entrée du serveur Express
-└── package.json
+└── README.md
 ```
 
 ---
 
-## 🚀 Installation & Démarrage
+## 4. Guide d'Installation et Exécution
 
-### 1. Prérequis
-- [Node.js](https://nodejs.org/) (version 18 ou supérieure recommandée)
-- [Git](https://git-scm.com/)
+### Prérequis
+* Node.js (version 18 ou supérieure)
+* Gestionnaire de paquets npm
 
-### 2. Cloner le dépôt
+### Procédure de mise en service
 ```bash
+# 1. Cloner le dépôt
 git clone https://github.com/AyaBouzommita/Projet-MERN.git
 cd Projet-MERN
-```
 
-### 3. Configurer l'environnement
-Copiez le fichier `.env.example` en `.env` à la racine :
-```bash
+# 2. Configurer les variables d'environnement
 cp .env.example .env
-```
-Renseignez vos identifiants (ou utilisez la chaîne MongoDB Atlas configurée par défaut) :
-```env
-PORT=5000
-MONGO_URI=mongodb+srv://<username>:<password>@cluster0.ondwve7.mongodb.net/mern_db
-JWT_SECRET=votre_cle_secrete_jwt
-NODE_ENV=development
-```
 
-### 4. Installer les dépendances
-```bash
-# Dépendances Backend
+# 3. Installer les dépendances serveur et client
 npm install
+cd client && npm install && cd ..
 
-# Dépendances Frontend
-cd client
-npm install
-cd ..
-```
+# 4. (Optionnel) Peupler la base avec le jeu de données de test
+node seed.js
 
-### 5. Lancer l'application
-Pour exécuter le backend et le frontend en parallèle avec une seule commande :
-```bash
+# 5. Lancer l'application complète
 npm run start
 ```
-* **Frontend :** `http://localhost:5173`
-* **Backend API :** `http://localhost:5000`
+
+* Application Frontend : `http://localhost:5173`
+* Serveur d'API Backend : `http://localhost:5000`
 
 ---
 
-## 🔑 Endpoints API REST
+## 5. Comptes de Démonstration (Jeu de données de test)
 
-### Authentification (`/api/auth`)
-* `POST /api/auth/register` : Inscription d'un nouvel utilisateur (retourne un token JWT).
-* `POST /api/auth/login` : Connexion utilisateur / admin (retourne un token JWT).
-* `GET  /api/auth/current` : Récupère les données de session de l'utilisateur connecté *(nécessite le token `Bearer <token>`)*.
-
-### Produits (`/api/product`)
-* `GET    /api/product` : Liste des produits avec support des filtres (`?search=`, `?category=`, `?sortBy=`, `?minPrice=`, `?maxPrice=`).
-* `GET    /api/product/:id` : Détails d'un produit.
-* `POST   /api/product/add` : Création d'un nouveau produit.
-* `PUT    /api/product/:id` : Mise à jour des informations d'un produit.
-* `DELETE /api/product/:id` : Suppression d'un produit.
-* `GET    /api/product/categories` : Liste des catégories distinctes.
-
-### Utilisateurs (`/api/user`)
-* `GET    /api/user` : Liste de tous les utilisateurs (avec filtre `?search=`).
-* `GET    /api/user/:id` : Détail d'un utilisateur par son identifiant.
-* `POST   /api/user/add` : Ajout manuel d'un utilisateur.
-* `PUT    /api/user/:id` : Mise à jour d'un profil utilisateur.
-* `DELETE /api/user/:id` : Suppression d'un utilisateur.
-
----
-
-## 👩‍💻 Auteur
-
-* **Aya Bouzommita**
-* Étudiante en **Filière Ingénieur Génie Logiciel 3 (FIGL3)**
-* GitHub : [@AyaBouzommita](https://github.com/AyaBouzommita)
+* **Administrateur :** `aya.bouzommita@isimg.tn` / mot de passe : `admin123`
+* **Collaborateur standard :** `sarra.trabelsi@gmail.com` / mot de passe : `password123`

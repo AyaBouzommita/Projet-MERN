@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Form, InputGroup, Spinner, Button, Badge } from "react-bootstrap";
+import { Container, Row, Col, Form, Spinner, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getproducts } from "../../redux/productSlice";
 import ProductCard from "./ProductCard";
 import AddProduct from "./AddProduct";
+import { IconSearch, IconRefresh } from "../common/Icons";
 
 function ProductList() {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ function ProductList() {
   const [category, setCategory] = useState("Tous");
   const [sortBy, setSortBy] = useState("");
 
-  const categories = ["Tous", "Informatique", "Smartphones", "Accessoires", "Audio", "Gaming"];
+  const categories = ["Tous", "Informatique", "Smartphones", "Audio", "Gaming", "Accessoires"];
 
   useEffect(() => {
     dispatch(getproducts({ search, category, sortBy }));
@@ -32,99 +33,114 @@ function ProductList() {
   };
 
   return (
-    <Container className="py-4">
-      {/* Header section */}
-      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 p-4 bg-light rounded-4 border">
-        <div>
-          <h2 className="fw-bold mb-1 text-dark">Catalogue des Produits</h2>
-          <p className="text-muted small mb-0">
-            Parcourez, filtrez et gérez les articles du catalogue en temps réel.
-          </p>
+    <div className="py-4">
+      <Container>
+        {/* Header Section */}
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-3 border-bottom">
+          <div>
+            <h2 className="fw-bold mb-1 text-dark">Catalogue Matériel & Solutions</h2>
+            <p className="text-muted small mb-0">
+              Gestion de l'inventaire et consultation des références certifiées en stock.
+            </p>
+          </div>
+          <div>
+            <AddProduct />
+          </div>
         </div>
-        <div>
-          <AddProduct />
-        </div>
-      </div>
 
-      {/* Filter Bar */}
-      <div className="filter-card p-3 mb-4 rounded-3 border bg-white shadow-sm">
-        <Row className="g-3 align-items-center">
-          <Col lg={5} md={6}>
-            <Form onSubmit={handleSearchSubmit}>
-              <InputGroup>
-                <Form.Control
-                  placeholder="Rechercher par nom de produit..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-                <Button variant="primary" type="submit">
-                  Rechercher
-                </Button>
-              </InputGroup>
-            </Form>
-          </Col>
-
-          <Col lg={4} md={6}>
-            <Form.Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-              <option value="">Trier par défaut (Récent)</option>
-              <option value="price_asc">Prix : Moins cher au plus cher</option>
-              <option value="price_desc">Prix : Plus cher au moins cher</option>
-              <option value="name_asc">Nom : A à Z</option>
-              <option value="name_desc">Nom : Z à A</option>
-            </Form.Select>
-          </Col>
-
-          <Col lg={3} className="text-end">
-            <Button variant="outline-secondary" size="sm" onClick={handleReset}>
-              🔄 Réinitialiser
-            </Button>
-          </Col>
-        </Row>
-
-        {/* Categories Pills */}
-        <div className="d-flex gap-2 flex-wrap mt-3 pt-3 border-top">
-          <span className="small text-muted me-2 align-self-center">Catégories :</span>
-          {categories.map((cat) => (
-            <Badge
-              key={cat}
-              bg={category === cat ? "primary" : "light"}
-              text={category === cat ? "white" : "dark"}
-              className="px-3 py-2 cursor-pointer border user-select-none"
-              onClick={() => setCategory(cat)}
-              style={{ cursor: "pointer" }}
-            >
-              {cat}
-            </Badge>
-          ))}
-        </div>
-      </div>
-
-      {/* Product Content */}
-      {loading ? (
-        <div className="text-center py-5">
-          <Spinner animation="border" variant="primary" />
-          <p className="text-muted mt-2">Chargement des produits...</p>
-        </div>
-      ) : error ? (
-        <div className="alert alert-danger text-center">{error}</div>
-      ) : productlist && productlist.length > 0 ? (
-        <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-          {productlist.map((el) => (
-            <Col key={el._id}>
-              <ProductCard el={el} />
+        {/* Filter and Control Bar */}
+        <div className="bg-white border rounded-3 p-3 mb-4 shadow-sm">
+          <Row className="g-3 align-items-center">
+            <Col lg={5} md={6}>
+              <Form onSubmit={handleSearchSubmit}>
+                <div className="position-relative">
+                  <span className="search-icon-pos">
+                    <IconSearch size={16} />
+                  </span>
+                  <Form.Control
+                    type="search"
+                    placeholder="Filtrer par nom de référence..."
+                    className="search-input-pro w-100"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </div>
+              </Form>
             </Col>
-          ))}
-        </Row>
-      ) : (
-        <div className="text-center py-5 bg-light rounded-4 border">
-          <h4 className="fw-bold text-muted">Aucun produit trouvé</h4>
-          <p className="text-muted small">Essayez de modifier vos filtres ou ajoutez un nouveau produit.</p>
-          <Button variant="primary" onClick={handleReset}>
-            Voir tous les produits
-          </Button>
+
+            <Col lg={4} md={4}>
+              <Form.Select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="form-select-sm py-2"
+                style={{ borderRadius: 8 }}
+              >
+                <option value="">Tri : Plus récents</option>
+                <option value="price_asc">Prix : Ordre croissant</option>
+                <option value="price_desc">Prix : Ordre décroissant</option>
+                <option value="name_asc">Alphabétique (A à Z)</option>
+                <option value="name_desc">Alphabétique (Z à A)</option>
+              </Form.Select>
+            </Col>
+
+            <Col lg={3} md={2} className="text-md-end">
+              <Button variant="light" size="sm" className="btn-outline-pro d-inline-flex align-items-center gap-1" onClick={handleReset}>
+                <IconRefresh size={14} />
+                <span>Réinitialiser</span>
+              </Button>
+            </Col>
+          </Row>
+
+          {/* Category Tabs */}
+          <div className="d-flex gap-2 flex-wrap mt-3 pt-3 border-top">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                className={`category-pill ${category === cat ? "active" : ""}`}
+                onClick={() => setCategory(cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
-      )}
-    </Container>
+
+        {/* Result Counter */}
+        <div className="d-flex justify-content-between align-items-center mb-3 text-muted small">
+          <span>{productlist?.length || 0} résultat(s) disponible(s)</span>
+          {category !== "Tous" && (
+            <span>Catégorie sélectionnée : <strong>{category}</strong></span>
+          )}
+        </div>
+
+        {/* Product Grid */}
+        {loading ? (
+          <div className="text-center py-5">
+            <Spinner animation="border" variant="primary" />
+            <div className="text-muted small mt-2">Chargement du catalogue...</div>
+          </div>
+        ) : error ? (
+          <div className="alert alert-danger text-center small py-3">{error}</div>
+        ) : productlist && productlist.length > 0 ? (
+          <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+            {productlist.map((el) => (
+              <Col key={el._id}>
+                <ProductCard el={el} />
+              </Col>
+            ))}
+          </Row>
+        ) : (
+          <div className="text-center py-5 bg-white border rounded-3 p-4">
+            <h5 className="fw-bold text-dark mb-1">Aucune référence trouvée</h5>
+            <p className="text-muted small mb-3">Aucun produit ne correspond aux filtres appliqués.</p>
+            <Button className="btn-outline-pro" onClick={handleReset}>
+              Réinitialiser les filtres
+            </Button>
+          </div>
+        )}
+      </Container>
+    </div>
   );
 }
 
