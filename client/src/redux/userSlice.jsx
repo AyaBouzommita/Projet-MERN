@@ -1,112 +1,123 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const getusers=createAsyncThunk("user/get" , async()=>{
-    try{
-        let result=await axios.get("http://localhost:5000/user");
-        return result
+const API_URL = "http://localhost:5000/api/user";
 
-    } catch (error) {
-        console.log(error)
-
-    }
+export const getusers = createAsyncThunk("user/get", async (search = "", { rejectWithValue }) => {
+  try {
+    const url = search ? `${API_URL}?search=${encodeURIComponent(search)}` : API_URL;
+    const result = await axios.get(url);
+    return result.data.users;
+  } catch (error) {
+    return rejectWithValue(error.response?.data?.msg || error.message);
+  }
 });
 
-export const adduser=createAsyncThunk("user/add" , async(newuser)=>{
-    try{
-        let result=await axios.post("http://localhost:5000/user/add", newuser);
-        return result
-
-    } catch (error) {
-        console.log(error)
-
-    }
+export const adduser = createAsyncThunk("user/add", async (newuser, { rejectWithValue }) => {
+  try {
+    const result = await axios.post(`${API_URL}/add`, newuser);
+    return result.data.user;
+  } catch (error) {
+    return rejectWithValue(error.response?.data?.msg || error.message);
+  }
 });
 
-export const deleteuser=createAsyncThunk("user/delete" , async(id)=>{
-    try{
-        let result=await axios.delete(`http://localhost:5000/user/${id}`);
-        return result
-
-    } catch (error) {
-        console.log(error)
-
-    }
-});
-export const edituser=createAsyncThunk("user/edit" , async({id,edited})=>{
-    try{
-        let result=await axios.put(`http://localhost:5000/user/${id}`, edited);
-        return result
-
-    } catch (error) {
-        console.log(error)
-
-    }
+export const deleteuser = createAsyncThunk("user/delete", async (id, { rejectWithValue }) => {
+  try {
+    await axios.delete(`${API_URL}/${id}`);
+    return id;
+  } catch (error) {
+    return rejectWithValue(error.response?.data?.msg || error.message);
+  }
 });
 
-
-
-
-
+export const edituser = createAsyncThunk("user/edit", async ({ id, edited }, { rejectWithValue }) => {
+  try {
+    const result = await axios.put(`${API_URL}/${id}`, edited);
+    return result.data.user;
+  } catch (error) {
+    return rejectWithValue(error.response?.data?.msg || error.message);
+  }
+});
 
 const initialState = {
-  userlist:[],
-  status:null
-}
+  userlist: [],
+  loading: false,
+  error: null,
+  successMsg: null,
+};
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
+    clearUserStatus: (state) => {
+      state.error = null;
+      state.successMsg = null;
+    },
   },
-
   extraReducers: (builder) => {
     builder
-    //Get
+      // Get users
       .addCase(getusers.pending, (state) => {
-        state.status = "pending";
+        state.loading = true;
+        state.error = null;
       })
       .addCase(getusers.fulfilled, (state, action) => {
-        state.status = "success";
-        state.userlist = action.payload.data.users;
+        state.loading = false;
+        state.userlist = action.payload || [];
       })
-      .addCase(getusers.rejected, (state) => {
-        state.status = "fail";
+      .addCase(getusers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
-     .addCase(adduser.pending, (state) => {
-        state.status = "pending";
+
+      // Add user
+      .addCase(adduser.pending, (state) => {
+        state.loading = true;
       })
       .addCase(adduser.fulfilled, (state, action) => {
-        state.status = "success";
-    
+        state.loading = false;
+        state.userlist.unshift(action.payload);
+        state.successMsg = "Utilisateur ajouté avec succès !";
       })
-      .addCase(adduser.rejected, (state) => {
-        state.status = "fail";
+      .addCase(adduser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
-          .addCase(deleteuser.pending, (state) => {
-        state.status = "pending";
+
+      // Delete user
+      .addCase(deleteuser.pending, (state) => {
+        state.loading = true;
       })
       .addCase(deleteuser.fulfilled, (state, action) => {
-        state.status = "success";
-    
+        state.loading = false;
+        state.userlist = state.userlist.filter((u) => u._id !== action.payload);
+        state.successMsg = "Utilisateur supprimé avec succès !";
       })
-      .addCase(deleteuser.rejected, (state) => {
-        state.status = "fail";
+      .addCase(deleteuser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
-     .addCase(edituser.pending, (state) => {
-        state.status = "pending";
+
+      // Edit user
+      .addCase(edituser.pending, (state) => {
+        state.loading = true;
       })
       .addCase(edituser.fulfilled, (state, action) => {
-        state.status = "success";
-    
+        state.loading = false;
+        const index = state.userlist.findIndex((u) => u._id === action.payload._id);
+        if (index !== -1) {
+          state.userlist[index] = action.payload;
+        }
+        state.successMsg = "Utilisateur modifié avec succès !";
       })
-      .addCase(edituser.rejected, (state) => {
-        state.status = "fail";
-      })
+      .addCase(edituser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
-})
+});
 
-// Action creators are generated for each case reducer function
-
-
-export default userSlice.reducer
+export const { clearUserStatus } = userSlice.actions;
+export default userSlice.reducer;
