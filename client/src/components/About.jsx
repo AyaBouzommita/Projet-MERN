@@ -53,23 +53,23 @@ function About() {
               <div className="p-4 bg-white border rounded-4 shadow-sm">
                 <h5 className="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
                   <IconCode size={20} className="text-primary" />
-                  <span>Architecture & Génie Logiciel</span>
+                  <span>Standards Techniques & Robustesse</span>
                 </h5>
                 <p className="text-muted small mb-3">
-                  Cette plateforme est elle-même un projet d'ingénierie logicielle complet conçu par <strong>Aya Bouzommita</strong> dans le cadre de la filière <strong>FIGL3</strong> :
+                  DevShowcase repose sur une architecture moderne conçue pour garantir réactivité, sécurité et modularité :
                 </p>
                 <div className="d-flex flex-column gap-2 text-muted small">
                   <div className="p-2 bg-light rounded border">
                     <strong className="text-dark d-block">Backend MVC & API RESTful :</strong>
-                    Express.js 5, contrôleurs modulaires, routes typées et gestion d'erreurs normalisée.
+                    Express.js, contrôleurs modulaires, découplage clair et gestion normalisée des requêtes.
                   </div>
                   <div className="p-2 bg-light rounded border">
                     <strong className="text-dark d-block">Sécurité & Authentification :</strong>
-                    Jeton JWT d'authentification, mots de passe salés et hachés avec Bcrypt, en-têtes Helmet.
+                    Authentification par JWT, hachage cryptographique des mots de passe avec Bcrypt et isolation des secrets.
                   </div>
                   <div className="p-2 bg-light rounded border">
                     <strong className="text-dark d-block">Frontend Réactif & Optimiste :</strong>
-                    React 19, Redux Toolkit avec mise à jour immédiate des votes et filtres instantanés.
+                    React, Redux Toolkit avec mise à jour immédiate des votes et filtres multi-critères instantanés.
                   </div>
                 </div>
               </div>
