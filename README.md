@@ -30,24 +30,33 @@ L'objectif est d'offrir une vitrine publique durable aux projets académiques, p
 
 ---
 
-## 3. Guide de Démarrage
+## 3. Guide de Démarrage & Configuration
 
+### Prérequis :
+* Node.js (>= 18)
+* Un cluster **MongoDB Atlas** (ou MongoDB en local)
+
+### Installation :
 ```bash
 # 1. Cloner le dépôt
 git clone https://github.com/AyaBouzommita/Projet-MERN.git
 cd Projet-MERN
 
 # 2. Configurer les variables d'environnement
-cp .env.example .env
+# Créer le fichier .env à la racine (basé sur .env.example) :
+PORT=5000
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/devshowcase?retryWrites=true&w=majority
+JWT_SECRET=supersecret_mern_token_gl3_2026
+NODE_ENV=development
 
-# 3. Installer les dépendances
+# 3. Installer les dépendances (serveur + client)
 npm install
 cd client && npm install && cd ..
 
-# 4. Peupler les projets de démonstration
+# 4. Peupler la base avec les projets et utilisateurs de démo
 node seed.js
 
-# 5. Démarrer le projet
+# 5. Démarrer le projet fullstack (Backend + Frontend en simultané)
 npm run start
 ```
 
